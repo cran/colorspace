@@ -1,6 +1,6 @@
 Package: colorspace
-Version: 0.9
-Date: 2005-01-19
+Version: 0.95
+Date: 2006-11-16
 Title: Colorspace Manipulation
 Author: Ross Ihaka <ihaka@stat.auckland.ac.nz>
 Maintainer: Ross Ihaka <ihaka@stat.auckland.ac.nz>
@@ -8,4 +8,5 @@ Depends: R (>= 2.0.0), methods
 Description: Carries out mapping between assorted color spaces.
 License: BSD
 URL: http://www.r-project.org
-Packaged: Thu Jan 20 08:21:47 2005; ihaka
+LazyLoad: yes
+Packaged: Thu Nov 16 11:47:26 2006; ihaka

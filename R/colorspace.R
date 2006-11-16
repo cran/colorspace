@@ -15,7 +15,7 @@
 ##  they are all useful.
 ##
 
-.onLoad = function(lib, pkg) require(methods)
+.onLoad = function(lib, pkg) require(methods, quietly = TRUE)
 
 ## The Abstract Color Class
 
@@ -209,12 +209,6 @@ writehex =
   }
 
 .WhitePoint = NULL
-
-hcl =
-  function(h = 0, c = 35, l = 85, gamma = 2.2, fixup = TRUE)
-  {
-      hex(polarLUV(l, c, h), gamma = gamma, fixup = fixup)
-  }
 
 mixcolor = 
   function(alpha, color1, color2, where = class(color1))

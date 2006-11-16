@@ -18,8 +18,8 @@ RGB(R, G, B, names)
     names of \code{R} are used).}
 }
 \details{
-  This function creates colors in the standard sRGB
-  color space (IEC standard 61966).
+  This function creates colors in the RGB color space which is
+  a linearly transformed version of CIEXYZ space.
 }
 \value{
   An object of class ``RGB'' which inherits from class ``color.''
