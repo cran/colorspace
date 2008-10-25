@@ -4,6 +4,7 @@
 \alias{RGB-class}
 \alias{XYZ-class}
 \alias{HSV-class}
+\alias{HLS-class}
 \alias{LAB-class}
 \alias{LUV-class}
 \alias{polarLAB-class}
@@ -14,6 +15,7 @@
 \alias{coerce,color,LAB-method}
 \alias{coerce,color,polarLAB-method}
 \alias{coerce,color,HSV-method}
+\alias{coerce,color,HLS-method}
 \alias{coerce,color,LUV-method}
 \alias{coerce,color,polarLUV-method}
 \alias{coords,color-method}
@@ -23,12 +25,12 @@
 \title{Class "color"}
 \description{
 Objects from the class \emph{color} represent colors in a number of
-color spaces.  In particular there are subclasses of color
-which correspond to RGB, CIEXYZ, CIELUV, CIELAB and polar
+color spaces.  In particular, there are subclasses of color
+which correspond to RGB, HSV, HLS, CIEXYZ, CIELUV, CIELAB and polar
 versions of the last two spaces.
 }
 \section{Objects from the Class}{
-Objects can be created by calls to the functions \code{RGB}
+Objects can be created by calls to the functions \code{RGB}, \code{HSV}, \code{HLS},
 \code{XYZ}, \code{LUV}, \code{LAB}, \code{polarLUV}, and
 \code{polarLAB}.  These are all subclasses of the virtual
 class \emph{color}.
@@ -52,6 +54,8 @@ class \emph{color}.
       a color vector to polarLAB. }
     \item{coerce}{\code{signature(from = "color", to = "HSV")}: convert
       a color vector to HSV. }
+    \item{coerce}{\code{signature(from = "color", to = "HLS")}: convert
+      a color vector to HLS. }
     \item{coerce}{\code{signature(from = "color", to = "LUV")}: convert
       a color vector to LUV. }
     \item{coerce}{\code{signature(from = "color", to = "polarLUV")}: convert
@@ -68,6 +72,7 @@ class \emph{color}.
   \code{\link{RGB}},
   \code{\link{XYZ}},
   \code{\link{HSV}},
+  \code{\link{HLS}},
   \code{\link{LAB}},
   \code{\link{polarLAB}},
   \code{\link{LUV}},

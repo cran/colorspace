@@ -9,13 +9,14 @@
 ##     HSV       Hue-Saturation-Value
 ##     LUV       CIE-L*u*v*
 ##     polarLUV  CIE-L*u*v* in polar coordinates
+##     HLS       Hue-Lightness-Saturation
 ##
 ##  The ``canonical'' space here is really CIE-XYZ, but in this
 ##  implementation all spaces are treated equally, because
 ##  they are all useful.
 ##
 
-.onLoad = function(lib, pkg) require(methods, quietly = TRUE)
+.onLoad = function(lib, pkg) require("methods", quietly = TRUE)
 
 ## The Abstract Color Class
 
@@ -28,6 +29,7 @@ setClass("XYZ", contains="color")
 setClass("LAB", contains="color")
 setClass("polarLAB", contains="color")
 setClass("HSV", contains="color")
+setClass("HLS", contains="color")
 setClass("LUV", contains="color")
 setClass("polarLUV", contains="color")
 
@@ -126,6 +128,21 @@ HSV =
     new("HSV", coords = coords)
   }
 
+HLS =
+  function(H, L, S, names)
+  {
+    if (missing(H)) return(new("HLS"))
+    if (missing(names)) names = dimnames(H)[[1]]
+    coords = cbind(H, if (missing(L)) NULL else L,
+                      if (missing(S)) NULL else S)
+    CheckMatrix(coords)
+    ## CheckBounds(coords[,1], 0, 360)
+    ## CheckBounds(coords[,2], 0, 1)
+    ## CheckBounds(coords[,3], 0, 1)
+    dimnames(coords) = list(names, c("H", "L", "S"))
+    new("HLS", coords = coords)
+  }
+
 LUV =
   function(L, U, V, names)
   {
@@ -169,6 +186,10 @@ setAs("color", "polarLAB", function(from)
 
 setAs("color", "HSV", function(from)
       HSV(.Call("as_HSV", from@coords, class(from), .WhitePoint),
+          names = dimnames(from@coords)[[1]]))
+
+setAs("color", "HLS", function(from)
+      HLS(.Call("as_HLS", from@coords, class(from), .WhitePoint),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "LUV", function(from)

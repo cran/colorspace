@@ -1,0 +1,45 @@
+citHeader("To cite colorspace in publications use")
+
+## R >= 2.8.0 passes package metadata to citation().
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("colorspace")
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+citEntry(entry = "Manual",
+         title = "{colorspace}: Color Space Manipulation",
+         author = personList(as.person("Ross Ihaka"), 
+	                     as.person("Paul Murrell"),
+                             as.person("Kurt Hornik"),
+			     as.person("Achim Zeileis")),
+         year = year,
+         note = note,
+         url = "http://CRAN.R-project.org/package=colorspace",
+
+         textVersion =
+         paste("Ross Ihaka, Paul Murrell, Kurt Hornik, Achim Zeileis",
+   	       sprintf("(%s).", year),	 
+               "colorspace: Color Space Manipulation.",
+	       paste(note, ".", sep = ""),
+               "URL http://CRAN.R-project.org/package=colorspace")
+)
+
+citEntry(entry = "TechReport",
+         title = "Escaping {RGB}land: Selecting Colors for Statistical Graphics",
+         author = personList(as.person("Achim Zeileis"), 
+	                     as.person("Kurt Hornik"),
+                             as.person("Paul Murrell")),
+         institution  = "Department of Statistics and Mathematics, Wirtschaftsuniversit\\\"at Wien, Research Report Series",
+         year         = "2007",
+	 type         = "Report",
+	 number       = "61",
+	 month        = "November",
+	 url          = "http://epub.wu-wien.ac.at/",
+         
+         textVersion = 
+         paste("Achim Zeileis, Kurt Hornik, Paul Murrell (2007).", 
+               "Escaping RGBland: Selecting Colors for Statistical Graphics.",
+	       "Report 61.",
+	       "Department of Statistics and Mathematics, Wirtschaftsuniversitaet Wien, Research Report Series.",
+	       "URL http://epub.wu-wien.ac.at/."),
+	 header = "If you use HCL-based color palettes, please cite:"
+)
