@@ -80,8 +80,8 @@ diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
 \references{
   Zeileis A., Hornik K. and Murrell P. (2007),
   Escaping RGBland: Selecting Colors for Statistical Graphics.
-  Report 61, Department of Statistics and Mathematics, Wirtschaftsuniversität Wien,
-  Research Report Series, \url{http://epub.wu-wien.ac.at/}.
+  \emph{Computational Statistics & Data Analysis}, Forthcoming.
+  Preprint available from \url{http://statmath.wu-wien.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2008.pdf}.
 }
 
 \value{

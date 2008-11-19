@@ -23,23 +23,18 @@ citEntry(entry = "Manual",
                "URL http://CRAN.R-project.org/package=colorspace")
 )
 
-citEntry(entry = "TechReport",
+citEntry(entry = "Article",
          title = "Escaping {RGB}land: Selecting Colors for Statistical Graphics",
          author = personList(as.person("Achim Zeileis"), 
 	                     as.person("Kurt Hornik"),
                              as.person("Paul Murrell")),
-         institution  = "Department of Statistics and Mathematics, Wirtschaftsuniversit\\\"at Wien, Research Report Series",
-         year         = "2007",
-	 type         = "Report",
-	 number       = "61",
-	 month        = "November",
-	 url          = "http://epub.wu-wien.ac.at/",
+         journal      = "Computational Statistics \\& Data Analysis",
+         year         = "2008",
+	 note         = "Forthcoming",
          
          textVersion = 
          paste("Achim Zeileis, Kurt Hornik, Paul Murrell (2007).", 
                "Escaping RGBland: Selecting Colors for Statistical Graphics.",
-	       "Report 61.",
-	       "Department of Statistics and Mathematics, Wirtschaftsuniversitaet Wien, Research Report Series.",
-	       "URL http://epub.wu-wien.ac.at/."),
+	       "Computational Statistics & Data Analysis, Forthcoming."),
 	 header = "If you use HCL-based color palettes, please cite:"
 )

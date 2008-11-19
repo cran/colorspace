@@ -57,9 +57,8 @@ library("KernSmooth")
 
 \section{Introduction} \label{sec:intro}
 
-This is a companion vignette to \cite{color:Zeileis+Hornik:2006} 
-and \cite{color:Zeileis+Hornik+Murrell:2007} providing
-further technical details on the construction of the palettes as well as
+This is a companion vignette to \cite{color:Zeileis+Hornik+Murrell:2008}
+providing further technical details on the construction of the palettes as well as
 \proglang{R} code illustrating the use of varying palettes in practice.
 The palettes as well as some graphical functions demonstrated are contained
 in the package \pkg{colorspace}.

@@ -1,4 +1,11 @@
-Changes in Version 0.96
+Changes in Version 1.0-0
+
+  o new version to accompany the "Escaping RGBland" paper accepted
+    for publication in Computational Statistics & Data Analysis, see
+    citation("colorspace")
+    
+
+Changes in Version 0.97
 
   o moved color palettes from vcd to colorspace,
     including vignette("hcl-colors")

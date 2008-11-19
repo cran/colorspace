@@ -1348,7 +1348,7 @@ static void decodeHexStr(const char * const x, double *r, double *g, double *b)
 SEXP hex_to_RGB(SEXP hex, SEXP gamma)
 {
     double gammavalue, r, g, b;
-    int i, n;
+    int i, n = 0;
     SEXP ans;
     CheckHex(hex, &n);
     gammavalue = asReal(gamma);
