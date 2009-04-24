@@ -1,15 +1,17 @@
 Package: colorspace
-Version: 1.0-0
-Date: 2008-11-19
+Version: 1.0-1
+Date: 2009-04-24
 Title: Color Space Manipulation
 Author: Ross Ihaka, Paul Murrell, Kurt Hornik, Achim Zeileis
 Maintainer: Ross Ihaka <ihaka@stat.auckland.ac.nz>
-Description: Carries out mapping between assorted color spaces including
-             RGB, HSV, HLS, CIEXYZ, CIELUV, HCL (polar CIELUV),
-	     CIELAB and polar CIELAB. Qualitative, sequential, and
-	     diverging color palettes based on HCL colors are provided.
+Description: Carries out mapping between assorted color spaces
+        including RGB, HSV, HLS, CIEXYZ, CIELUV, HCL (polar CIELUV),
+        CIELAB and polar CIELAB. Qualitative, sequential, and diverging
+        color palettes based on HCL colors are provided.
 Depends: R (>= 2.0.0), methods
 Suggests: KernSmooth, MASS, kernlab, mvtnorm, vcd
 License: BSD
 LazyLoad: yes
-Packaged: Fri Nov 21 11:45:29 2008; zeileis
+Packaged: Fri Apr 24 18:21:34 2009; zeileis
+Repository: CRAN
+Date/Publication: 2009-04-24 16:23:06

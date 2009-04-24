@@ -57,7 +57,7 @@ library("KernSmooth")
 
 \section{Introduction} \label{sec:intro}
 
-This is a companion vignette to \cite{color:Zeileis+Hornik+Murrell:2008}
+This is a companion vignette to \cite{color:Zeileis+Hornik+Murrell:2009}
 providing further technical details on the construction of the palettes as well as
 \proglang{R} code illustrating the use of varying palettes in practice.
 The palettes as well as some graphical functions demonstrated are contained
