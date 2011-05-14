@@ -14,13 +14,14 @@
  *  Gamma Correction
  *
  *  The following two functions provide gamma correction which
- *  maps between device independent and device dependent RGB
- *  spaces sRGB.
+ *  can be used to switch between sRGB and linearized sRGB (RGB).
  *
- *  The standard value of gamma for sRGB displays is 2.2.
+ *  The standard value of gamma for sRGB displays is approximately 2.2,
+ *  but more accurately is a combination of a linear transform and
+ *  a power transform with exponent 2.4
  *
- *  gtrans maps device independent RGB to device dependent RGB.
- *  ftrans provides the inverse map.
+ *  gtrans maps linearized sRGB to sRGB.
+x *  ftrans provides the inverse map.
  *
  */
 
@@ -80,6 +81,36 @@ static void XYZ_to_RGB(double X, double Y, double Z,
     *R = ( 3.240479 * X - 1.537150 * Y - 0.498535 * Z) / YN;
     *G = (-0.969256 * X + 1.875992 * Y + 0.041556 * Z) / YN;
     *B = ( 0.055648 * X - 0.204043 * Y + 1.057311 * Z) / YN;
+}
+
+/* ----- CIE-XYZ <-> sRGB -----
+ *
+ *  R, G, and B give the levels of red, green and blue as values
+ *  in the interval [0,1].  X, Y and Z give the CIE chromaticies.
+ *  XN, YN, ZN gives the chromaticity of the white point.
+ *
+ */
+
+static void sRGB_to_XYZ(double R, double G, double B,
+                        double XN, double YN, double ZN,
+                        double *X, double *Y, double *Z)
+{
+    double r, g, b;
+    r = ftrans(R, 2.4);
+    g = ftrans(G, 2.4);
+    b = ftrans(B, 2.4);
+    *X = YN * (0.412453 * r + 0.357580 * g + 0.180423 * b);
+    *Y = YN * (0.212671 * r + 0.715160 * g + 0.072169 * b);
+    *Z = YN * (0.019334 * r + 0.119193 * g + 0.950227 * b);
+}
+
+static void XYZ_to_sRGB(double X, double Y, double Z,
+                        double XN, double YN, double ZN,
+                        double *R, double *G, double *B)
+{
+    *R = gtrans(( 3.240479 * X - 1.537150 * Y - 0.498535 * Z) / YN, 2.4);
+    *G = gtrans((-0.969256 * X + 1.875992 * Y + 0.041556 * Z) / YN, 2.4);
+    *B = gtrans(( 0.055648 * X - 0.204043 * Y + 1.057311 * Z) / YN, 2.4);
 }
 
 
@@ -445,6 +476,7 @@ static void polarLUV_to_LUV(double l, double c, double h,
 #define CIELAB    5
 #define POLARLAB  6
 #define HLS       7
+#define sRGB      8
 
 static void CheckSpace(SEXP space, int *spacecode)
 {
@@ -454,6 +486,8 @@ static void CheckSpace(SEXP space, int *spacecode)
 	*spacecode = CIEXYZ;
     else if (!strcmp(CHAR(STRING_ELT(space, 0)), "RGB"))
 	*spacecode = RGB;
+    else if (!strcmp(CHAR(STRING_ELT(space, 0)), "sRGB"))
+	*spacecode = sRGB;
     else if (!strcmp(CHAR(STRING_ELT(space, 0)), "HSV"))
 	*spacecode = HSV;
     else if (!strcmp(CHAR(STRING_ELT(space, 0)), "HLS"))
@@ -565,21 +599,15 @@ SEXP as_XYZ(SEXP color, SEXP space, SEXP white)
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
-    case HSV:
+    case sRGB:
 	for(i = 0; i < n; i++) {
-	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+	    sRGB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
+    case HSV:
     case HLS:
-	for(i = 0; i < n; i++) {
-	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
+        error("Ambiguous conversion");
 	break;
     case CIELUV:
 	for(i = 0; i < n; i++) {
@@ -642,6 +670,13 @@ SEXP as_RGB(SEXP color, SEXP space, SEXP white)
 	    REAL(ans)[i+2*n] = REAL(color)[i+2*n];
 	}
 	break;
+    case sRGB:
+	for(i = 0; i < n; i++) {
+	    DEVRGB_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
+                          2.4,
+                          &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
     case HSV:
 	for(i = 0; i < n; i++) {
 	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
@@ -696,7 +731,7 @@ SEXP as_RGB(SEXP color, SEXP space, SEXP white)
     return ans;
 }
 
-SEXP as_HSV(SEXP color, SEXP space, SEXP white)
+SEXP as_sRGB(SEXP color, SEXP space, SEXP white)
 {
     double Xn, Yn, Zn;
     int spacecode;
@@ -712,13 +747,101 @@ SEXP as_HSV(SEXP color, SEXP space, SEXP white)
     switch(spacecode) {
     case CIEXYZ:
 	for(i = 0; i < n; i++) {
-	    XYZ_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HSV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
+	    XYZ_to_sRGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
+                        &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    case RGB: 
+	for(i = 0; i < n; i++) {
+            RGB_to_DEVRGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
+                          2.4,
+                          &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+        }
+        break;
+    case sRGB:
+	for(i = 0; i < n; i++) {
+	    REAL(ans)[i] = REAL(color)[i];
+	    REAL(ans)[i+n] = REAL(color)[i+n];
+	    REAL(ans)[i+2*n] = REAL(color)[i+2*n];
+	}
+	break;
+    case HSV:
+	for(i = 0; i < n; i++) {
+	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
+    case HLS:
+	for(i = 0; i < n; i++) {
+	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    case CIELUV:
+	for(i = 0; i < n; i++) {
+	    LUV_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	    XYZ_to_sRGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+                        &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    case POLARLUV:
+	for(i = 0; i < n; i++) {
+	    polarLUV_to_LUV(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	    LUV_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	    XYZ_to_sRGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    case CIELAB:
+	for(i = 0; i < n; i++) {
+	    LAB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	    XYZ_to_sRGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    case POLARLAB:
+	for(i = 0; i < n; i++) {
+	    polarLAB_to_LAB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	    LAB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	    XYZ_to_sRGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    default:
+	error("unimplemented colour space (3)");
+    }
+    return ans;
+}
+
+SEXP as_HSV(SEXP color, SEXP space, SEXP white)
+{
+    double Xn, Yn, Zn;
+    int spacecode;
+    int i, n;
+    SEXP ans;
+
+    CheckColor(color, &n);
+    CheckSpace(space, &spacecode);
+    CheckWhite(white, &Xn, &Yn, &Zn);
+
+    ans = allocMatrix(REALSXP, n, 3);
+
+    switch(spacecode) {
+    case CIEXYZ:
+    case CIELUV:
+    case POLARLUV:
+    case CIELAB:
+    case POLARLAB:
+        error("Ambiguous conversion");
+	break;
     case RGB:
+    case sRGB:
 	for(i = 0; i < n; i++) {
 	    RGB_to_HSV(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
@@ -734,50 +857,6 @@ SEXP as_HSV(SEXP color, SEXP space, SEXP white)
     case HLS:
 	for(i = 0; i < n; i++) {
 	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HSV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case CIELUV:
-	for(i = 0; i < n; i++) {
-	    LUV_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HSV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case POLARLUV:
-	for(i = 0; i < n; i++) {
-	    polarLUV_to_LUV(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    LUV_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HSV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case CIELAB:
-	for(i = 0; i < n; i++) {
-	    LAB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HSV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case POLARLAB:
-	for(i = 0; i < n; i++) {
-	    polarLAB_to_LAB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    LAB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	    RGB_to_HSV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
@@ -804,16 +883,21 @@ SEXP as_HLS(SEXP color, SEXP space, SEXP white)
 
     switch(spacecode) {
     case CIEXYZ:
-	for(i = 0; i < n; i++) {
-	    XYZ_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
+    case CIELUV:
+    case POLARLUV:
+    case CIELAB:
+    case POLARLAB:
+        error("Ambiguous conversion");
 	break;
     case RGB:
 	for(i = 0; i < n; i++) {
 	    RGB_to_HLS(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
+		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
+	}
+	break;
+    case sRGB:
+	for(i = 0; i < n; i++) {
+	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
@@ -830,50 +914,6 @@ SEXP as_HLS(SEXP color, SEXP space, SEXP white)
 	    REAL(ans)[i] = REAL(color)[i];
 	    REAL(ans)[i+n] = REAL(color)[i+n];
 	    REAL(ans)[i+2*n] = REAL(color)[i+2*n];
-	}
-	break;
-    case CIELUV:
-	for(i = 0; i < n; i++) {
-	    LUV_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case POLARLUV:
-	for(i = 0; i < n; i++) {
-	    polarLUV_to_LUV(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    LUV_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case CIELAB:
-	for(i = 0; i < n; i++) {
-	    LAB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
-	break;
-    case POLARLAB:
-	for(i = 0; i < n; i++) {
-	    polarLAB_to_LAB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    LAB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_RGB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
     default:
@@ -911,25 +951,17 @@ SEXP as_LUV(SEXP color, SEXP space, SEXP white)
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
-    case HSV:
+    case sRGB:
 	for(i = 0; i < n; i++) {
-	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+	    sRGB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	    XYZ_to_LUV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
+    case HSV:
     case HLS:
-	for(i = 0; i < n; i++) {
-	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_LUV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
+        error("Ambiguous conversion");
 	break;
     case CIELUV:
 	for(i = 0; i < n; i++) {
@@ -1000,11 +1032,9 @@ SEXP as_polarLUV(SEXP color, SEXP space, SEXP white)
 			    &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
-    case HSV:
+    case sRGB:
 	for(i = 0; i < n; i++) {
-	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+	    sRGB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	    XYZ_to_LUV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
@@ -1012,17 +1042,9 @@ SEXP as_polarLUV(SEXP color, SEXP space, SEXP white)
 			    &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
+    case HSV:
     case HLS:
-	for(i = 0; i < n; i++) {
-	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_LUV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    LUV_to_polarLUV(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-			    &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
+        error("Ambiguous conversion");
 	break;
     case CIELUV:
 	for(i = 0; i < n; i++) {
@@ -1093,25 +1115,17 @@ SEXP as_LAB(SEXP color, SEXP space, SEXP white)
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
-    case HSV:
+    case sRGB:
 	for(i = 0; i < n; i++) {
-	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+	    sRGB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	    XYZ_to_LAB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
+    case HSV:
     case HLS:
-	for(i = 0; i < n; i++) {
-	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_LAB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
+        error("Ambiguous conversion");
 	break;
     case CIELUV:
 	for(i = 0; i < n; i++) {
@@ -1182,11 +1196,9 @@ SEXP as_polarLAB(SEXP color, SEXP space, SEXP white)
 			    &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
-    case HSV:
+    case sRGB:
 	for(i = 0; i < n; i++) {
-	    HSV_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
+	    sRGB_to_XYZ(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	    XYZ_to_LAB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
@@ -1194,17 +1206,9 @@ SEXP as_polarLAB(SEXP color, SEXP space, SEXP white)
 			    &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;
+    case HSV:
     case HLS:
-	for(i = 0; i < n; i++) {
-	    HLS_to_RGB(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    RGB_to_XYZ(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    XYZ_to_LAB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n], Xn, Yn, Zn,
-		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	    LAB_to_polarLAB(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
-			    &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
-	}
+        error("Ambiguous conversion");
 	break;
     case CIELUV:
 	for(i = 0; i < n; i++) {
@@ -1261,15 +1265,14 @@ static const char HEXDIG[] = {
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
 
-SEXP RGB_to_RColor(SEXP rgb, SEXP gamma, SEXP fixup)
+SEXP sRGB_to_RColor(SEXP rgb, SEXP fixup)
 {
-    double gammavalue, r, g, b;
+    double r, g, b;
     int fixupvalue, i, ir, ig, ib, n, nagen;
     char hex[8];
     SEXP ans;
 
     CheckColor(rgb, &n);
-    CheckGamma(gamma, &gammavalue);
     CheckFixup(fixup, &fixupvalue);
 
     PROTECT(ans = allocVector(STRSXP, n));
@@ -1279,7 +1282,6 @@ SEXP RGB_to_RColor(SEXP rgb, SEXP gamma, SEXP fixup)
 	r = REAL(rgb)[i];
 	g = REAL(rgb)[i+n];
 	b = REAL(rgb)[i+2*n];
-	RGB_to_DEVRGB(r, g, b, gammavalue, &r, &g, &b);
         if (R_FINITE(r) && R_FINITE(g) && R_FINITE(b)) {
 	    /* Hardware color representation */
 	    ir = 255 * r + .5;
@@ -1347,16 +1349,15 @@ static void decodeHexStr(const char * const x, double *r, double *g, double *b)
 
 SEXP hex_to_RGB(SEXP hex, SEXP gamma)
 {
-    double gammavalue, r, g, b;
+    double r, g, b;
     int i, n = 0;
     SEXP ans;
     CheckHex(hex, &n);
-    gammavalue = asReal(gamma);
     ans = allocMatrix(REALSXP, n, 3);
     for(i = 0; i < n; i++) {
         decodeHexStr(CHAR(STRING_ELT(hex, i)), &r, &g, &b);
-        if (R_FINITE(gammavalue) && gammavalue > 0)
-            DEVRGB_to_RGB(r, g, b, gammavalue, &r, &g, &b);
+        if (asLogical(gamma))
+            DEVRGB_to_RGB(r, g, b, 2.4, &r, &g, &b);
         REAL(ans)[i] = r;
         REAL(ans)[i+n] = g;
         REAL(ans)[i+2*n] = b;

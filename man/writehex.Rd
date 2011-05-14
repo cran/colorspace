@@ -14,7 +14,7 @@ writehex(x, file = "")
   \item{file}{the name of the file to be written.}
 }
 \details{
-  This function converts the given color oject to RGB and
+  This function converts the given color object to RGB and
   then writes hexadecimal strings (of the form \code{#RRGGBB})
   representing the colors to the specified file.  
 }

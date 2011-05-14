@@ -2,6 +2,7 @@
 \docType{class}
 \alias{color-class}
 \alias{RGB-class}
+\alias{sRGB-class}
 \alias{XYZ-class}
 \alias{HSV-class}
 \alias{HLS-class}
@@ -11,6 +12,7 @@
 \alias{polarLUV-class}
 \alias{[,color-method}
 \alias{coerce,color,RGB-method}
+\alias{coerce,color,sRGB-method}
 \alias{coerce,color,XYZ-method}
 \alias{coerce,color,LAB-method}
 \alias{coerce,color,polarLAB-method}
@@ -30,10 +32,11 @@ which correspond to RGB, HSV, HLS, CIEXYZ, CIELUV, CIELAB and polar
 versions of the last two spaces.
 }
 \section{Objects from the Class}{
-Objects can be created by calls to the functions \code{RGB}, \code{HSV}, \code{HLS},
-\code{XYZ}, \code{LUV}, \code{LAB}, \code{polarLUV}, and
-\code{polarLAB}.  These are all subclasses of the virtual
-class \emph{color}.
+  Objects can be created by calls to the functions \code{RGB},
+  \code{sRGB}, \code{HSV}, \code{HLS},
+  \code{XYZ}, \code{LUV}, \code{LAB}, \code{polarLUV}, and
+  \code{polarLAB}.  These are all subclasses of the virtual
+  class \emph{color}.
 }
 \section{Slots}{
   \describe{
@@ -46,6 +49,8 @@ class \emph{color}.
       take subsets of a vector of colors.}
     \item{coerce}{\code{signature(from = "color", to = "RGB")}: convert
       a color vector to RGB.}
+    \item{coerce}{\code{signature(from = "color", to = "sRGB")}: convert
+      a color vector to sRGB.}
     \item{coerce}{\code{signature(from = "color", to = "XYZ")}: convert
       a color vector to XYZ.}
     \item{coerce}{\code{signature(from = "color", to = "LAB")}: convert

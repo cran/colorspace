@@ -1,6 +1,6 @@
 Package: colorspace
-Version: 1.0-1
-Date: 2009-04-24
+Version: 1.1-0
+Date: 2011-05-14
 Title: Color Space Manipulation
 Author: Ross Ihaka, Paul Murrell, Kurt Hornik, Achim Zeileis
 Maintainer: Ross Ihaka <ihaka@stat.auckland.ac.nz>
@@ -12,6 +12,6 @@ Depends: R (>= 2.0.0), methods
 Suggests: KernSmooth, MASS, kernlab, mvtnorm, vcd
 License: BSD
 LazyLoad: yes
-Packaged: Fri Apr 24 18:21:34 2009; zeileis
+Packaged: 2011-05-14 21:20:43 UTC; zeileis
 Repository: CRAN
-Date/Publication: 2009-04-24 16:23:06
+Date/Publication: 2011-05-16 13:21:01

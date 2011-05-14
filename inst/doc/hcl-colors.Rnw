@@ -27,8 +27,8 @@
   Augasse 2--6\\
   A-1090 Wien, Austria\\
   E-mail: \email{Achim.Zeileis@R-project.org}, \email{Kurt.Hornik@R-project.org}\\
-  URL: \url{http://statmath.wu-wien.ac.at/~zeileis/},\\
-  \phantom{URL:} \url{http://statmath.wu-wien.ac.at/~hornik/}
+  URL: \url{http://statmath.wu.ac.at/~zeileis/},\\
+  \phantom{URL:} \url{http://statmath.wu.ac.at/~hornik/}
 
   Paul Murrell\\
   Department of Statistics\\

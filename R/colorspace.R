@@ -2,7 +2,8 @@
 ##
 ##  The following color spaces are available:
 ##
-##     RGB       Gamma-corrected sRGB space
+##     RGB       linearized sRGB space
+##     sRGB      Gamma-corrected sRGB space
 ##     XYZ       CIE-XYZ space
 ##     LAB       CIE-L*a*b* space
 ##     polarLAB  CIE-L*a*b* space in polar coordinates
@@ -25,6 +26,7 @@ setClass("color", representation=list(coords="matrix"))
 ## Subclasses corresponding to various color spaces
 
 setClass("RGB", contains="color")
+setClass("sRGB", contains="color")
 setClass("XYZ", contains="color")
 setClass("LAB", contains="color")
 setClass("polarLAB", contains="color")
@@ -68,6 +70,18 @@ RGB =
     CheckMatrix(coords)
     dimnames(coords) = list(names, c("R", "G", "B"))
     new("RGB", coords = coords)
+  }
+
+sRGB =
+  function(R, G, B, names)
+  {
+    if (missing(R)) return(new("sRGB"))
+    if (missing(names)) names = dimnames(R)[[1]]
+    coords = cbind(R, if (missing(G)) NULL else G,
+                      if (missing(B)) NULL else B)
+    CheckMatrix(coords)
+    dimnames(coords) = list(names, c("R", "G", "B"))
+    new("sRGB", coords = coords)
   }
 
 XYZ =
@@ -172,6 +186,10 @@ setAs("color", "RGB", function(from)
       RGB(.Call("as_RGB", from@coords, class(from), .WhitePoint),
           names = dimnames(from@coords)[[1]]))
 
+setAs("color", "sRGB", function(from)
+      sRGB(.Call("as_sRGB", from@coords, class(from), .WhitePoint),
+           names = dimnames(from@coords)[[1]]))
+
 setAs("color", "XYZ", function(from)
       XYZ(.Call("as_XYZ", from@coords, class(from), .WhitePoint),
           names = dimnames(from@coords)[[1]]))
@@ -201,14 +219,20 @@ setAs("color", "polarLUV", function(from)
                names = dimnames(from@coords)[[1]]))
 
 hex =
-  function(from, gamma = 2.2, fixup=FALSE)
+  function(from, gamma = NULL, fixup=FALSE)
   {
-    .Call("RGB_to_RColor", as(from, "RGB")@coords, gamma, fixup)
+      if (!is.null(gamma))
+          warning("'gamma' is deprecated and has no effect")
+      .Call("sRGB_to_RColor", as(from, "sRGB")@coords, fixup)
   }
 
 hex2RGB =
-  function(x, gamma = 2.2)
-  RGB(.Call("hex_to_RGB", x, gamma))
+  function(x, gamma = FALSE) {
+      if (gamma)
+          RGB(.Call("hex_to_RGB", x, gamma))
+      else
+          sRGB(.Call("hex_to_RGB", x, gamma))
+  }
   
 
 readRGB =

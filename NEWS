@@ -1,3 +1,22 @@
+Changes in Version 1.1-0
+
+  o Added "sRGB" colorspace.  
+
+    (Existing "RGB" colorspace is linearized "sRGB".)
+
+  o Conversions to and from "HSV" and "HSL" can only occur
+    from or to "RGB" or "sRGB" (because both "HSV" and "HSL"
+    are relative colorspaces, meaning relative to a particular
+    RGB colorspace).  
+
+    (Converting to or from "RGB" gives a different result 
+     compared to conversion to or from "sRGB".)
+
+  o All 'gamma' parameters in all R-level functions have been deprecated.
+
+    (The "sRGB" colorspace has implicit gamma.)
+
+
 Changes in Version 1.0-1
 
   o "Escaping RGBland" paper is now published Computational

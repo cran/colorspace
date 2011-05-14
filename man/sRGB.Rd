@@ -1,12 +1,12 @@
-\name{RGB}
-\alias{RGB}
-\title{Create RGB Colors}
+\name{sRGB}
+\alias{sRGB}
+\title{Create sRGB Colors}
 \description{
-  This function creates colors of class RGB;
+  This function creates colors of class sRGB;
   a subclass of the virtual ``color'' class.
 }
 \usage{
-RGB(R, G, B, names)
+sRGB(R, G, B, names)
 }
 \arguments{
   \item{R,G,B}{these arguments give the red, green and blue
@@ -18,18 +18,18 @@ RGB(R, G, B, names)
     names of \code{R} are used).}
 }
 \details{
-  This function creates colors in the linearized sRGB color space (IEC
+  This function creates colors in the standard sRGB color space (IEC
   standard 61966).
 }
 \value{
-  An object of class ``RGB'' which inherits from class ``color.''
+  An object of class ``sRGB'' which inherits from class ``color.''
 }
 \references{\url{www.srgb.com}}
 \author{Ross Ihaka}
 %\note{ ~~further notes~~ }
 
 \seealso{
-  \code{\link{sRGB}},
+  \code{\link{RGB}},
   \code{\link{HSV}},
   \code{\link{XYZ}},
   \code{\link{LAB}},
@@ -40,6 +40,6 @@ RGB(R, G, B, names)
 
 \examples{
 # Create a random set of colors
-rgb = RGB(R = runif(20), G = runif(20), B = runif(20))
+rgb = sRGB(R = runif(20), G = runif(20), B = runif(20))
 }
 \keyword{color}

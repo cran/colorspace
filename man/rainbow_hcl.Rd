@@ -12,19 +12,19 @@
 }
 \usage{
 rainbow_hcl(n, c = 50, l = 70, start = 0, end = 360*(n-1)/n,
-  gamma = 2.4, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, \dots)
 
 sequential_hcl(n, h = 260, c. = c(80, 0), l = c(30, 90), power = 1.5,
-  gamma = 2.4, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, \dots)
 heat_hcl(n, h = c(0, 90), c. = c(100, 30), l = c(50, 90), power = c(1/5, 1),
-  gamma = 2.4, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, \dots)
 terrain_hcl(n, h = c(130, 0), c. = c(80, 0), l = c(60, 95), power = c(1/10, 1),
-  gamma = 2.4, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, \dots)
 
 diverge_hcl(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
-  gamma = 2.4, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, \dots)
 diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
-  gamma = 2.4, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, \dots)
 }
 \arguments{
   \item{n}{the number of colors (\eqn{\ge 1}{>= 1}) to be in the palette.}
@@ -38,7 +38,7 @@ diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
   \item{v}{value value in the HSV color description.}
   \item{power}{control parameter determining how chroma
     and luminance should be increased (1 = linear, 2 = quadratic, etc.).}
-  \item{gamma}{gamma value of the display.}
+  \item{gamma}{Deprecated.}
   \item{fixup}{logical. Should the color be corrected to a valid RGB
     value before correction?}
   \item{\dots}{Other arguments passed to \code{\link{hex}}.}
@@ -57,7 +57,7 @@ diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
   HCL(\code{h}, \code{c[2]}, \code{l[2]}) by interpolation.
   
   \code{diverge_hcl} and \code{diverge_hsv}, compute 
-  a set of colors diverging from a neutral center (grey or white, without
+  a set of colors diverging from a neutral center (gray or white, without
   color) to two different extreme colors (blue and red by default). This
   is similar to \code{\link{cm.colors}}. For the diverging HSV colors,
   two hues \code{h} are needed, a maximal saturation \code{s} and a

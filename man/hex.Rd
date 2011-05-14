@@ -6,17 +6,17 @@
   hexadecimal strings.
 }
 \usage{
-hex(from, gamma = 2.2, fixup = FALSE)
+hex(from, gamma = NULL, fixup = FALSE)
 }
 \arguments{
   \item{from}{The color object to be converted.}
-  \item{gamma}{The display \emph{gamma} value.}
+  \item{gamma}{Deprecated.}
   \item{fixup}{Should the color be corrected to a valid
     RGB value before correction.  The default is to convert
     out-of-gamut colors to the string \code{"NA"}.}
 }
 \details{
-  The color objects are first converted to RGB color objects.
+  The color objects are first converted to sRGB color objects.
   They are then multiplied by 255 and rounded to obtain an
   integer value.  These values are then converted to hexadecimal
   strings of the form \code{"#RRGGBB"} and suitable for use
@@ -33,6 +33,7 @@ hex(from, gamma = 2.2, fixup = FALSE)
 \seealso{
   \code{\link{hex2RGB}},
   \code{\link{RGB}},
+  \code{\link{sRGB}},
   \code{\link{HSV}},
   \code{\link{XYZ}},
   \code{\link{LAB}},
