@@ -129,12 +129,37 @@ pal(heat_hcl(12, h = c(0, -100), l = c(75, 40), c = c(40, 80), power = 1))
 pal(terrain_hcl(12, c = c(65, 0), l = c(45, 95), power = c(1/3, 1.5)))
 pal(heat_hcl(12, c = c(80, 30), l = c(30, 90), power = c(1/5, 1.5)))
 
-## compare base and vcd palettes
-par(mfrow = c(2, 1))
-wheel(rainbow(12)); wheel(rainbow_hcl(12))
-pal(diverge_hcl(7, c = 100, l = c(50, 90))); pal(diverge_hsv(7))
-pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95))); pal(cm.colors(7))
-pal(heat_hcl(12)); pal(heat.colors(12))
-pal(terrain_hcl(12)); pal(terrain.colors(12))
+## compare base and colorspace palettes
+## (in color and desaturated)
+par(mar = rep(0, 4), mfrow = c(2, 2))
+## rainbow color wheel
+wheel(rainbow_hcl(12))
+wheel(rainbow(12))
+wheel(desaturate(rainbow_hcl(12)))
+wheel(desaturate(rainbow(12)))
+
+## diverging red-blue colors
+pal(diverge_hsv(7))
+pal(diverge_hcl(7, c = 100, l = c(50, 90)))
+pal(desaturate(diverge_hsv(7)))
+pal(desaturate(diverge_hcl(7, c = 100, l = c(50, 90))))
+
+## diverging cyan-magenta colors
+pal(cm.colors(7))
+pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
+pal(desaturate(cm.colors(7)))
+pal(desaturate(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95))))
+
+## heat colors
+pal(heat.colors(12))
+pal(heat_hcl(12))
+pal(desaturate(heat.colors(12)))
+pal(desaturate(heat_hcl(12)))
+
+## terrain colors
+pal(terrain.colors(12))
+pal(terrain_hcl(12))
+pal(desaturate(terrain.colors(12)))
+pal(desaturate(terrain_hcl(12)))
 }
 \keyword{color}

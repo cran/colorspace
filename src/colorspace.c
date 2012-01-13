@@ -391,8 +391,8 @@ static void HLS_to_RGB(double h, double l, double s,
     p1 = 2 * l - p2;
 
     if (s == 0) {
-        *r = 1;
-        *g = 1;
+        *r = l;
+        *g = l;
         *b = l;
     } else {
         *r = qtrans(p1, p2, h + 120);

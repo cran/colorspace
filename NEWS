@@ -1,3 +1,11 @@
+Changes in Version 1.1-1
+
+  o Added desaturate() function for removal of chroma in a given
+    vector of colors.
+
+  o Bug fix in HLS_to_RGB conversion for s == 0.
+
+
 Changes in Version 1.1-0
 
   o Added "sRGB" colorspace.  

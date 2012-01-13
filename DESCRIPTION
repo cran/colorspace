@@ -1,8 +1,16 @@
 Package: colorspace
-Version: 1.1-0
-Date: 2011-05-14
+Version: 1.1-1
+Date: 2012-01-13
 Title: Color Space Manipulation
-Author: Ross Ihaka, Paul Murrell, Kurt Hornik, Achim Zeileis
+Authors@R: c(person(given = "Ross", family = "Ihaka", role = c("aut",
+        "cre"), email = "ihaka@stat.auckland.ac.nz"), person(given =
+        "Paul", family = "Murrell", role = "aut", email =
+        "paul@stat.auckland.ac.nz"), person(given = "Kurt", family =
+        "Hornik", role = "aut", email = "Kurt.Hornik@R-project.org"),
+        person(given = "Achim", family = "Zeileis", role = "aut", email
+        = "Achim.Zeileis@R-project.org"))
+Author: Ross Ihaka [aut, cre], Paul Murrell [aut], Kurt Hornik [aut],
+        Achim Zeileis [aut]
 Maintainer: Ross Ihaka <ihaka@stat.auckland.ac.nz>
 Description: Carries out mapping between assorted color spaces
         including RGB, HSV, HLS, CIEXYZ, CIELUV, HCL (polar CIELUV),
@@ -11,7 +19,6 @@ Description: Carries out mapping between assorted color spaces
 Depends: R (>= 2.0.0), methods
 Suggests: KernSmooth, MASS, kernlab, mvtnorm, vcd
 License: BSD
-LazyLoad: yes
-Packaged: 2011-05-14 21:20:43 UTC; zeileis
+Packaged: 2012-01-13 08:44:07 UTC; zeileis
 Repository: CRAN
-Date/Publication: 2011-05-16 13:21:01
+Date/Publication: 2012-01-13 08:45:54
