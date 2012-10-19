@@ -41,7 +41,11 @@ polarLAB(L, C, H, names)
 
 \examples{
 ## Show the polarLAB space
-x = RGB(runif(1000), runif(1000), runif(1000))
-plot(as(x,"polarLAB"))
+set.seed(1)
+x <- RGB(runif(1000), runif(1000), runif(1000))
+y <- as(x, "polarLAB")
+head(x)
+head(y)
+plot(y)
 }
 \keyword{color}

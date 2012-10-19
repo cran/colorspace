@@ -44,7 +44,11 @@ LAB(L, A, B, names)
 
 \examples{
 ## Show the LAB space
-x = RGB(runif(1000), runif(1000), runif(1000))
-plot(as(x,"LAB"))
+set.seed(1)
+x <- RGB(runif(1000), runif(1000), runif(1000))
+y <- as(x, "LAB")
+head(x)
+head(y)
+plot(y)
 }
 \keyword{color}

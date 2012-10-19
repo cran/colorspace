@@ -1,3 +1,34 @@
+##  Copyright 2005, Ross Ihaka. All Rights Reserved.
+##  
+##  Redistribution and use in source and binary forms, with or without
+##  modification, are permitted provided that the following conditions
+##  are met:
+##  
+##     1. Redistributions of source code must retain the above copyright notice,
+##        this list of conditions and the following disclaimer.
+##  
+##     2. Redistributions in binary form must reproduce the above copyright
+##        notice, this list of conditions and the following disclaimer in the
+##        documentation and/or other materials provided with the distribution.
+##  
+##     3. The name of the Ross Ihaka may not be used to endorse or promote
+##        products derived from this software without specific prior written
+##        permission.
+##  
+##  THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS''
+##  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+##  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+##  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL ROSS IHAKA BE LIABLE FOR
+##  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+##  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+##  OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+##  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+##  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+##  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+##  POSSIBILITY OF SUCH DAMAGE.
+
+##  ----------------------------------------------------------------------------
+
 ##  An S4 Color Space Class
 ##
 ##  The following color spaces are available:
@@ -16,6 +47,8 @@
 ##  implementation all spaces are treated equally, because
 ##  they are all useful.
 ##
+
+##  ----------------------------------------------------------------------------
 
 .onLoad = function(lib, pkg) require("methods", quietly = TRUE)
 
@@ -183,39 +216,39 @@ polarLUV =
   }
 
 setAs("color", "RGB", function(from)
-      RGB(.Call("as_RGB", from@coords, class(from), .WhitePoint),
+      RGB(.Call("as_RGB", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "sRGB", function(from)
-      sRGB(.Call("as_sRGB", from@coords, class(from), .WhitePoint),
+      sRGB(.Call("as_sRGB", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
            names = dimnames(from@coords)[[1]]))
 
 setAs("color", "XYZ", function(from)
-      XYZ(.Call("as_XYZ", from@coords, class(from), .WhitePoint),
+      XYZ(.Call("as_XYZ", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "LAB", function(from)
-      LAB(.Call("as_LAB", from@coords, class(from), .WhitePoint),
+      LAB(.Call("as_LAB", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "polarLAB", function(from)
-      polarLAB(.Call("as_polarLAB", from@coords, class(from), .WhitePoint),
+      polarLAB(.Call("as_polarLAB", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
                names = dimnames(from@coords)[[1]]))
 
 setAs("color", "HSV", function(from)
-      HSV(.Call("as_HSV", from@coords, class(from), .WhitePoint),
+      HSV(.Call("as_HSV", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "HLS", function(from)
-      HLS(.Call("as_HLS", from@coords, class(from), .WhitePoint),
+      HLS(.Call("as_HLS", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "LUV", function(from)
-      LUV(.Call("as_LUV", from@coords, class(from), .WhitePoint),
+      LUV(.Call("as_LUV", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
           names = dimnames(from@coords)[[1]]))
 
 setAs("color", "polarLUV", function(from)
-      polarLUV(.Call("as_polarLUV", from@coords, class(from), .WhitePoint),
+      polarLUV(.Call("as_polarLUV", from@coords, class(from), .WhitePoint, PACKAGE = "colorspace"),
                names = dimnames(from@coords)[[1]]))
 
 hex =
@@ -223,15 +256,15 @@ hex =
   {
       if (!is.null(gamma))
           warning("'gamma' is deprecated and has no effect")
-      .Call("sRGB_to_RColor", as(from, "sRGB")@coords, fixup)
+      .Call("sRGB_to_RColor", as(from, "sRGB")@coords, fixup, PACKAGE = "colorspace")
   }
 
 hex2RGB =
   function(x, gamma = FALSE) {
       if (gamma)
-          RGB(.Call("hex_to_RGB", x, gamma))
+          RGB(.Call("hex_to_RGB", x, gamma, PACKAGE = "colorspace"))
       else
-          sRGB(.Call("hex_to_RGB", x, gamma))
+          sRGB(.Call("hex_to_RGB", x, gamma, PACKAGE = "colorspace"))
   }
   
 

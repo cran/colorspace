@@ -37,7 +37,9 @@ readhex(file = "", class = "RGB")
   \code{\link{polarLUV}},
 }
 \examples{
-\dontrun{rgb = readhex("pastel.txt")
-hsv = readhex("pastel.txt", "HSV")}
+\dontrun{
+rgb <- readhex("pastel.txt")
+hsv <- readhex("pastel.txt", "HSV")
+}
 }
 \keyword{color}

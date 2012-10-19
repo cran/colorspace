@@ -41,7 +41,7 @@ HLS(H, L, S, names)
 
 \examples{
 # A rainbow of full-intensity hues
-hls = HLS(seq(0, 360, length=13)[-13], 0.5, 1)
+HLS(seq(0, 360, length=13)[-13], 0.5, 1)
 }
 
 \keyword{color}

@@ -1,3 +1,21 @@
+Changes in Version 1.2-0
+
+  o New Tcl/Tk-based GUI for choosing different types of palettes:
+    qualitative (rainbow_hcl), single-hue sequential (sequential_hcl),
+    multi-hue sequential (heat_hcl), and diverging (diverge_hcl). The
+    GUI provides a wide collection of pre-stored palettes, easy
+    manipulation of the corresponding arguments, illustration through
+    a broad range of plot types (maps, heatmaps, variations of bar plots,
+    scatter plots, and many more), emulation of desaturation and
+    dichromatic vision, loading/saving palettes, etc.    
+
+  o Bug fix in polarLAB_to_LAB conversion.
+
+  o All .Call() calls now with PACKAGE = "colorspace".
+  
+  o Added some simple tests based on the examples and vignette.
+
+
 Changes in Version 1.1-1
 
   o Added desaturate() function for removal of chroma in a given

@@ -38,7 +38,8 @@ writehex(x, file = "")
 }
 
 \examples{
-x = RGB(runif(10), runif(10), runif(10))
+set.seed(1)
+x <- RGB(runif(10), runif(10), runif(10))
 writehex(x, "random.txt")
 }
 \keyword{color}

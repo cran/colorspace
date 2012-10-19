@@ -40,6 +40,7 @@ sRGB(R, G, B, names)
 
 \examples{
 # Create a random set of colors
-rgb = sRGB(R = runif(20), G = runif(20), B = runif(20))
+set.seed(1)
+sRGB(R = runif(20), G = runif(20), B = runif(20))
 }
 \keyword{color}

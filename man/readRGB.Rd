@@ -39,7 +39,9 @@ readRGB(file = "", class = "RGB")
   \code{\link{polarLUV}}.
 }
 \examples{
-\dontrun{rgb = readRGB("pastel.rgb")
-hsv = readRGB("pastel.rgb", "HSV")}
+\dontrun{
+rgb <- readRGB("pastel.rgb")
+hsv <- readRGB("pastel.rgb", "HSV")
+}
 }
 \keyword{color}

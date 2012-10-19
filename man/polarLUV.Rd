@@ -41,7 +41,11 @@ polarLUV(L, C, H, names)
 
 \examples{
 ## Show the polarLUV space
-x = RGB(runif(1000), runif(1000), runif(1000))
-plot(as(x,"polarLUV"))
+set.seed(1)
+x <- RGB(runif(1000), runif(1000), runif(1000))
+y <- as(x, "polarLUV")
+head(x)
+head(y)
+plot(y)
 }
 \keyword{color}

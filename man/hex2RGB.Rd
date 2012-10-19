@@ -36,6 +36,6 @@ hex2RGB(x, gamma = FALSE)
 }
 
 \examples{
-rgb = hex2RGB(c("#FF0000","#00FF00", "#0000FF"))
+hex2RGB(c("#FF0000","#00FF00", "#0000FF"))
 }
 \keyword{color}

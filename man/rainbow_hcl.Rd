@@ -82,7 +82,7 @@ diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
   Escaping RGBland: Selecting Colors for Statistical Graphics.
   \emph{Computational Statistics & Data Analysis}, \bold{53}, 3259-3270.
   doi:10.1016/j.csda.2008.11.033
-  Preprint available from \url{http://statmath.wu-wien.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+  Preprint available from \url{http://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
 }
 
 \value{

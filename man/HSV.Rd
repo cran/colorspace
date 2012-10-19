@@ -41,7 +41,7 @@ HSV(H, S, V, names)
 
 \examples{
 # A rainbow of full-intensity hues
-hsv = HSV(seq(0, 360, length=13)[-13], 1, 1)
+HSV(seq(0, 360, length=13)[-13], 1, 1)
 }
 
 \keyword{color}

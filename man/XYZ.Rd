@@ -39,6 +39,6 @@ XYZ(X, Y, Z, names)
 
 \examples{
 ## Generate white in XYZ space
-white = XYZ(95.047, 100.000, 108.883)
+XYZ(95.047, 100.000, 108.883)
 }
 \keyword{color}

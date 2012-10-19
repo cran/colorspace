@@ -44,7 +44,11 @@ LUV(L, U, V, names)
 
 \examples{
 ## Show the LUV space
-x = RGB(runif(1000), runif(1000), runif(1000))
-plot(as(x,"LUV"))
+set.seed(1)
+x <- RGB(runif(1000), runif(1000), runif(1000))
+y <- as(x, "LUV")
+head(x)
+head(y)
+plot(y)
 }
 \keyword{color}

@@ -43,8 +43,10 @@ hex(from, gamma = NULL, fixup = FALSE)
 }
 
 \examples{
-hsv = HSV(seq(0,360,length=7)[-7], 1, 1)
-barplot(rep(1,6), col=hex(hsv))
+hsv = HSV(seq(0, 360, length = 7)[-7], 1, 1)
+hsv
+hex(hsv)
+barplot(rep(1,6), col = hex(hsv))
 }
 
 \keyword{color}

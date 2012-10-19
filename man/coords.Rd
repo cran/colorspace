@@ -30,7 +30,7 @@ coords(color)
   \code{\link{mixcolor}}.
 }
 \examples{
-x = RGB(1, 0, 0)
+x <- RGB(1, 0, 0)
 coords(as(x, "HSV"))
 }
 \keyword{color}

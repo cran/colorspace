@@ -37,6 +37,10 @@ desaturate(col)
 }
 
 \examples{
+## rainbow of colors and their desaturated counterparts
+rainbow_hcl(12)
+desaturate(rainbow_hcl(12))
+
 ## convenience demo function
 wheel <- function(col, radius = 1, ...)
   pie(rep(1, length(col)), col = col, radius = radius, ...) 
