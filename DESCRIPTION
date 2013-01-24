@@ -1,6 +1,6 @@
 Package: colorspace
-Version: 1.2-0
-Date: 2012-10-19
+Version: 1.2-1
+Date: 2013-01-24
 Title: Color Space Manipulation
 Authors@R: c(person(given = "Ross", family = "Ihaka", role = "aut",
         email = "ihaka@stat.auckland.ac.nz"), person(given = "Paul",
@@ -19,9 +19,9 @@ Depends: R (>= 2.10.0), methods
 Suggests: KernSmooth, MASS, kernlab, mvtnorm, vcd, tcltk, dichromat
 License: BSD
 LazyData: yes
-Packaged: 2012-10-19 06:16:58 UTC; zeileis
+Packaged: 2013-01-24 07:18:23 UTC; zeileis
 Author: Ross Ihaka [aut], Paul Murrell [aut], Kurt Hornik [aut], Jason
         C. Fisher [aut], Achim Zeileis [aut, cre]
 Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
 Repository: CRAN
-Date/Publication: 2012-10-24 07:18:20
+Date/Publication: 2013-01-24 14:59:08

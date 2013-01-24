@@ -1,3 +1,9 @@
+Changes in Version 1.2-1
+
+  o If a new version of the dichromat package (> 1.2-4) with tritan
+    support is found, this is interfaced in choose_palette().
+
+
 Changes in Version 1.2-0
 
   o New Tcl/Tk-based GUI for choosing different types of palettes:

@@ -303,9 +303,3 @@ mixcolor =
     if (n2 < n) c2 = c2[rep(1:n2, length = n),]
     get(where)((1 - alpha) * c1 + alpha * c2)
   }
-
-.First.lib =
-  function(lib, pkg)
-  {
-      library.dynam("colorspace", pkg, lib)
-  }

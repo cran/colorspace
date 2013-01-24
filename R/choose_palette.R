@@ -854,8 +854,17 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
     frame7.rb.4 <- ttkradiobutton(frame7, variable=colorblind.type.var,
                                   value="protan", text="protan",
                                   command=function() DrawPalette(is.n=TRUE))
-    tkgrid(frame7.chk.1, frame7.chk.2, frame7.rb.3, frame7.rb.4, "x",
+    frame7.rb.5 <- ttkradiobutton(frame7, variable=colorblind.type.var,
+                                  value="tritan", text="tritan",
+                                  command=function() DrawPalette(is.n=TRUE))
+    ## tritan support in dichromat starting from > 1.2-4
+    if(compareVersion(packageDescription("dichromat")$Version, "1.2-4") > 0) {
+      tkgrid(frame7.chk.1, frame7.chk.2, frame7.rb.3, frame7.rb.4, frame7.rb.5, "x",
+           pady=c(2, 0), sticky="w")    
+    } else {
+      tkgrid(frame7.chk.1, frame7.chk.2, frame7.rb.3, frame7.rb.4, "x",
            pady=c(2, 0), sticky="w")
+    }
     tkgrid.configure(frame7.chk.2, padx=c(7, 0))
     tkgrid.configure(frame7.cvs, columnspan=5)
     tkgrid.columnconfigure(frame7, 4, weight=1)
