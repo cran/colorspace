@@ -256,15 +256,20 @@ hex =
   {
       if (!is.null(gamma))
           warning("'gamma' is deprecated and has no effect")
-      .Call("sRGB_to_RColor", as(from, "sRGB")@coords, fixup, PACKAGE = "colorspace")
+      coords <- as(from, "sRGB")@coords
+      rval <- .Call("sRGB_to_RColor", coords, fixup, PACKAGE = "colorspace")
+      if(!is.null(dnam <- attr(coords, "dimnames"))) names(rval) <- dnam[[1L]]
+      return(rval)
   }
 
 hex2RGB =
   function(x, gamma = FALSE) {
-      if (gamma)
+      rval <- if (gamma)
           RGB(.Call("hex_to_RGB", x, gamma, PACKAGE = "colorspace"))
       else
           sRGB(.Call("hex_to_RGB", x, gamma, PACKAGE = "colorspace"))
+      if(!is.null(nam <- names(x))) attr(rval@coords, "dimnames")[[1L]] <- nam
+      return(rval)
   }
   
 

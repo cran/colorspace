@@ -1,3 +1,9 @@
+Changes in Version 1.2-2
+
+  o Names of colors are preserved in hex() and hex2RGB now. (Reported
+    by Richard Cotton.)
+
+
 Changes in Version 1.2-1
 
   o If a new version of the dichromat package (> 1.2-4) with tritan

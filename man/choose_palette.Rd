@@ -38,6 +38,15 @@ luminance are changed through the palette. Subsets of the parameters
 may not be applicable depending on the type of palette chosen. See
 \code{\link{rainbow_hcl}} and Zeileis et al. (2009) for a more detailed
 explanation of the different arguments
+
+Optionally, active palette can be illustrated by using a range of examples
+such as a map, heatmap, scatter plot, perspective 3D surface etc.
+
+To demonstrate different types of deficiencies, the active palette may
+be desaturated (emulating printing on a grayscale printer) and, if the
+\code{\link[dichromat]{dichromat}} package is available, collapsed to
+emulate different types of color-blindness (without red-green or green-blue
+contrasts).
 }
 
 \value{
