@@ -338,7 +338,7 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
   # Show example plot
   ShowExample <- function() {
     if (!dev.example %in% dev.list()) {
-      x11(width=7, height=7)
+      dev.new(width=7L, height=7L)
       dev.example <<- dev.cur()
     }
     par(oma=c(0, 0, 0, 0), mar=c(0, 0, 0, 0))

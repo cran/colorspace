@@ -50,8 +50,6 @@
 
 ##  ----------------------------------------------------------------------------
 
-.onLoad = function(lib, pkg) require("methods", quietly = TRUE)
-
 ## The Abstract Color Class
 
 setClass("color", representation=list(coords="matrix"))

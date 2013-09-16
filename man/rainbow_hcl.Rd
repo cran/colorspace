@@ -12,19 +12,19 @@
 }
 \usage{
 rainbow_hcl(n, c = 50, l = 70, start = 0, end = 360*(n-1)/n,
-  gamma = NULL, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, alpha = 1, \dots)
 
 sequential_hcl(n, h = 260, c. = c(80, 0), l = c(30, 90), power = 1.5,
-  gamma = NULL, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, alpha = 1, \dots)
 heat_hcl(n, h = c(0, 90), c. = c(100, 30), l = c(50, 90), power = c(1/5, 1),
-  gamma = NULL, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, alpha = 1, \dots)
 terrain_hcl(n, h = c(130, 0), c. = c(80, 0), l = c(60, 95), power = c(1/10, 1),
-  gamma = NULL, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, alpha = 1, \dots)
 
 diverge_hcl(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
-  gamma = NULL, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, alpha = 1, \dots)
 diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
-  gamma = NULL, fixup = TRUE, \dots)
+  gamma = NULL, fixup = TRUE, alpha = 1, \dots)
 }
 \arguments{
   \item{n}{the number of colors (\eqn{\ge 1}{>= 1}) to be in the palette.}
@@ -41,6 +41,8 @@ diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
   \item{gamma}{Deprecated.}
   \item{fixup}{logical. Should the color be corrected to a valid RGB
     value before correction?}
+  \item{alpha}{numeric vector of values in the range \code{[0, 1]} for
+    alpha transparency channel (0 means transparent and 1 means opaque).}
   \item{\dots}{Other arguments passed to \code{\link{hex}}.}
 }
 \details{
