@@ -1,3 +1,9 @@
+Changes in Version 1.2-4
+
+  o Bug fix for choose_palette() when using palette functions with
+    optional alpha channels.
+
+
 Changes in Version 1.2-3
 
   o Alpha channel is preserved in desaturate for named colors (especially
@@ -48,20 +54,17 @@ Changes in Version 1.1-1
 
 Changes in Version 1.1-0
 
-  o Added "sRGB" colorspace.  
-
+  o Added "sRGB" colorspace.
     (Existing "RGB" colorspace is linearized "sRGB".)
 
   o Conversions to and from "HSV" and "HSL" can only occur
     from or to "RGB" or "sRGB" (because both "HSV" and "HSL"
     are relative colorspaces, meaning relative to a particular
-    RGB colorspace).  
-
+    RGB colorspace).
     (Converting to or from "RGB" gives a different result 
      compared to conversion to or from "sRGB".)
 
   o All 'gamma' parameters in all R-level functions have been deprecated.
-
     (The "sRGB" colorspace has implicit gamma.)
 
 

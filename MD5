@@ -1,8 +1,8 @@
-bbfd11f6bce3fef39f03bf137eaa3194 *DESCRIPTION
+2797508e3329c24d54301ced2620d1c8 *DESCRIPTION
 95e40dcb16e2b3e91e901e8ea54fcf45 *LICENSE
 8356d81d3acea4ea672da7460af3d3b8 *NAMESPACE
-5960ea69db716e88481990b798b0b55c *NEWS
-201f35c331afc22a37c781e800b8c3e3 *R/choose_palette.R
+60e8d440fa38d1b89a95506d3699b5b1 *NEWS
+4c52b0c62f725c234c3d3638e31e8aa3 *R/choose_palette.R
 ab2c6a1f45c8fb2fdd259a49e44f73f9 *R/colorspace.R
 55c9e23fd6f9735825551037f94c0775 *R/desaturate.R
 8591fc086b53241cf293c2c5cfe3f8d0 *R/palettes.R
@@ -10,7 +10,7 @@ c520909660a6980196c1ca1706e4d973 *data/USSouthPolygon.rda
 2f81a499669b3966aef1d712f47eabb9 *inst/CITATION
 5570f26f8ccc2e170c9ba90653c864d9 *inst/doc/hcl-colors.R
 699d2594e53622a6c995d057150bb321 *inst/doc/hcl-colors.Rnw
-71ec81debbbde41a205ffaf642ba3e32 *inst/doc/hcl-colors.pdf
+82aefde39f6ccdaa4239414d934d44cd *inst/doc/hcl-colors.pdf
 db9d5f422710029852c85b7252875e15 *man/HLS.Rd
 83d2c121d21919e319c2ef45a42c60c7 *man/HSV.Rd
 17a8655e3d0150245fe6c3e366b7b859 *man/LAB.Rd

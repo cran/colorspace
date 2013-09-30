@@ -136,24 +136,24 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
     if (type == "Qualitative") {
       f <- rainbow_hcl
       formals(f) <- eval(substitute(alist(n=, c=d1, l=d2, start=d3, end=d4,
-                                          fixup=d5, gamma=NULL, ...=),
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
                                     list(d1=c1, d2=l1, d3=h1, d4=h2, d5=fixup)))
     } else if (type == "Sequential (single hue)") {
       f <- sequential_hcl
       formals(f) <- eval(substitute(alist(n=, h=d1, c.=d2, l=d3, power=d4,
-                                          fixup=d5, gamma=NULL, ...=),
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
                                     list(d1=h1, d2=c(c1, c2), d3=c(l1, l2),
                                          d4=p1, d5=fixup)))
     } else if (type == "Sequential (multiple hues)") {
       f <- heat_hcl
       formals(f) <- eval(substitute(alist(n=, h=d1, c.=d2, l=d3, power=d4,
-                                          fixup=d5, gamma=NULL, ...=),
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
                                     list(d1=c(h1, h2), d2=c(c1, c2),
                                          d3=c(l1, l2), d4=c(p1, p2), d5=fixup)))
     } else if (type == "Diverging") {
       f <- diverge_hcl
       formals(f) <- eval(substitute(alist(n=, h=d1, c=d2, l=d3, power=d4,
-                                          fixup=d5, gamma=NULL, ...=),
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
                                     list(d1=c(h1, h2), d2=c1, d3=c(l1, l2),
                                          d4=p1, d5=fixup)))
     }
