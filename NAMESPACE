@@ -2,6 +2,7 @@ useDynLib("colorspace")
 
 import("methods")
 importFrom("graphics", "plot")
+import("tcltk")
 
 exportClasses("color", "RGB", "sRGB", "HSV", "HLS", "XYZ", "LAB", "polarLAB", "LUV", "polarLUV")
 

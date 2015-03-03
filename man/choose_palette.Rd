@@ -71,8 +71,10 @@ of the specified hue/chroma/luminance/power values.
 }
 
 \examples{
-\donttest{pal <- choose_palette()
-filled.contour(volcano, color.palette = pal, asp = 1)}
+if(interactive()) {
+pal <- choose_palette()
+filled.contour(volcano, color.palette = pal, asp = 1)
+}
 }
 
 \keyword{misc}

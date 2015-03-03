@@ -1,3 +1,8 @@
+Changes in Version 1.2-5
+
+  o Changed Depends/Imports/Suggests to conform with current R CMD check.
+
+
 Changes in Version 1.2-4
 
   o Bug fix for choose_palette() when using palette functions with

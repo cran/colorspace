@@ -172,7 +172,7 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
       pal.cols <- desaturate(pal.cols)
     if (as.logical(as.integer(tclvalue(colorblind.var)))) {
       type <- as.character(tclvalue(colorblind.type.var))
-      pal.cols <- dichromat(pal.cols, type=type)
+      pal.cols <- dichromat::dichromat(pal.cols, type=type)
     }
     dx <- (cvs.width - 1) / n
     x2 <- 1
@@ -362,8 +362,9 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
     n <- length(pal.cols)
     plot(0, 0, type="n", xlab="", ylab="", xaxt="n", yaxt="n", bty="n",
          xlim=c(-88.5, -78.6), ylim=c(30.2, 35.2), asp=1)
-     polygon(USSouthPolygon, col=pal.cols[cut(na.omit(USSouthPolygon$z), 
-                                              breaks=0:n / n)])
+     polygon(colorspace::USSouthPolygon,
+             col=pal.cols[cut(na.omit(colorspace::USSouthPolygon$z), 
+             breaks=0:n / n)])
   }
   
   # Plot heatmap example
@@ -502,10 +503,6 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
 
   # Main program
   
-  # Load tcltk package
-  if(!("tcltk" %in% .packages(all.available = TRUE) &&
-     require("tcltk", quietly=FALSE))) stop("'tcltk' support is required")
-
   # Initialize directory
   initialdir <- getwd()
   
@@ -842,8 +839,7 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
                                  variable=desaturation.var,
                                  command=function() DrawPalette(is.n=TRUE))
 
-  is.pkg <- "dichromat" %in% .packages(all.available=TRUE) &&
-            require("dichromat", quietly=FALSE)
+  is.pkg <- requireNamespace("dichromat", quietly=FALSE)
   if (is.pkg) {
     frame7.chk.2 <- ttkcheckbutton(frame7, text="Color blindness:",
                                    variable=colorblind.var,
@@ -858,7 +854,7 @@ choose_palette <- function(pal=diverge_hcl, n=7L, parent=NULL) {
                                   value="tritan", text="tritan",
                                   command=function() DrawPalette(is.n=TRUE))
     ## tritan support in dichromat starting from > 1.2-4
-    if(compareVersion(packageDescription("dichromat")$Version, "1.2-4") > 0) {
+    if(compareVersion(getNamespaceVersion("dichromat"), "1.2-4") > 0) {
       tkgrid(frame7.chk.1, frame7.chk.2, frame7.rb.3, frame7.rb.4, frame7.rb.5, "x",
            pady=c(2, 0), sticky="w")    
     } else {
