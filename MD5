@@ -1,8 +1,8 @@
-0a3de47a0b18ab6273c2cef35b696d25 *DESCRIPTION
+c1d939c17873a6f05ac54b7ded8b6374 *DESCRIPTION
 95e40dcb16e2b3e91e901e8ea54fcf45 *LICENSE
-feeef560ecb3b70fbe3a06516bdb499e *NAMESPACE
-f27c1dac0d464ae5fed3a1d1e6fc0777 *NEWS
-3217ce81aa68ace01d0bc8ac5a03bffd *R/choose_palette.R
+8356d81d3acea4ea672da7460af3d3b8 *NAMESPACE
+670e99d862200602cbe063f8c0dba1f0 *NEWS
+641a4bf0407f387a2760638c7ab19238 *R/choose_palette.R
 ab2c6a1f45c8fb2fdd259a49e44f73f9 *R/colorspace.R
 55c9e23fd6f9735825551037f94c0775 *R/desaturate.R
 8591fc086b53241cf293c2c5cfe3f8d0 *R/palettes.R
@@ -11,7 +11,7 @@ ab2c6a1f45c8fb2fdd259a49e44f73f9 *R/colorspace.R
 2f81a499669b3966aef1d712f47eabb9 *inst/CITATION
 5570f26f8ccc2e170c9ba90653c864d9 *inst/doc/hcl-colors.R
 699d2594e53622a6c995d057150bb321 *inst/doc/hcl-colors.Rnw
-169bf9b0a5b327c35bb8be12a5c0f28f *inst/doc/hcl-colors.pdf
+d066b73f086691c81936f0cfdb917b82 *inst/doc/hcl-colors.pdf
 db9d5f422710029852c85b7252875e15 *man/HLS.Rd
 83d2c121d21919e319c2ef45a42c60c7 *man/HSV.Rd
 17a8655e3d0150245fe6c3e366b7b859 *man/LAB.Rd

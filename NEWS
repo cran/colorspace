@@ -1,3 +1,9 @@
+Changes in Version 1.2-6
+
+  o Moved "tcltk" again from Imports to Suggests to facilitate usage of
+    colorspace on platforms where tcltk is not available.
+
+
 Changes in Version 1.2-5
 
   o Changed Depends/Imports/Suggests to conform with current R CMD check.
