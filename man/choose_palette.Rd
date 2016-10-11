@@ -37,7 +37,8 @@ a power transformations that control how quickly/slowly chroma and/or
 luminance are changed through the palette. Subsets of the parameters
 may not be applicable depending on the type of palette chosen. See
 \code{\link{rainbow_hcl}} and Zeileis et al. (2009) for a more detailed
-explanation of the different arguments
+explanation of the different arguments. Stauffer et al. (2015) provide
+more examples and guidance.
 
 Optionally, active palette can be illustrated by using a range of examples
 such as a map, heatmap, scatter plot, perspective 3D surface etc.
@@ -59,11 +60,16 @@ of the specified hue/chroma/luminance/power values.
 \author{Jason C. Fisher and Achim Zeileis}
 
 \references{
-  Zeileis A., Hornik K. and Murrell P. (2009),
+  Zeileis A, Hornik K, Murrell P (2009).
   Escaping RGBland: Selecting Colors for Statistical Graphics.
-  \emph{Computational Statistics & Data Analysis}, \bold{53}, 3259-3270.
-  doi:10.1016/j.csda.2008.11.033
-  Preprint available from \url{http://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+  \emph{Computational Statistics & Data Analysis}, \bold{53}, 3259--3270.
+  \doi{10.1016/j.csda.2008.11.033}
+  Preprint available from \url{https://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+
+  Stauffer R, Mayr GJ, Dabernig M, Zeileis A (2015).
+  Somewhere over the Rainbow: How to Make Effective Use of Colors in Meteorological Visualizations.
+  \emph{Bulletin of the American Meteorological Society}, \bold{96}(2), 203--216.
+  \doi{10.1175/BAMS-D-13-00155.1}
 }
 
 \seealso{

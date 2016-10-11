@@ -18,7 +18,7 @@ for illustrating colored maps.
 
 \source{
 Polygon data taken from \pkg{maps} package of Becker, Wilks, Brownrigg,
-and Minka (2012). Version 2.2-6. \url{http://CRAN.R-project.org/package=maps}
+and Minka (2012). Version 2.2-6. \url{https://CRAN.R-project.org/package=maps}
 }
 
 \examples{

@@ -28,7 +28,7 @@ desaturate(col)
 }
 
 \author{
-  Achim Zeileis \email{Achim.Zeileis@R-project.org}
+  Achim Zeileis
 }
 
 \seealso{

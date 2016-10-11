@@ -80,20 +80,24 @@ diverge_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
 }
 
 \references{
-  Zeileis A., Hornik K. and Murrell P. (2009),
+  Zeileis A, Hornik K, Murrell P (2009).
   Escaping RGBland: Selecting Colors for Statistical Graphics.
-  \emph{Computational Statistics & Data Analysis}, \bold{53}, 3259-3270.
-  doi:10.1016/j.csda.2008.11.033
-  Preprint available from \url{http://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+  \emph{Computational Statistics & Data Analysis}, \bold{53}, 3259--3270.
+  \doi{10.1016/j.csda.2008.11.033}
+  Preprint available from \url{https://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+
+  Stauffer R, Mayr GJ, Dabernig M, Zeileis A (2015).
+  Somewhere over the Rainbow: How to Make Effective Use of Colors in Meteorological Visualizations.
+  \emph{Bulletin of the American Meteorological Society}, \bold{96}(2), 203--216.
+  \doi{10.1175/BAMS-D-13-00155.1}
 }
 
 \value{
   A character vector with (s)RGB codings of the colors in the palette.
 }
 
-\author{
-  Achim Zeileis \email{Achim.Zeileis@R-project.org}
-}
+\author{Achim Zeileis}
+
 \seealso{
   \code{\link[colorspace]{polarLUV}},
   \code{\link[colorspace]{HSV}},

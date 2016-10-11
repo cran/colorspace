@@ -78,7 +78,7 @@ setMethod("[", "color",
 
 setMethod("plot", signature("color"),
           function(x, y, pch=20, cex=3)
-          pairs(coords(x), col=hex(x,fix=TRUE), pch=pch, cex=cex))
+          pairs(coords(x), col=hex(x,fixup=TRUE), pch=pch, cex=cex))
 
 CheckMatrix =
   function(x)

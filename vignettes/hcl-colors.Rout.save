@@ -4,7 +4,6 @@
 > library("colorspace")
 
 > library("vcd")
-Loading required package: MASS
 Loading required package: grid
 
 > library("mvtnorm")
@@ -148,11 +147,10 @@ CDU/CSU     FDP   Linke  Gruene     SPD
 > library("kernlab")
 
 > fm <- ksvm(class ~ ., data = ex1, C = 0.5)
-Using automatic sigma estimation (sigest) for RBF or laplace kernel 
 
 > plot(fm, data = ex1)
 
  *** Run successfully completed ***
 > proc.time()
    user  system elapsed 
-  4.772   0.144   4.922 
+  1.264   0.056   1.316 

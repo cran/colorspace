@@ -92,7 +92,7 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
         cols <- as.matrix(as.data.frame(list(C=cyan, M=black, Y=yellow,
                                              K=black)))
       }
-      write.table(cols, file=f, quote=FALSE, row.names=FALSE, sep="\t")
+      utils::write.table(cols, file=f, quote=FALSE, row.names=FALSE, sep="\t")
     }
   }
 
@@ -363,13 +363,13 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
     plot(0, 0, type="n", xlab="", ylab="", xaxt="n", yaxt="n", bty="n",
          xlim=c(-88.5, -78.6), ylim=c(30.2, 35.2), asp=1)
      polygon(colorspace::USSouthPolygon,
-             col=pal.cols[cut(na.omit(colorspace::USSouthPolygon$z), 
+             col=pal.cols[cut(stats::na.omit(colorspace::USSouthPolygon$z), 
              breaks=0:n / n)])
   }
   
   # Plot heatmap example
   PlotHeatmap <- function(pal.cols) {
-    image(volcano, col=rev(pal.cols), xaxt="n", yaxt="n", useRaster=TRUE)
+    image(datasets::volcano, col=rev(pal.cols), xaxt="n", yaxt="n", useRaster=TRUE)
   }
   
   # Plot scatter example
@@ -388,13 +388,13 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
         y=c(y0 + yr[1], y0 + yr[2], y0 + yr[3], y0 + yr[4], y0 + yr[5], 
             y0 + yr[6], y0 + yr[7])
       )
-      attr(dat, "hclust") <- hclust(dist(dat), method="ward")
-      dat$xerror <- rnorm(nrow(dat), sd=runif(nrow(dat), 0.05, 0.45))
-      dat$yerror <- rnorm(nrow(dat), sd=runif(nrow(dat), 0.05, 0.45))
+      attr(dat, "hclust") <- stats::hclust(stats::dist(dat), method = "ward.D")
+      dat$xerror <- stats::rnorm(nrow(dat), sd=stats::runif(nrow(dat), 0.05, 0.45))
+      dat$yerror <- stats::rnorm(nrow(dat), sd=stats::runif(nrow(dat), 0.05, 0.45))
       xyhclust <<- dat
     }
     plot(xyhclust$x + xyhclust$xerror, xyhclust$y + xyhclust$yerror,
-         col="black", bg=pal.cols[cutree(attr(xyhclust, "hclust"), length(pal.cols))],
+         col="black", bg=pal.cols[stats::cutree(attr(xyhclust, "hclust"), length(pal.cols))],
          xlab="", ylab="", axes=FALSE, pch=21, cex=1.3)
   }
   
@@ -412,7 +412,7 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
     )
    
     # Rectangle coordinates
-    xleft0 <- c(0, head(cumsum(widths + off), -1))
+    xleft0 <- c(0, cumsum(widths + off)[-k])
     xleft <- rep(xleft0, each=n)
     xright <- xleft + rep(widths, each=n)
     ybottom <- as.vector(heights[-(n + 1), ])
@@ -450,8 +450,8 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
     x1 <- x2 <- seq(-3, 3, length=n)
     y <- outer(x1, x2, 
                function(x, y) {
-                 0.5 * dnorm(x, mean=-1, sd=0.80) * dnorm(y, mean=-1, sd=0.80) +
-                 0.5 * dnorm(x, mean= 1, sd=0.72) * dnorm(y, mean= 1, sd=0.72)
+                 0.5 * stats::dnorm(x, mean=-1, sd=0.80) * stats::dnorm(y, mean=-1, sd=0.80) +
+                 0.5 * stats::dnorm(x, mean= 1, sd=0.72) * stats::dnorm(y, mean= 1, sd=0.72)
                })
   
     # Compute color based on density
@@ -473,7 +473,7 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
       set.seed(1071)
       mat <- list()
       for (i in 1:50) {
-        mat[[i]] <- matrix(runif(i * 10, min=-1, max=1), nrow=10, ncol=i)
+        mat[[i]] <- matrix(stats::runif(i * 10, min=-1, max=1), nrow=10, ncol=i)
       }
       msc.matrix <<- mat
     }
@@ -558,6 +558,8 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
   seqm.pals[[8]]  <- c(130,   30,  65,  0, 45, 90, 0.5, 1.5, 1) # JCF/Z: alternative to terrain_hcl
   seqm.pals[[9]]  <- c(130,    0,  80,  0, 60, 95, 0.1, 1.0, 1) # Z+KH+PM-09, Fig.5: terrain_hcl
   seqm.pals[[10]] <- c(  0, -100,  80, 40, 40, 75, 1.0, 1.0, 1) # Z+KH+PM-09, Fig.5: Red-Blue
+  seqm.pals[[11]] <- c(300,   75,  35, 95, 15, 90, 0.8, 1.2, 1) # viridis::viridis
+  seqm.pals[[12]] <-c(-100,  100,  60,100, 15, 95, 2.0, 0.9, 1) # viridis::plasma
 
   dive.pals <- list()
   dive.pals[[1]]  <- c(340,  128,  45, NA, 35, 95, 0.7, 1.3, 1) # ColorBrewer.org: PiYG
@@ -854,7 +856,7 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
                                   value="tritan", text="tritan",
                                   command=function() DrawPalette(is.n=TRUE))
     ## tritan support in dichromat starting from > 1.2-4
-    if(compareVersion(getNamespaceVersion("dichromat"), "1.2-4") > 0) {
+    if(utils::compareVersion(getNamespaceVersion("dichromat"), "1.2-4") > 0) {
       tcltk::tkgrid(frame7.chk.1, frame7.chk.2, frame7.rb.3, frame7.rb.4, frame7.rb.5, "x",
            pady=c(2, 0), sticky="w")    
     } else {

@@ -1,3 +1,13 @@
+Changes in Version 1.2-7
+
+  o Extended choose_palette() for sequential palettes with multiple hues:
+    Now two palettes are included in the examples that are very close
+    to "viridis" and "magma" from matplotlib in Python (also available
+    in R via package "viridis")
+
+  o Changed Depends/Imports/Suggests to conform with current R CMD check.
+
+
 Changes in Version 1.2-6
 
   o Moved "tcltk" again from Imports to Suggests to facilitate usage of
