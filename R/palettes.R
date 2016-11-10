@@ -136,3 +136,16 @@ terrain_hcl <- function(n, h = c(130, 0), c. = c(80, 0), l = c(60, 95),
 
     return(rval)
 }
+
+bpy <- function(n) {
+  i <- 0.05 + 0.9 * 0:(n-1)/(n-1)
+  r <- -0.78125 + 3.125 * i
+  g <- -0.84 + 2 * i
+  b <- 1 + as.numeric(i > 0.3) + as.numeric(i > 0.92)
+  b <- c(0, 1.84, -11.5)[b] + c(4, -2, 12.5)[b] * i
+  hex(sRGB(
+    pmax(0, pmin(1, r)),
+    pmax(0, pmin(1, g)),
+    pmax(0, pmin(1, b))
+  ))
+}

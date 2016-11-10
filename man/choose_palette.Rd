@@ -1,5 +1,6 @@
 \name{choose_palette}
 \alias{choose_palette}
+\alias{hclwizard}
 
 \title{Graphical User Interface for Choosing HCL Color Palettes}
 
@@ -9,18 +10,25 @@ and choosing HCL color palettes.
 }
 
 \usage{
-choose_palette(pal = diverge_hcl, n = 7L, parent = NULL)
+choose_palette(pal = diverge_hcl, n = 7L, parent = NULL, gui = "tcltk")
+hclwizard(n = 7L, gui = "shiny", shiny.trace = FALSE)
 }
 
 \arguments{
-  \item{pal}{function; the initial palette, see \sQuote{Value} below.}
+  \item{pal}{function; the initial palette, see \sQuote{Value} below.
+         Only used if \code{gui="tcltk"}.}
   \item{n}{integer; the initial number of colors in the palette.}
-  \item{parent}{tkwin; the GUI parent window.}
+  \item{parent}{tkwin; the GUI parent window.
+         Only used if \code{gui="tcltk"}.}
+  \item{gui}{character; GUI to use. Available options are
+      \code{tcltk} and \code{shiny}, see \sQuote{Details} below.}
+  \item{shiny.trace}{boolean, default \code{FALSE}. Used
+      for debugging if \code{gui="shiny"}.}
 }
 
 \details{
 Computes palettes based on the HCL (hue-chroma-luminance) color
-model (as implemented by \code{\link{polarLUV}}). The GUI interfaces
+model (as implemented by \code{\link{polarLUV}}). The GUIs interface
 the palette functions
 \code{\link{rainbow_hcl}} for qualitative palettes,
 \code{\link{sequential_hcl}} for sequential palettes with a single hue,
@@ -28,7 +36,9 @@ the palette functions
 \code{\link{diverge_hcl}} for diverging palettes (composed from two single-hue
 sequential palettes).
 
-The GUI allows for interactive modification of the arguments of the respective
+Two different GUIs are implemented and can be selected using the
+function input argument \code{gui} (\code{"tcltk"} or \code{"shiny"}).
+Both GUIs allows for interactive modification of the arguments of the respective
 palette-generating functions, i.e.,
 starting/ending hue (wavelength, type of color),
 minimal/maximal chroma (colorfulness),
@@ -57,7 +67,7 @@ number of HCL colors by traversing HCL space through interpolation
 of the specified hue/chroma/luminance/power values.
 }
 
-\author{Jason C. Fisher and Achim Zeileis}
+\author{Jason C. Fisher, Reto Stauffer, Achim Zeileis}
 
 \references{
   Zeileis A, Hornik K, Murrell P (2009).
@@ -78,7 +88,14 @@ of the specified hue/chroma/luminance/power values.
 
 \examples{
 if(interactive()) {
+## Using tcltk GUI
+## Analog to: hclwizard(gui="tcltk")
 pal <- choose_palette()
+## Using shiny GUI
+## Analog to: choose_palette(gui = "shiny")
+pal <- hclwizard()
+
+## use resulting palette function
 filled.contour(volcano, color.palette = pal, asp = 1)
 }
 }

@@ -1,8 +1,64 @@
-choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
-# A GUI for selecting a color palette.
+# Get color palette as function of n
+GetPalette <- function(type, h1, h2, c1, c2, l1, l2, p1, p2, fixup) {
+   fixup <- as.logical(fixup)
+   #type <- as.character(tcltk::tclvalue(nature.var))
+   if (type %in% c("Qualitative","qual")) {
+      f <- rainbow_hcl
+      formals(f) <- eval(substitute(alist(n=, c=d1, l=d2, start=d3, end=d4,
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
+                                    list(d1=c1, d2=l1, d3=h1, d4=h2, d5=fixup)))
+   } else if (type %in% c("seqs","Sequential (single hue)")) {
+      f <- sequential_hcl
+      formals(f) <- eval(substitute(alist(n=, h=d1, c.=d2, l=d3, power=d4,
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
+                                    list(d1=h1, d2=c(c1, c2), d3=c(l1, l2),
+                                         d4=p1, d5=fixup)))
+   } else if (type %in% c("seqm","Sequential (multiple hues)")) {
+      f <- heat_hcl
+      formals(f) <- eval(substitute(alist(n=, h=d1, c.=d2, l=d3, power=d4,
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
+                                    list(d1=c(h1, h2), d2=c(c1, c2),
+                                         d3=c(l1, l2), d4=c(p1, p2), d5=fixup)))
+   } else if (type %in% c("dive","Diverging")) {
+      f <- diverge_hcl
+      formals(f) <- eval(substitute(alist(n=, h=d1, c=d2, l=d3, power=d4,
+                                          fixup=d5, gamma=NULL, alpha=1, ...=),
+                                    list(d1=c(h1, h2), d2=c1, d3=c(l1, l2),
+                                         d4=p1, d5=fixup)))
+   }
+   f
+}
 
-  # Additional functions (subroutines)
-  
+# GUI wrapper methods. 
+choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL, gui = "tcltk") {
+   args <- list("pal" = pal, "n" = n, "parent" = parent)
+   gui <- match.arg(gui, c("tcltk", "shiny"))
+   do.call(sprintf("choose_palette_%s", gui), args)
+}
+hclwizard <- function(n = 7L, gui = "shiny", shiny.trace = FALSE) {
+   args <- list("n" = n, "shiny.trace" = shiny.trace)
+   gui <- match.arg(gui, c("tcltk", "shiny"))
+   do.call(sprintf("choose_palette_%s", gui), args)
+}
+
+# hclwizard shiny GUI for selecting color palette
+choose_palette_shiny <- function(pal, shiny.trace = FALSE, n = 7L, ...) {
+   # Requirements for shiny application
+   stopifnot(requireNamespace("shiny"), requireNamespace("shinyjs"))   
+   appDir <- system.file("hclwizard", package = "colorspace")
+   if (appDir == "")
+      stop("Could not find hclwizard app directory. Try re-installing `colorspace`.", call. = FALSE)
+   # Start shiny
+   Sys.setenv("hclwizard_Ninit"=n)
+   options(shiny.trace=shiny.trace)
+   pal <- shiny::runApp(appDir, display.mode = "normal", quiet = TRUE )
+   Sys.unsetenv("hclwizard_Ninit")
+   return(pal)
+}
+
+# tcltk GUI for selecting a color palette
+choose_palette_tcltk <- function( pal = diverge_hcl, n=7L, parent = NULL, ... ) {
+
   # Choose a file interactively
   ChooseFile <- function(cmd, win.title, initialfile=NULL, 
                          defaultextension=NULL) {
@@ -48,13 +104,15 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
                     initialfile="color_palette", defaultextension=".R")
     if (is.null(f))
       return()
-    pal <- GetPalette(h1, h2, c1, c2, l1, l2, p1, p2, fixup)
+    type <- as.character(tcltk::tclvalue(nature.var))
+    pal  <- GetPalette(type, h1, h2, c1, c2, l1, l2, p1, p2, fixup)
     dput(pal, file=f)
   }
 
   # Save colors to file
   SaveColorsToFile <- function(type) {
-    pal <- GetPalette(h1, h2, c1, c2, l1, l2, p1, p2, fixup)
+    type <- as.character(tcltk::tclvalue(nature.var))
+    pal <- GetPalette(type, h1, h2, c1, c2, l1, l2, p1, p2, fixup)
     
     cols <- try(hex2RGB(pal(n)), silent=TRUE)
     if (inherits(cols, "try-error")) {
@@ -98,7 +156,8 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
 
   # Save palette and quit
   SavePalette <- function() {
-    pal.rtn <<- GetPalette(h1, h2, c1, c2, l1, l2, p1, p2, fixup)
+    type <- as.character(tcltk::tclvalue(nature.var))
+    pal.rtn <<- GetPalette(type, h1, h2, c1, c2, l1, l2, p1, p2, fixup)
     tcltk::tclvalue(tt.done.var) <- 1
   }
 
@@ -129,43 +188,10 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
     DrawPalette(v == "n")
   }
 
-  # Get color palette as function of n
-  GetPalette <- function(h1, h2, c1, c2, l1, l2, p1, p2, fixup) {
-    fixup <- as.logical(fixup)
-    type <- as.character(tcltk::tclvalue(nature.var))
-    if (type == "Qualitative") {
-      f <- rainbow_hcl
-      formals(f) <- eval(substitute(alist(n=, c=d1, l=d2, start=d3, end=d4,
-                                          fixup=d5, gamma=NULL, alpha=1, ...=),
-                                    list(d1=c1, d2=l1, d3=h1, d4=h2, d5=fixup)))
-    } else if (type == "Sequential (single hue)") {
-      f <- sequential_hcl
-      formals(f) <- eval(substitute(alist(n=, h=d1, c.=d2, l=d3, power=d4,
-                                          fixup=d5, gamma=NULL, alpha=1, ...=),
-                                    list(d1=h1, d2=c(c1, c2), d3=c(l1, l2),
-                                         d4=p1, d5=fixup)))
-    } else if (type == "Sequential (multiple hues)") {
-      f <- heat_hcl
-      formals(f) <- eval(substitute(alist(n=, h=d1, c.=d2, l=d3, power=d4,
-                                          fixup=d5, gamma=NULL, alpha=1, ...=),
-                                    list(d1=c(h1, h2), d2=c(c1, c2),
-                                         d3=c(l1, l2), d4=c(p1, p2), d5=fixup)))
-    } else if (type == "Diverging") {
-      f <- diverge_hcl
-      formals(f) <- eval(substitute(alist(n=, h=d1, c=d2, l=d3, power=d4,
-                                          fixup=d5, gamma=NULL, alpha=1, ...=),
-                                    list(d1=c(h1, h2), d2=c1, d3=c(l1, l2),
-                                         d4=p1, d5=fixup)))
-    }
-    f
-  }
-
-  # Draw palette
-  DrawPalette <- function(is.n=FALSE) {
-    pal <- GetPalette(h1, h2, c1, c2, l1, l2, p1, p2, fixup)
-    if (!is.n)
-      tcltk::tcl(frame2.cvs, "delete", "browse")
-    tcltk::tcl(frame7.cvs, "delete", "pal")
+  # Reto, Nov. 2016: helper function to create the hex palettes.
+  # Generates "n" colors from palette "pal" and manipulates them
+  # if desaturation or dichromat options are required.
+  get_hex_colors <- function(pal,n) {
     pal.cols <- pal(n)
     pal.cols[is.na(pal.cols)] <- "#FFFFFF"
     if (as.logical(as.integer(tcltk::tclvalue(desaturation.var))))
@@ -174,6 +200,18 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
       type <- as.character(tcltk::tclvalue(colorblind.type.var))
       pal.cols <- dichromat::dichromat(pal.cols, type=type)
     }
+    pal.cols
+  }
+
+  # Draw palette
+  DrawPalette <- function(is.n=FALSE) {
+    type <- as.character(tcltk::tclvalue(nature.var))
+    pal <- GetPalette(type, h1, h2, c1, c2, l1, l2, p1, p2, fixup)
+    if (!is.n)
+      tcltk::tcl(frame2.cvs, "delete", "browse")
+    tcltk::tcl(frame7.cvs, "delete", "pal")
+    # Reto, Nov 2016: outsourced
+    pal.cols <- get_hex_colors(pal,n)
     dx <- (cvs.width - 1) / n
     x2 <- 1
     y1 <- 1
@@ -184,7 +222,7 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
       pts <- tcltk::.Tcl.args(c(x1, y1, x2, y1, x2, y2, x1, y2))
       tcltk::tkcreate(frame7.cvs, "polygon", pts, fill=i, tag="pal")
     }
-    RegenExample(pal.cols)
+    RegenExample(pal,n)
   }
 
   # Update data type
@@ -208,7 +246,10 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
     tcltk::tcl(frame2.cvs, "delete", "default")
     x1 <- 10
     for (i in 1:length(default.pals)) {
-      pal <- do.call(GetPalette, args=as.list(default.pals[[i]]))
+      # Create numeric palette parameter list, drop name
+      args <- as.list(as.list(default.pals[[i]][-10]))
+      args[['type']] <- as.character(tcltk::tclvalue(nature.var))
+      pal <- do.call(GetPalette, args=args)
       pal.cols <- pal(5)
       pal.cols[is.na(pal.cols)] <- "#FFFFFF"
       y2 <- 10
@@ -261,7 +302,8 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
     x1 <- x.seq[i]
     x2 <- x.seq[i + 1]
     for (j in 1:length(vars)) {
-      val <- default.pals[[i]][j]
+      if ( vars[j] == "name" ) next
+      val <- as.numeric(default.pals[[i]][j])
       if (is.na(val))
         val <- 0
       assign(vars[j], val, inherits=TRUE)
@@ -346,161 +388,21 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
   }
 
   # Regenerate example plot
-  RegenExample <- function(pal.cols) {
+  RegenExample <- function(pal,n) {
     if (dev.example %in% dev.list())
       dev.set(which=dev.example)
     else
       return()
-    PlotExample <- get(paste("Plot", tcltk::tclvalue(example.var), sep=""))
+    PlotExample <- eval(parse(text=sprintf("Plot%s",tcltk::tclvalue(example.var))))
+    # Reto, Nov 2016: Picking colors. For 'Example Spectrum' 100 colors
+    # will be choosen (overruling input "n").
+    if ( tcltk::tclvalue(example.var) == "Spectrum" ) n <- 100
+    pal.cols <- get_hex_colors(pal,n)
     if (as.logical(as.integer(tcltk::tclvalue(reverse.var))))
       pal.cols <- rev(pal.cols)
     PlotExample(pal.cols)
   }
   
-  # Plot map example 
-  PlotMap <- function(pal.cols) {
-    n <- length(pal.cols)
-    plot(0, 0, type="n", xlab="", ylab="", xaxt="n", yaxt="n", bty="n",
-         xlim=c(-88.5, -78.6), ylim=c(30.2, 35.2), asp=1)
-     polygon(colorspace::USSouthPolygon,
-             col=pal.cols[cut(stats::na.omit(colorspace::USSouthPolygon$z), 
-             breaks=0:n / n)])
-  }
-  
-  # Plot heatmap example
-  PlotHeatmap <- function(pal.cols) {
-    image(datasets::volcano, col=rev(pal.cols), xaxt="n", yaxt="n", useRaster=TRUE)
-  }
-  
-  # Plot scatter example
-  PlotScatter <- function(pal.cols) {
-    
-    # Generate artificial data 
-    if (is.null(xyhclust)) {
-      set.seed(1071)
-      x0 <- sin(pi * 1:60 / 30) / 5
-      y0 <- cos(pi * 1:60 / 30) / 5
-      xr <- c(0.1, -0.6, -0.7, -0.9,  0.4,  1.3, 1.0)
-      yr <- c(0.3,  1.0,  0.1, -0.9, -0.8, -0.4, 0.6)
-      dat <- data.frame(
-        x=c(x0 + xr[1], x0 + xr[2], x0 + xr[3], x0 + xr[4], x0 + xr[5], 
-            x0 + xr[6], x0 + xr[7]),
-        y=c(y0 + yr[1], y0 + yr[2], y0 + yr[3], y0 + yr[4], y0 + yr[5], 
-            y0 + yr[6], y0 + yr[7])
-      )
-      attr(dat, "hclust") <- stats::hclust(stats::dist(dat), method = "ward.D")
-      dat$xerror <- stats::rnorm(nrow(dat), sd=stats::runif(nrow(dat), 0.05, 0.45))
-      dat$yerror <- stats::rnorm(nrow(dat), sd=stats::runif(nrow(dat), 0.05, 0.45))
-      xyhclust <<- dat
-    }
-    plot(xyhclust$x + xyhclust$xerror, xyhclust$y + xyhclust$yerror,
-         col="black", bg=pal.cols[stats::cutree(attr(xyhclust, "hclust"), length(pal.cols))],
-         xlab="", ylab="", axes=FALSE, pch=21, cex=1.3)
-  }
-  
-  # Plot spine example
-  PlotSpine <- function(pal.cols) {
-    n <- length(pal.cols)
-    
-    # Rectangle dimensions
-    off <- 0.015
-    widths <- c(0.05, 0.1, 0.15, 0.1, 0.2, 0.08, 0.12, 0.16, 0.04)
-    k <- length(widths)
-    heights <- sapply(
-      c(2.5, 1.2, 2.7, 1, 1.3, 0.7, 0.4, 0.2, 1.7),
-      function(p) (0:n / n)^(1 / p)
-    )
-   
-    # Rectangle coordinates
-    xleft0 <- c(0, cumsum(widths + off)[-k])
-    xleft <- rep(xleft0, each=n)
-    xright <- xleft + rep(widths, each=n)
-    ybottom <- as.vector(heights[-(n + 1), ])
-    ytop <- as.vector(heights[-1, ])
-   
-    # Draw rectangles, borders, and annotation
-    plot(0, 0, xlim=c(0, sum(widths) + off * (k - 1)), ylim=c(0, 1),
-         xaxs="i", yaxs="i", main="", xlab="", ylab="",
-         type="n", axes=FALSE)
-    rect(xleft, ybottom, xright, ytop, col=rep(pal.cols, k),
-         border=if(n < 10) "black" else "transparent")
-    if(n >= 10) rect(xleft0, 0, xleft0 + widths, 1, border="black")
-  }
-  
-  # Plot bar example
-  PlotBar <- function(pal.cols) {
-    barplot(cbind(1.1 + abs(sin(0.5 + seq_along(pal.cols))) / 3,
-            1.9 + abs(cos(1.1 + seq_along(pal.cols))) / 3,
-            0.7 + abs(sin(1.5 + seq_along(pal.cols))) / 3,
-            0.3 + abs(cos(0.8 + seq_along(pal.cols))) / 3),
-            beside=TRUE, col=pal.cols, axes=FALSE)
-  }
-
-  # Plot pie example
-  PlotPie <- function(pal.cols) {
-    pie(0.01 + abs(sin(0.5 + seq_along(pal.cols))), labels="", col=pal.cols, 
-        radius=1)
-  }
-  
-  # Plot perspective example
-  PlotPerspective <- function(pal.cols) {
-    
-    # Mixture of bivariate normals
-    n <- 31
-    x1 <- x2 <- seq(-3, 3, length=n)
-    y <- outer(x1, x2, 
-               function(x, y) {
-                 0.5 * stats::dnorm(x, mean=-1, sd=0.80) * stats::dnorm(y, mean=-1, sd=0.80) +
-                 0.5 * stats::dnorm(x, mean= 1, sd=0.72) * stats::dnorm(y, mean= 1, sd=0.72)
-               })
-  
-    # Compute color based on density
-    if (length(pal.cols) > 1) {
-      facet <- cut(y[-1, -1] + y[-1, -n] + y[-n, -1] + y[-n, -n], 
-                   length(pal.cols))
-      cols <- rev(pal.cols)[facet]
-    } else {
-      cols <- pal.cols
-    }
-  
-    # Perspective plot coding z-axis with color
-    persp(x1, x2, y, col=cols, phi=28, theta=20, r=5, xlab="", ylab="", zlab="")
-  }
-  
-  # Plot mosaic example
-  PlotMosaic <- function(pal.cols) {
-    if (is.null(msc.matrix)) {
-      set.seed(1071)
-      mat <- list()
-      for (i in 1:50) {
-        mat[[i]] <- matrix(stats::runif(i * 10, min=-1, max=1), nrow=10, ncol=i)
-      }
-      msc.matrix <<- mat
-    }
-    image(msc.matrix[[n]], col=pal.cols, xaxt="n", yaxt="n")
-  }
-  
-  # Plot lines example
-  PlotLines <- function(pal.cols) {
-    n <- length(pal.cols)
-    plot(NULL, xlab="", ylab="", xaxt="n", yaxt="n", type="n", 
-         xlim=c(0, 6), ylim=c(1.5, n + 1.5))
-    s <- 2:(n + 1)
-    rev.s <- rev(s)
-    rev.pal.cols <- rev(pal.cols)
-    lwd <- 6
-    if (n > 5)
-     lwd <- lwd -1
-    if (n > 15)
-     lwd <- lwd -1
-    if (n > 25)
-     lwd <- lwd -1
-    segments(1 / s, s, 2 + 1 / rev.s, rev.s, pal.cols, lwd=lwd)
-    segments(2 + 1 / s, s, 4 - 1 / s, s, rev.pal.cols, lwd=lwd)
-    segments(4 - 1 / s, s, 6 - 1 / s, rev.s, rev.pal.cols, lwd=lwd)
-  }
-
-
   # Main program
   
   # Initialize directory
@@ -524,53 +426,14 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
   # Set default and initial palettes
   h1 <- h2 <- c1 <- c2 <- l1 <- l2 <- p1 <- p2 <- 0
   fixup <- 1
-  vars <- c("h1", "h2", "c1", "c2", "l1", "l2", "p1", "p2", "fixup")
+  #vars <- c("h1", "h2", "c1", "c2", "l1", "l2", "p1", "p2", "fixup")
 
-  qual.pals <- list()
-  qual.pals[[1]]  <- c(  0,  288,  35, NA, 85, NA,  NA,  NA, 1) # ColorBrewer.org: Pastel1
-  qual.pals[[2]]  <- c( 10,  320,  50, NA, 80, NA,  NA,  NA, 1) # ColorBrewer.org: Set3
-  qual.pals[[3]]  <- c(  0,  288,  60, NA, 70, NA,  NA,  NA, 1) # ColorBrewer.org: Set2
-  qual.pals[[4]]  <- c(  0,  288,  50, NA, 60, NA,  NA,  NA, 1) # ColorBrewer.org: Dark2
-  qual.pals[[5]]  <- c(  0,  300,  80, NA, 60, NA,  NA,  NA, 1) # JCF/Z: Even Darker
-  qual.pals[[6]]  <- c( 90,  -30,  50, NA, 70, NA,  NA,  NA, 1) # Z+KH+PM-09, Fig.4: Warm (based on Ihaka-03)
-  qual.pals[[7]]  <- c(270,  150,  50, NA, 70, NA,  NA,  NA, 1) # Z+KH+PM-09, Fig.4: Cold (based on Ihaka-03)
-  qual.pals[[8]]  <- c( 60,  240,  50, NA, 70, NA,  NA,  NA, 1) # Z+KH+PM-09, Fig.4: Harmonic (based on Ihaka-03)
-  qual.pals[[9]]  <- c( 30,  300,  50, NA, 70, NA,  NA,  NA, 1) # Z+KH+PM-09, Fig.4: Dynamic (based on Ihaka-03)
-
-  seqs.pals <- list()
-  seqs.pals[[1]]  <- c(  0,   NA,   0,  0, 15, 95, 1.3,  NA, 1) # ColorBrewer.org: Greys
-  seqs.pals[[2]]  <- c(280,   NA,  60,  5, 20, 95, 0.7, 1.3, 1) # ColorBrewer.org: Purples
-  seqs.pals[[3]]  <- c(260,   NA,  80, 10, 30, 95, 0.7, 1.3, 1) # ColorBrewer.org: Blues
-  seqs.pals[[4]]  <- c(135,   NA,  50, 10, 40, 95, 0.4, 1.3, 1) # ColorBrewer.org: Greens
-  seqs.pals[[5]]  <- c( 20,   NA,  80,  5, 35, 95, 0.6, 1.3, 1) # ColorBrewer.org: Oranges
-  seqs.pals[[6]]  <- c( 10,   NA,  80, 10, 30, 95, 0.7, 1.3, 1) # JCF/Z: Reds
-  seqs.pals[[7]]  <- c(260,   NA,  80,  0, 30, 90, 1.5,  NA, 1) # Z+KH+PM-09, Fig.5: Blues
-  seqs.pals[[8]]  <- c(260,   NA,   0,  0, 30, 90, 1.5,  NA, 1) # Z+KH+PM-09, Fig.5: Light Grays
-  
-  seqm.pals <- list()
-  seqm.pals[[1]]  <- c(300,  200,  60,  0, 25, 95, 0.7, 1.3, 1) # ColorBrewer.org: BuPu
-  seqm.pals[[2]]  <- c(370,  280,  80,  5, 25, 95, 0.7, 1.3, 1) # ColorBrewer.org: PuRd
-  seqm.pals[[3]]  <- c(140,   80,  40, 10, 35, 95, 0.7, 1.7, 1) # ColorBrewer.org: YlGn
-  seqm.pals[[4]]  <- c(265,   80,  60, 10, 25, 95, 0.7, 2.0, 1) # ColorBrewer.org: YlGnBu
-  seqm.pals[[5]]  <- c( 10,   85,  80, 10, 25, 95, 0.4, 1.3, 1) # ColorBrewer.org: YlOrRd
-  seqm.pals[[6]]  <- c(  0,   90,  80, 30, 30, 90, 0.2, 2.0, 1) # JCF/Z: alternative to heat_hcl
-  seqm.pals[[7]]  <- c(  0,   90, 100, 30, 50, 90, 0.2, 1.0, 1) # Z+KH+PM-09, Fig.5: heat_hcl
-  seqm.pals[[8]]  <- c(130,   30,  65,  0, 45, 90, 0.5, 1.5, 1) # JCF/Z: alternative to terrain_hcl
-  seqm.pals[[9]]  <- c(130,    0,  80,  0, 60, 95, 0.1, 1.0, 1) # Z+KH+PM-09, Fig.5: terrain_hcl
-  seqm.pals[[10]] <- c(  0, -100,  80, 40, 40, 75, 1.0, 1.0, 1) # Z+KH+PM-09, Fig.5: Red-Blue
-  seqm.pals[[11]] <- c(300,   75,  35, 95, 15, 90, 0.8, 1.2, 1) # viridis::viridis
-  seqm.pals[[12]] <-c(-100,  100,  60,100, 15, 95, 2.0, 0.9, 1) # viridis::plasma
-
-  dive.pals <- list()
-  dive.pals[[1]]  <- c(340,  128,  45, NA, 35, 95, 0.7, 1.3, 1) # ColorBrewer.org: PiYG
-  dive.pals[[2]]  <- c(300,  128,  45, NA, 30, 95, 0.7, 1.3, 1) # ColorBrewer.org: PRGn
-  dive.pals[[3]]  <- c( 55,  160,  30, NA, 35, 95, 0.7, 1.3, 1) # ColorBrewer.org: BrBG
-  dive.pals[[4]]  <- c( 40,  270,  45, NA, 30, 95, 0.7, 1.3, 1) # ColorBrewer.org: PuOr
-  dive.pals[[5]]  <- c( 12,  265,  80, NA, 25, 95, 0.7, 1.3, 1) # ColorBrewer.org: RdBu
-  dive.pals[[6]]  <- c(260,    0,  80, NA, 30, 90, 1.5,  NA, 1) # Z+KH+PM-09, Fig.6: Blue-Red (high luminance contrast)
-  dive.pals[[7]]  <- c(260,    0, 100, NA, 50, 90, 1.0,  NA, 1) # Z+KH+PM-09, Fig.6: Blue-Red (medium luminance contrast)
-  dive.pals[[8]]  <- c(130,   43, 100, NA, 70, 90, 1.0,  NA, 1) # Z+KH+PM-09, Fig.6: Green-Orange (low luminance contrast)
-  dive.pals[[9]]  <- c(180,  330,  59, NA, 75, 95, 1.5,  NA, 1) # Z+KH+PM-09, Fig.6: Blue-Red (low luminance contrast)
+  # Load/Define palettes
+  vars      <- vars.pal
+  qual.pals <- qual.pals
+  seqs.pals <- seqs.pals
+  seqm.pals <- seqm.pals
+  dive.pals <- dive.pals
 
   # Set limits for palette attributes
   n.lim <- c(   1,  50)
@@ -819,9 +682,7 @@ choose_palette <- function(pal = diverge_hcl, n = 7L, parent = NULL) {
   frame6.lab.1 <- tcltk::ttklabel(frame6, text="Plot type")
   frame6.box.2 <- tcltk::ttkcombobox(frame6, state="readonly", 
                               textvariable=example.var,
-                              values=c("Map", "Heatmap", "Scatter", "Spine", 
-                                       "Bar", "Pie", "Perspective", "Mosaic", 
-                                       "Lines"))
+                              values=example.plots)
   frame6.chk.3 <- tcltk::ttkcheckbutton(frame6, text="Reverse colors", 
                                  variable=reverse.var, command=ShowExample)
   tcltk::tkgrid(frame6.lab.1, frame6.box.2, frame6.chk.3)

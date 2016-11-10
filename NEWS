@@ -1,3 +1,18 @@
+Changes in Version 1.3-0
+
+  o In addition to the Tcl/Tk-based GUI for choose_palette() there is now
+    a shiny-based GUI. choose_palette() by default still uses the Tcl/Tk
+    version while hclwizard() is a new wrapper that by default calls the
+    new shiny version.
+
+  o New function specplot() that converts a given palette in hex codes
+    to RGB and HCL coordinates and visualizes their spectrum as a line
+    plot.
+
+  o hex2RGB() now omits the alpha channel (if any) in the hex colors
+    provided.
+
+
 Changes in Version 1.2-7
 
   o Extended choose_palette() for sequential palettes with multiple hues:

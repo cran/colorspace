@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -230,13 +230,20 @@ Type 'q()' to quit R.
 > 
 > ### Name: choose_palette
 > ### Title: Graphical User Interface for Choosing HCL Color Palettes
-> ### Aliases: choose_palette
+> ### Aliases: choose_palette hclwizard
 > ### Keywords: misc
 > 
 > ### ** Examples
 > 
 > if(interactive()) {
++ ## Using tcltk GUI
++ ## Analog to: hclwizard(gui="tcltk")
 + pal <- choose_palette()
++ ## Using shiny GUI
++ ## Analog to: choose_palette(gui = "shiny")
++ pal <- hclwizard()
++ 
++ ## use resulting palette function
 + filled.contour(volcano, color.palette = pal, asp = 1)
 + }
 > 
@@ -365,7 +372,7 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> hex2RGB(c("#FF0000","#00FF00", "#0000FF"))
+> hex2RGB(c("#FF0000","#00FF00", "#0000FF50"))
      R G B
 [1,] 1 0 0
 [2,] 0 1 0
@@ -608,6 +615,63 @@ Type 'q()' to quit R.
 > 
 > 
 > cleanEx()
+> nameEx("specplot")
+> ### * specplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: specplot
+> ### Title: Color Spectrum Plot
+> ### Aliases: specplot
+> ### Keywords: misc
+> 
+> ### ** Examples
+> 
+> ## spectrum of the (in)famous RGB rainbow palette
+> specplot(rainbow(100))
+> 
+> ## spectrum of HCL-based palettes: qualitative/sequential/diverging
+> specplot(rainbow_hcl(100))
+> specplot(sequential_hcl(100))
+> specplot(diverge_hcl(100))
+> 
+> ## return computed RGB and HCL coordinates
+> res <- specplot(rainbow(10), plot = FALSE)
+> print(res)
+$RGB
+        R   G   B
+ [1,] 1.0 0.0 0.0
+ [2,] 1.0 0.6 0.0
+ [3,] 0.8 1.0 0.0
+ [4,] 0.2 1.0 0.0
+ [5,] 0.0 1.0 0.4
+ [6,] 0.0 1.0 1.0
+ [7,] 0.0 0.4 1.0
+ [8,] 0.2 0.0 1.0
+ [9,] 0.8 0.0 1.0
+[10,] 1.0 0.0 0.6
+
+$HCL
+              H         C        L
+ [1,]  12.17395 179.04076 53.24059
+ [2,]  39.43554 109.90223 72.26076
+ [3,] 102.90782 109.54965 93.60562
+ [4,] 126.52223 133.56847 88.07440
+ [5,] 132.97247 118.65166 88.19667
+ [6,] 192.16714  72.09794 91.11330
+ [7,] 259.85512 127.32455 47.90415
+ [8,] 267.22822 132.04235 33.81769
+ [9,] 291.97946 133.06241 51.90335
+[10,] 346.98811 133.87809 55.65064
+
+$hex
+ [1] "#FF0000FF" "#FF9900FF" "#CCFF00FF" "#33FF00FF" "#00FF66FF" "#00FFFFFF"
+ [7] "#0066FFFF" "#3300FFFF" "#CC00FFFF" "#FF0099FF"
+
+> 
+> 
+> 
+> cleanEx()
 > nameEx("writehex")
 > ### * writehex
 > 
@@ -631,7 +695,7 @@ Type 'q()' to quit R.
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  1.456 0.068 1.559 0 0 
+Time elapsed:  0.404 0.032 0.436 0 0 
 > grDevices::dev.off()
 null device 
           1 

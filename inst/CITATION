@@ -61,6 +61,6 @@ citEntry(entry = "Article",
          paste("Reto Stauffer, Georg J. Mayr, Markus Dabernig, Achim Zeileis (2015).", 
                "Somewhere over the Rainbow: How to Make Effective Use of Colors in Meteorological Visualizations.",
 	       "Bulletin of the American Meteorological Society, 96(2), 203-216.",
-	       "10.1175/BAMS-D-13-00155.1"),
+	       "doi:10.1175/BAMS-D-13-00155.1"),
 	 header = "If you use HCL-based color palettes in meteorological visualizations, please cite:"
 )

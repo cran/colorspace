@@ -262,6 +262,7 @@ hex =
 
 hex2RGB =
   function(x, gamma = FALSE) {
+      x <- substr(x,0,7) # Remove alpha
       rval <- if (gamma)
           RGB(.Call("hex_to_RGB", x, gamma, PACKAGE = "colorspace"))
       else
