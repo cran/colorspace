@@ -164,7 +164,7 @@ choose_palette_tcltk <- function( pal = diverge_hcl, n=7L, parent = NULL, ... ) 
   # Scale change
   ScaleChange <- function(x, v, x.ent.var) {
     if (x == get(v))
-      return
+      return()
     assign(v, x, inherits=TRUE)
     fmt <- ifelse(v %in% c("p1", "p2"), "%.1f", "%.0f")
     tcltk::tclvalue(x.ent.var) <- sprintf(fmt, x)

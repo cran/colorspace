@@ -7,7 +7,7 @@
 # -------------------------------------------------------------------
 # - EDITORIAL:   2015-05-01, RS: Created file on thinkreto.
 # -------------------------------------------------------------------
-# - L@ST MODIFIED: 2016-11-09 09:29 on thinkreto
+# - L@ST MODIFIED: 2016-11-16 10:04 on thinkreto
 # -------------------------------------------------------------------
 
 library("shiny")
@@ -100,8 +100,7 @@ shinyServer(function(input, output, session) {
    # When the user changes the slider settings
    # ----------------------------------------------------------------
    sliderChanged <- function(elem) {
-      # Else getting inputs and show color map
-      if ( nchar(Sys.getenv("hclwizard_lock")) > 0 ) return
+      # Load color palette
       pal <- getCurrentPalette()
       # Show new color map
       showColorMap()
@@ -371,7 +370,7 @@ shinyServer(function(input, output, session) {
       mstr <- append(mstr,"</div>")
 
       output$exportMatlab <- renderText(paste(mstr,collapse="\n"))
-      
+
    }
    
    # ----------------------------------------------------------------
