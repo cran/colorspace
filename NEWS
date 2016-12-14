@@ -1,3 +1,11 @@
+Changes in Version 1.3-2
+
+  o Fixed error in as_HLS(), which was passing 'ans' rather than
+    'color' as the colour to convert (and that was producing not only
+    wrong results, but random results because the values in 'ans' were
+    not initialized).  Thanks to Thomas Julou for the report.
+
+
 Changes in Version 1.3-1
 
   o Fixed erroneous use of "return" rather than "return()" in

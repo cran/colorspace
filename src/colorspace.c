@@ -928,7 +928,7 @@ SEXP as_HLS(SEXP color, SEXP space, SEXP white)
 	break;
     case sRGB:
 	for(i = 0; i < n; i++) {
-	    RGB_to_HLS(REAL(ans)[i], REAL(ans)[i+n], REAL(ans)[i+2*n],
+	    RGB_to_HLS(REAL(color)[i], REAL(color)[i+n], REAL(color)[i+2*n],
 		       &REAL(ans)[i], &REAL(ans)[i+n], &REAL(ans)[i+2*n]);
 	}
 	break;

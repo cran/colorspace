@@ -1,6 +1,6 @@
 Package: colorspace
-Version: 1.3-1
-Date: 2016-11-18
+Version: 1.3-2
+Date: 2016-12-14
 Title: Color Space Manipulation
 Authors@R: c(person(given = "Ross", family = "Ihaka", role = "aut", email = "ihaka@stat.auckland.ac.nz"),
              person(given = "Paul", family = "Murrell", role = "aut", email = "paul@stat.auckland.ac.nz"),
@@ -22,7 +22,7 @@ License: BSD_3_clause + file LICENSE
 URL: https://hclwizard.org/
 LazyData: yes
 NeedsCompilation: yes
-Packaged: 2016-11-18 08:30:03 UTC; zeileis
+Packaged: 2016-12-14 22:11:46 UTC; zeileis
 Author: Ross Ihaka [aut],
   Paul Murrell [aut],
   Kurt Hornik [aut],
@@ -31,4 +31,4 @@ Author: Ross Ihaka [aut],
   Achim Zeileis [aut, cre]
 Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
 Repository: CRAN
-Date/Publication: 2016-11-18 10:08:44
+Date/Publication: 2016-12-14 23:28:25

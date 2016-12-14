@@ -1,7 +1,7 @@
-47e4d5040f8ea9bafeb5af7611dc88d4 *DESCRIPTION
+c411b823d4e55a70da1062777f9d44ff *DESCRIPTION
 8f496392e8dd9e8e458fb31341293540 *LICENSE
 7ceef74ad84f5ba2f557b079d143a292 *NAMESPACE
-0789704682533da807747e79e9430320 *NEWS
+a49529b2bdafbcfc0869b390f3950fb3 *NEWS
 1aec1323622ac2f9ae3fd3d92a3dfced *R/ExamplePlots.R
 978b104e07b409071a425bd451368219 *R/choose_palette.R
 ba5247bc85c14fadddac7d83c4c642b6 *R/colorspace.R
@@ -9,13 +9,13 @@ c56df443ebfd4c8e70b5eca059415cfa *R/definitions.R
 55c9e23fd6f9735825551037f94c0775 *R/desaturate.R
 fd8bbd29c876b712ed546dc477a3c8b6 *R/palettes.R
 1b19cbc0541210963e5b39fd96ec9a20 *R/specplot.R
-fd93d17bf506ef65e7bf1c672b0a6ed7 *build/partial.rdb
+1ae79dea9be7f15e187adf4beae11eb0 *build/partial.rdb
 f89b211c24eebd6fe1ab235c88e9d301 *build/vignette.rds
 af7bc171ef89cc09fd3a05c575e800fe *data/USSouthPolygon.rda
 0adff7540ec13fec132060a1d89e5083 *inst/CITATION
 5570f26f8ccc2e170c9ba90653c864d9 *inst/doc/hcl-colors.R
 699d2594e53622a6c995d057150bb321 *inst/doc/hcl-colors.Rnw
-9c4186bc6a32a1dc07e178cce9e2629d *inst/doc/hcl-colors.pdf
+f963007aa2de61247c647eb917c75173 *inst/doc/hcl-colors.pdf
 abe66ec21987b5aa81d3eb04bbd3ff6e *inst/hclwizard/html/GrADS.html
 15ca589462f6b9e648318c2bc5bab157 *inst/hclwizard/html/help.html
 fc969608fccbbb5da8ae623df50ab493 *inst/hclwizard/html/matlab.html
@@ -90,7 +90,7 @@ b6275a64f3eec4a08e58e5a6eb35601f *man/readhex.Rd
 522ccf01a4815cbedb855878bc9ceb26 *man/sRGB.Rd
 131120335f57b8d5a502e85eea8bab1a *man/specplot.Rd
 b4625d7530ef5eb1177b2675681ad966 *man/writehex.Rd
-bd45219bdc0fb1283375105ceab84b12 *src/colorspace.c
+1e9bfe5beed456a4ad74ce331bf5f0dc *src/colorspace.c
 bade34f545f359b8524060eefdc5e8b6 *tests/Examples/colorspace-Ex.Rout.save
 31c484288b1a00186d42d3e04b2dfb2e *vignettes/color.bib
 699d2594e53622a6c995d057150bb321 *vignettes/hcl-colors.Rnw
