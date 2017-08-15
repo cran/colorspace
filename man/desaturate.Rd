@@ -8,7 +8,7 @@
   with chroma removed (collapsed to zero) in HCL space.
 }
 \usage{
-desaturate(col, rel_chroma = 0)
+desaturate(col)
 }
 \arguments{
   \item{col}{vector of any of the three kind of R colors, i.e., either a
