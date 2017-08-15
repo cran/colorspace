@@ -8,14 +8,14 @@
   with chroma removed (collapsed to zero) in HCL space.
 }
 \usage{
-desaturate(col)
+desaturate(col, rel_chroma = 0)
 }
 \arguments{
   \item{col}{vector of any of the three kind of R colors, i.e., either a
     color name (an element of \code{\link[grDevices]{colors}}), a hexadecimal string
     of the form \code{"#rrggbb"} or \code{"#rrggbbaa"} (see \code{\link[grDevices]{rgb}}),
     or an integer \code{i} meaning \code{palette()[i]}.}
-  \item{rel_chroma}{Number between 0 and 1 indicating the degree of desaturation (0: complete, 1: none).
+  \item{rel_chroma}{number between 0 and 1 indicating the degree of desaturation (0: complete, 1: none);
     defaults to 0.}
 }
 \details{
