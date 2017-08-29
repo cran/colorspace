@@ -1,4 +1,4 @@
-c411b823d4e55a70da1062777f9d44ff *DESCRIPTION
+d64600e135a093c24e97b7daa5db5300 *DESCRIPTION
 8f496392e8dd9e8e458fb31341293540 *LICENSE
 7ceef74ad84f5ba2f557b079d143a292 *NAMESPACE
 a49529b2bdafbcfc0869b390f3950fb3 *NEWS
@@ -6,7 +6,7 @@ a49529b2bdafbcfc0869b390f3950fb3 *NEWS
 978b104e07b409071a425bd451368219 *R/choose_palette.R
 ba5247bc85c14fadddac7d83c4c642b6 *R/colorspace.R
 c56df443ebfd4c8e70b5eca059415cfa *R/definitions.R
-55c9e23fd6f9735825551037f94c0775 *R/desaturate.R
+941bb514bb781003143ab6d70eebd44a *R/desaturate.R
 fd8bbd29c876b712ed546dc477a3c8b6 *R/palettes.R
 1b19cbc0541210963e5b39fd96ec9a20 *R/specplot.R
 1ae79dea9be7f15e187adf4beae11eb0 *build/partial.rdb
@@ -78,7 +78,7 @@ f8cf179f4beaec7c9c0886dbe8362c1e *man/XYZ.Rd
 e6774e10f5cb95d7201dcd8e023a3779 *man/choose_palette.Rd
 a95c1d83aa72d7650e7c72bd58173b46 *man/color-class.Rd
 697427e94cd84f974d2048f69d67c288 *man/coords.Rd
-687d8f6f26db25a018374551610e133a *man/desaturate.Rd
+5243e93ed3abc28d9d25d24a966ac6c5 *man/desaturate.Rd
 05a98bce053da27aea61296a394cd720 *man/hex.Rd
 2966e8db7a3b8debe3dbb1a2a817a679 *man/hex2RGB.Rd
 84869c345ed5ee4e61fec49e1f8df9cd *man/mixcolor.Rd

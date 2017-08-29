@@ -15,6 +15,8 @@ desaturate(col)
     color name (an element of \code{\link[grDevices]{colors}}), a hexadecimal string
     of the form \code{"#rrggbb"} or \code{"#rrggbbaa"} (see \code{\link[grDevices]{rgb}}),
     or an integer \code{i} meaning \code{palette()[i]}.}
+  \item{rel_chroma}{number between 0 and 1 indicating the degree of desaturation (0: complete, 1: none);
+    defaults to 0.}
 }
 \details{
   Given colors are first transformed to RGB (either using \code{\link[colorspace]{hex2RGB}}
