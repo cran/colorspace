@@ -45,14 +45,14 @@ Copyright M. P. Wand 1997-2009
 
 > par(mfrow = c(4, 1), mar = c(0, 0, 0, 0))
 
-> pal(diverge_hcl(7))
+> pal(diverging_hcl(7))
 
-> pal(diverge_hcl(7, c = 100, l = c(50, 90), power = 1))
+> pal(diverging_hcl(7, c = 100, l = c(50, 90), power = 1))
 
-> pal(diverge_hcl(7, h = c(130, 43), c = 100, l = c(70, 
+> pal(diverging_hcl(7, h = c(130, 43), c = 100, l = c(70, 
 +     90)))
 
-> pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 
+> pal(diverging_hcl(7, h = c(180, 330), c = 59, l = c(75, 
 +     95)))
 
 > seats <- structure(c(226, 61, 54, 51, 222), .Names = c("CDU/CSU", 
@@ -153,4 +153,4 @@ CDU/CSU     FDP   Linke  Gruene     SPD
  *** Run successfully completed ***
 > proc.time()
    user  system elapsed 
-  1.264   0.056   1.316 
+  2.264   0.108   2.363 

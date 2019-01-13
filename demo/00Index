@@ -1,0 +1,4 @@
+brewer	Compare HCL spectrum of RColorBrewer palettes with colorspace approximations
+carto	Compare HCL spectrum of rcartocolor palettes with colorspace approximations
+viridis	Compare HCL spectrum of viridis palettes with colorspace approximations
+scico	Compare HCL spectrum of scico palettes with colorspace approximations

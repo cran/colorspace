@@ -1,11 +1,13 @@
 
-R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -21,6 +23,7 @@ Type 'q()' to quit R.
 > library('colorspace')
 > 
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
 > cleanEx()
 > nameEx("HLS")
 > ### * HLS
@@ -35,7 +38,7 @@ Type 'q()' to quit R.
 > ### ** Examples
 > 
 > # A rainbow of full-intensity hues
-> HLS(seq(0, 360, length=13)[-13], 0.5, 1)
+> HLS(seq(0, 360, length = 13)[-13], 0.5, 1)
         H   L S
  [1,]   0 0.5 1
  [2,]  30 0.5 1
@@ -66,7 +69,7 @@ Type 'q()' to quit R.
 > ### ** Examples
 > 
 > # A rainbow of full-intensity hues
-> HSV(seq(0, 360, length=13)[-13], 1, 1)
+> HSV(seq(0, 360, length = 13)[-13], 1, 1)
         H S V
  [1,]   0 1 1
  [2,]  30 1 1
@@ -192,7 +195,7 @@ Type 'q()' to quit R.
 > ### ** Examples
 > 
 > ## generate color palette
-> pal <- diverge_hcl(9)
+> pal <- diverging_hcl(9)
 > n <- length(pal)
 > 
 > ## draw shaded polygons
@@ -230,18 +233,19 @@ Type 'q()' to quit R.
 > 
 > ### Name: choose_palette
 > ### Title: Graphical User Interface for Choosing HCL Color Palettes
-> ### Aliases: choose_palette hclwizard
+> ### Aliases: choose_palette hclwizard hcl_wizard
 > ### Keywords: misc
 > 
 > ### ** Examples
 > 
 > if(interactive()) {
 + ## Using tcltk GUI
-+ ## Analog to: hclwizard(gui="tcltk")
 + pal <- choose_palette()
++ ## or equivalently: hclwizard(gui = "tcltk")
++ 
 + ## Using shiny GUI
-+ ## Analog to: choose_palette(gui = "shiny")
 + pal <- hclwizard()
++ ## or equivalently: choose_palette(gui = "shiny")
 + 
 + ## use resulting palette function
 + filled.contour(volcano, color.palette = pal, asp = 1)
@@ -269,7 +273,7 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> x = RGB(runif(1000),runif(1000),runif(1000))
+> x <- RGB(runif(1000), runif(1000), runif(1000))
 > plot(as(x, "LUV"))
 > 
 > 
@@ -281,7 +285,7 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: coords
-> ### Title: Extract the numerical coordinates of a color
+> ### Title: Extract the Numerical Coordinates of a Color
 > ### Aliases: coords
 > ### Keywords: color
 > 
@@ -294,6 +298,60 @@ Type 'q()' to quit R.
 > 
 > 
 > 
+> cleanEx()
+> nameEx("demoplot")
+> ### * demoplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: demoplot
+> ### Title: Color Palette Demonstration Plot
+> ### Aliases: demoplot
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## all built-in demos with the same sequential heat color palette
+> par(mfrow = c(3, 3))
+> cl <- sequential_hcl(5, "Heat")
+> for (i in c("map", "heatmap", "scatter", "spine", "bar", "pie", "perspective", "mosaic", "lines")) {
++   demoplot(cl, type = i)
++ }
+> 
+> ## qualitative palettes: light pastel colors for shading areas (pie)
+> ## and darker colorful palettes for points or lines
+> demoplot(qualitative_hcl(4, "Pastel 1"), type = "pie")
+> demoplot(qualitative_hcl(4, "Set 2"), type = "scatter")
+> demoplot(qualitative_hcl(4, "Dark 3"), type = "lines")
+> 
+> ## sequential palettes: display almost continuous gradients with
+> ## strong luminance contrasts (heatmap, perspective) and colorful
+> ## sequential palette for spine plot with only a few ordered categories
+> demoplot(sequential_hcl(99, "Purple-Blue"), type = "heatmap")
+> demoplot(sequential_hcl(99, "Reds"), type = "perspective")
+> demoplot(sequential_hcl(4, "Viridis"), type = "spine")
+> 
+> ## diverging palettes: display almost continuous gradient with
+> ## strong luminance contrast bringing out the extremes (map),
+> ## more colorful palette with lower luminance contrasts for displays
+> ## with fewer colors (mosaic, bar)
+> demoplot(diverging_hcl(99, "Tropic", power = 2.5), type = "map")
+> demoplot(diverging_hcl(5, "Green-Orange"), type = "mosaic")
+> demoplot(diverging_hcl(5, "Blue-Red 2"), type = "bar")
+> 
+> ## some palettes that work well on black backgrounds
+> par(mfrow = c(2, 3), bg = "black")
+> demoplot(sequential_hcl(9, "Oslo"), "heatmap")
+> demoplot(sequential_hcl(9, "Turku"), "heatmap")
+> demoplot(sequential_hcl(9, "Inferno", rev = TRUE), "heatmap")
+> demoplot(qualitative_hcl(9, "Set 2"), "lines")
+> demoplot(diverging_hcl(9, "Berlin"), "scatter")
+> demoplot(diverging_hcl(9, "Cyan-Magenta", l2 = 20), "lines")
+> 
+> 
+> 
+> 
+> graphics::par(get("par.postscript", pos = 'CheckExEnv'))
 > cleanEx()
 > nameEx("desaturate")
 > ### * desaturate
@@ -328,9 +386,213 @@ Type 'q()' to quit R.
 > wheel(desaturate(rainbow_hcl(12)))
 > wheel(desaturate(rainbow(12)))
 > 
+> ## apply desaturation directly on RGB values
+> RGB <- t(hex2RGB(rainbow(3))@coords * 255)
+> desaturate(RGB)
+      [,1]     [,2]     [,3]
+R 127.1223 219.9281 75.94690
+G 127.1213 219.9264 75.94625
+B 127.1266 219.9352 75.94962
+> 
 > 
 > 
 > graphics::par(get("par.postscript", pos = 'CheckExEnv'))
+> cleanEx()
+> nameEx("divergingx_hcl")
+> ### * divergingx_hcl
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: divergingx_hcl
+> ### Title: (More) Flexible Diverging HCL Palettes
+> ### Aliases: divergingx_hcl divergex_hcl divergingx_palettes
+> ### Keywords: color
+> 
+> ### ** Examples
+> 
+> ## show emulated CARTO/ColorBrewer.org palettes
+> divergingx_palettes(plot = TRUE)
+> 
+> ## compared to diverging_hcl() the diverging CARTO palettes are typically warmer
+> ## but also less balanced with respect to chroma/luminance, see e.g.,
+> specplot(divergingx_hcl(7, "ArmyRose"))
+> 
+> 
+> 
+> cleanEx()
+> nameEx("hcl_color_picker")
+> ### * hcl_color_picker
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hcl_color_picker
+> ### Title: Graphical User Interface to Pick Colors in HCL Space
+> ### Aliases: hcl_color_picker choose_color hclcolorpicker
+> ### Keywords: misc
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D hcl_color_picker()
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("hcl_palettes")
+> ### * hcl_palettes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hcl_palettes
+> ### Title: HCL Color Palettes
+> ### Aliases: hcl_palettes print.hcl_palettes summary.hcl_palettes
+> ###   plot.hcl_palettes qualitative_hcl sequential_hcl diverging_hcl
+> ###   diverge_hcl
+> ### Keywords: color
+> 
+> ### ** Examples
+> 
+> ## overview of all _named_ HCL palettes
+> hcl_palettes()
+HCL palettes
+
+Type:  Qualitative 
+Names: Pastel 1, Dark 2, Dark 3, Set 2, Set 3, Warm, Cold, Harmonic, Dynamic
+
+Type:  Sequential (single-hue) 
+Names: Grays, Light Grays, Blues 2, Blues 3, Purples 2, Purples 3, Reds 2,
+       Reds 3, Greens 2, Greens 3, Oslo
+
+Type:  Sequential (multi-hue) 
+Names: Purple-Blue, Red-Purple, Red-Blue, Purple-Orange, Blue-Yellow,
+       Green-Yellow, Red-Yellow, Heat, Heat 2, Terrain, Terrain 2,
+       Viridis, Plasma, Inferno, Dark Mint, Mint, BluGrn, Teal,
+       TealGrn, Emrld, BluYl, ag_GrnYl, Peach, PinkYl, Burg, BurgYl,
+       RedOr, OrYel, Purp, PurpOr, Sunset, Magenta, SunsetDark,
+       ag_Sunset, BrwnYl, YlOrRd, YlOrBr, OrRd, Oranges, YlGn, YlGnBu,
+       Reds, RdPu, PuRd, Purples, PuBuGn, PuBu, Greens, BuGn, GnBu,
+       BuPu, Blues, Lajolla, Turku
+
+Type:  Diverging 
+Names: Blue-Red, Blue-Red 2, Blue-Red 3, Red-Green, Purple-Green,
+       Purple-Brown, Green-Brown, Blue-Yellow 2, Blue-Yellow 3,
+       Green-Orange, Cyan-Magenta, Tropic, Broc, Cork, Vik, Berlin,
+       Lisbon, Tofino
+> 
+> ## visualize
+> hcl_palettes("qualitative", plot = TRUE)
+> hcl_palettes("sequential (single-hue)", n = 7, plot = TRUE)
+> hcl_palettes("sequential (multi-hue)", n = 7, plot = TRUE)
+> hcl_palettes("diverging", n = 7, plot = TRUE)
+> 
+> ## inspect a specific palette
+> ## (upper-case, spaces, etc. are ignored for matching)
+> hcl_palettes(palette = "Dark 2")
+HCL palette
+Name: Dark 2
+Type: Qualitative
+Parameter ranges:
+ h1 h2 c1 c2 l1 l2 p1 p2 cmax fixup
+  0 NA 50 NA 60 NA NA NA   NA  TRUE
+> hcl_palettes(palette = "dark2")
+HCL palette
+Name: Dark 2
+Type: Qualitative
+Parameter ranges:
+ h1 h2 c1 c2 l1 l2 p1 p2 cmax fixup
+  0 NA 50 NA 60 NA NA NA   NA  TRUE
+> 
+> ## set up actual colors
+> qualitative_hcl(4, h = c(0, 288), c = 50, l = 60) ## by hand
+[1] "#C87A8A" "#8A9748" "#00A2A2" "#A782C3"
+> qualitative_hcl(4, palette = "dark2")             ## by name
+[1] "#C87A8A" "#909646" "#00A396" "#9189C7"
+> qualitative_hcl(4, palette = "dark2", c = 80)     ## by name plus modification
+[1] "#E16A86" "#909800" "#00AD9A" "#9183E6"
+> 
+> ## how HCL palettes are constructed:
+> ## by varying the perceptual properties via hue/chroma/luminance
+> swatchplot(
++   "Hue"       = sequential_hcl(5, h = c(0, 300), c = c(60, 60), l = 65),
++   "Chroma"    = sequential_hcl(5, h = 0, c = c(100, 0), l = 65, rev = TRUE, power = 1),
++   "Luminance" = sequential_hcl(5, h = 260, c = c(25, 25), l = c(25, 90), rev = TRUE, power = 1),
++   off = 0
++ )
+> 
+> ## for qualitative palettes luminance and chroma are fixed, varying only hue
+> hclplot(qualitative_hcl(9, c = 50, l = 70))
+> 
+> ## single-hue sequential palette (h = 260) with linear vs. power-transformed trajectory
+> hclplot(sequential_hcl(7, h = 260, c = 80, l = c(35, 95), power = 1))
+> hclplot(sequential_hcl(7, h = 260, c = 80, l = c(35, 95), power = 1.5))
+> 
+> ## advanced single-hue sequential palette with triangular chroma trajectory
+> ## (piecewise linear vs. power-transformed)
+> hclplot(sequential_hcl(7, h = 245, c = c(40, 75, 0), l = c(30, 95), power = 1))
+> hclplot(sequential_hcl(7, h = 245, c = c(40, 75, 0), l = c(30, 95), power = c(0.8, 1.4)))
+> 
+> ## multi-hue sequential palette with small hue range and triangular chroma vs.
+> ## large hue range and linear chroma trajectory
+> hclplot(sequential_hcl(7, h = c(260, 220), c = c(50, 75, 0), l = c(30, 95), power = 1))
+> hclplot(sequential_hcl(7, h = c(260, 60), c = 60, l = c(40, 95), power = 1))
+> 
+> ## balanced diverging palette constructed from two simple single-hue sequential
+> ## palettes (for hues 260/blue and 0/red)
+> hclplot(diverging_hcl(7, h = c(260, 0), c = 80, l = c(35, 95), power = 1))
+> 
+> ## to register a particular adapted palette for re-use in the same session
+> ## with a new name the register=... argument can be used once, e.g.,
+> diverging_hcl(7, palette = "Tropic", h2 = 0, register = "mytropic")
+> 
+> ## subsequently palete="mytropic" is available in diverging_hcl() and the diverging
+> ## ggplot2 scales such as scale_color_continuous_diverging() etc.
+> demoplot(diverging_hcl(11, "mytropic"), type = "map")
+> 
+> ## to register this palette in all R sessions you could place the following
+> ## code in a startup script (e.g., .Rprofile):
+> ## colorspace::diverging_hcl(7, palette = "Tropic", h2 = 0, register = "mytropic")
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("hclplot")
+> ### * hclplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hclplot
+> ### Title: Palette Plot in HCL Space
+> ### Aliases: hclplot
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## for qualitative palettes luminance and chroma are fixed, varying only hue
+> hclplot(qualitative_hcl(9, c = 50, l = 70))
+> 
+> ## single-hue sequential palette (h = 260) with linear vs. power-transformed trajectory
+> hclplot(sequential_hcl(7, h = 260, c = 80, l = c(35, 95), power = 1))
+> hclplot(sequential_hcl(7, h = 260, c = 80, l = c(35, 95), power = 1.5))
+> 
+> ## advanced single-hue sequential palette with triangular chroma trajectory
+> ## (piecewise linear vs. power-transformed)
+> hclplot(sequential_hcl(7, h = 245, c = c(40, 75, 0), l = c(30, 95), power = 1))
+> hclplot(sequential_hcl(7, h = 245, c = c(40, 75, 0), l = c(30, 95), power = c(0.8, 1.4)))
+> 
+> ## multi-hue sequential palette with small hue range and triangular chroma vs.
+> ## large hue range and linear chroma trajectory
+> hclplot(sequential_hcl(7, h = c(260, 220), c = c(50, 75, 0), l = c(30, 95), power = 1))
+> hclplot(sequential_hcl(7, h = c(260, 60), c = 60, l = c(40, 95), power = 1))
+> 
+> ## balanced diverging palette constructed from two simple single-hue sequential
+> ## palettes (for hues 260/blue and 0/red)
+> hclplot(diverging_hcl(7, h = c(260, 0), c = 80, l = c(35, 95), power = 1))
+> 
+> 
+> 
+> 
 > cleanEx()
 > nameEx("hex")
 > ### * hex
@@ -338,13 +600,13 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: hex
-> ### Title: Convert Colors To Hexadecimal Strings
+> ### Title: Convert Colors to Hexadecimal Strings
 > ### Aliases: hex
 > ### Keywords: color
 > 
 > ### ** Examples
 > 
-> hsv = HSV(seq(0, 360, length = 7)[-7], 1, 1)
+> hsv <- HSV(seq(0, 360, length = 7)[-7], 1, 1)
 > hsv
        H S V
 [1,]   0 1 1
@@ -366,7 +628,7 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: hex2RGB
-> ### Title: Convert Hexadecimal Color Specifications To RGB Objects
+> ### Title: Convert Hexadecimal Color Specifications to sRGB Objects
 > ### Aliases: hex2RGB
 > ### Keywords: color
 > 
@@ -381,13 +643,112 @@ Type 'q()' to quit R.
 > 
 > 
 > cleanEx()
+> nameEx("lighten")
+> ### * lighten
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: lighten
+> ### Title: Algorithmically Lighten or Darken Colors
+> ### Aliases: lighten darken
+> ### Keywords: color
+> 
+> ### ** Examples
+> 
+> # lighten dark colors, example 1
+> cl <- qualitative_hcl(5)
+> swatchplot(list(
++   HCL = rbind("0%" = cl,
++               "15%" = lighten(cl, 0.15),
++               "30%" = lighten(cl, 0.3)),
++   HLS = rbind("0%" = cl,
++               "15%" = lighten(cl, 0.15, space = "HLS"),
++               "30%" = lighten(cl, 0.3, space = "HLS")),
++   combined = rbind("0%" = cl,
++               "15%" = lighten(cl, 0.15, space = "combined"),
++               "30%" = lighten(cl, 0.3, space = "combined"))),
++   nrow = 4, line = 2.5
++ )
+> 
+> # lighten dark colors, example 2
+> cl <- c("#61A9D9", "#ADD668", "#E6D152", "#CE6BAF", "#797CBA")
+> swatchplot(list(
++   HCL = rbind("0%" = cl,
++               "15%" = lighten(cl, 0.15),
++               "30%" = lighten(cl, 0.3)),
++   HLS = rbind("0%" = cl,
++               "15%" = lighten(cl, 0.15, space = "HLS"),
++               "30%" = lighten(cl, 0.3, space = "HLS")),
++   combined = rbind("0%" = cl,
++               "15%" = lighten(cl, 0.15, space = "combined"),
++               "30%" = lighten(cl, 0.3, space = "combined"))),
++   nrow = 4, line = 2.5
++ )
+> 
+> # darken light colors, example 1
+> cl <- qualitative_hcl(5, "Pastel 1")
+> swatchplot(list(
++   combined = rbind("0%" = cl,
++               "15%" = darken(cl, 0.15),
++               "30%" = darken(cl, 0.3)),
++   HCL = rbind("0%" = cl,
++               "15%" = darken(cl, 0.15, space = "HCL"),
++               "30%" = darken(cl, 0.3, space = "HCL")),
++   HLS = rbind("0%" = cl,
++               "15%" = darken(cl, 0.15, space = "HLS"),
++               "30%" = darken(cl, 0.3, space = "HLS"))),
++   nrow = 4, line = 2.5
++ )
+> 
+> # darken light colors, example 2 
+> cl <- c("#CDE4F3","#E7F3D3","#F7F0C7","#EFCFE5","#D0D1E7")
+> swatchplot(list(
++   combined = rbind("0%" = cl,
++               "15%" = darken(cl, 0.15),
++               "30%" = darken(cl, 0.3)),
++   HCL = rbind("0%" = cl,
++               "15%" = darken(cl, 0.15, space = "HCL"),
++               "30%" = darken(cl, 0.3, space = "HCL")),
++   HLS = rbind("0%" = cl,
++               "15%" = darken(cl, 0.15, space = "HLS"),
++               "30%" = darken(cl, 0.3, space = "HLS"))),
++   nrow = 4, line = 2.5
++ )
+> 
+> 
+> 
+> cleanEx()
+> nameEx("max_chroma")
+> ### * max_chroma
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: max_chroma
+> ### Title: Compute Maximum Chroma for Given Hue and Luminance in HCL
+> ### Aliases: max_chroma max_chroma_table
+> ### Keywords: color datasets
+> 
+> ### ** Examples
+> 
+> max_chroma(0:36 * 10, 50)
+ [1] 137.96 161.61 121.85  91.86  75.55  65.86  59.99  56.66  55.28  55.61
+[11]  57.70  61.92  69.06  72.78  58.06  49.54  44.38  41.33  39.81  39.55
+[21]  40.52  42.87  47.04  53.90  65.45  86.65 124.44 123.87 127.15 131.17
+[31] 119.54 112.95 110.23 110.93 115.15 123.62 137.96
+> max_chroma(120, 0:10 * 10)
+ [1]   0.00  14.44  28.04  41.67  55.35  69.06  82.79  96.53 110.28 122.90
+[11]   0.00
+> 
+> 
+> 
+> cleanEx()
 > nameEx("mixcolor")
 > ### * mixcolor
 > 
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: mixcolor
-> ### Title: Compute the convex combination of two colors
+> ### Title: Compute the Convex Combination of Two Colors
 > ### Aliases: mixcolor
 > ### Keywords: color
 > 
@@ -433,7 +794,7 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: polarLUV
-> ### Title: Create polarLUV Colors
+> ### Title: Create polarLUV (HCL) Colors
 > ### Aliases: polarLUV
 > ### Keywords: color
 > 
@@ -460,43 +821,15 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: rainbow_hcl
-> ### Title: HCL and HSV Color Palettes
-> ### Aliases: rainbow_hcl diverge_hcl diverge_hsv heat_hcl sequential_hcl
-> ###   terrain_hcl
+> ### Title: HCL (and HSV) Color Palettes Corresponding to Base R Palettes
+> ### Aliases: rainbow_hcl heat_hcl terrain_hcl diverging_hsv diverge_hsv
 > ### Keywords: color
 > 
 > ### ** Examples
 > 
-> ## convenience demo functions
+> ## convenience demo function
 > wheel <- function(col, radius = 1, ...)
 +   pie(rep(1, length(col)), col = col, radius = radius, ...) 
-> 
-> pal <- function(col, border = "light gray")
-+ {
-+   n <- length(col)
-+   plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1), axes = FALSE, xlab = "", ylab = "")
-+   rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
-+ }
-> 
-> ## qualitative palette
-> wheel(rainbow_hcl(12))
-> 
-> ## a few useful diverging HCL palettes
-> par(mar = rep(0, 4), mfrow = c(4, 1))
-> pal(diverge_hcl(7))
-> pal(diverge_hcl(7, h = c(246, 40), c = 96, l = c(65, 90)))
-> pal(diverge_hcl(7, h = c(130, 43), c = 100, l = c(70, 90)))
-> pal(diverge_hcl(7, h = c(180, 70), c = 70, l = c(90, 95)))
-> pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
-> pal(diverge_hcl(7, h = c(128, 330), c = 98, l = c(65, 90)))
-> pal(diverge_hcl(7, h = c(255, 330), l = c(40, 90)))
-> pal(diverge_hcl(7, c = 100, l = c(50, 90), power = 1))
-> 
-> ## sequential palettes
-> pal(sequential_hcl(12))
-> pal(heat_hcl(12, h = c(0, -100), l = c(75, 40), c = c(40, 80), power = 1))
-> pal(terrain_hcl(12, c = c(65, 0), l = c(45, 95), power = c(1/3, 1.5)))
-> pal(heat_hcl(12, c = c(80, 30), l = c(30, 90), power = c(1/5, 1.5)))
 > 
 > ## compare base and colorspace palettes
 > ## (in color and desaturated)
@@ -508,28 +841,40 @@ Type 'q()' to quit R.
 > wheel(desaturate(rainbow(12)))
 > 
 > ## diverging red-blue colors
-> pal(diverge_hsv(7))
-> pal(diverge_hcl(7, c = 100, l = c(50, 90)))
-> pal(desaturate(diverge_hsv(7)))
-> pal(desaturate(diverge_hcl(7, c = 100, l = c(50, 90))))
+> swatchplot(
++   diverging_hsv(7),
++   desaturate(diverging_hsv(7)),
++   diverging_hcl(7, c = 100, l = c(50, 90)),
++   desaturate(diverging_hcl(7, c = 100, l = c(50, 90))),
++   nrow = 2
++ )
 > 
 > ## diverging cyan-magenta colors
-> pal(cm.colors(7))
-> pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
-> pal(desaturate(cm.colors(7)))
-> pal(desaturate(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95))))
+> swatchplot(
++   cm.colors(7),
++   desaturate(cm.colors(7)),
++   diverging_hcl(7, "Cyan-Magenta"), ## or, similarly: Tropic
++   desaturate(diverging_hcl(7, "Cyan-Magenta")),
++   nrow = 2
++ )
 > 
 > ## heat colors
-> pal(heat.colors(12))
-> pal(heat_hcl(12))
-> pal(desaturate(heat.colors(12)))
-> pal(desaturate(heat_hcl(12)))
+> swatchplot(
++   heat.colors(12),
++   desaturate(heat.colors(12)),
++   heat_hcl(12),
++   desaturate(heat_hcl(12)),
++   nrow = 2
++ )
 > 
 > ## terrain colors
-> pal(terrain.colors(12))
-> pal(terrain_hcl(12))
-> pal(desaturate(terrain.colors(12)))
-> pal(desaturate(terrain_hcl(12)))
+> swatchplot(
++   terrain.colors(12),
++   desaturate(terrain.colors(12)),
++   terrain_hcl(12),
++   desaturate(terrain_hcl(12)),
++   nrow = 2
++ )
 > 
 > 
 > 
@@ -615,6 +960,352 @@ Type 'q()' to quit R.
 > 
 > 
 > cleanEx()
+> nameEx("scale_colour_continuous_diverging")
+> ### * scale_colour_continuous_diverging
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_continuous_diverging
+> ### Title: HCL-Based Continuous Diverging Color Scales for ggplot2
+> ### Aliases: scale_colour_continuous_diverging
+> ###   scale_color_continuous_diverging scale_fill_continuous_diverging
+> 
+> ### ** Examples
+> 
+> # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
+> 
+> library(ggplot2)
+> 
+> # generate dataset and base plot
+> set.seed(100)
+> df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
+> df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors
+> gg <- ggplot(df, aes(x = country, y = V, fill = V)) +
++   geom_bar(stat = "identity") +
++   labs(y = "Under/over valuation in %", x = "Country") +
++   coord_flip() + theme_minimal()
+>   
+> # plot with default diverging scale
+> gg + scale_fill_continuous_diverging()
+> 
+> # plot with alternative scale
+> gg + scale_fill_continuous_diverging(palette = "Purple-Green")
+> 
+> # plot with modified alternative scale
+> gg + scale_fill_continuous_diverging(palette = "Blue-Red 3", l1 = 30, l2 = 100, p1 = .9, p2 = 1.2)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_continuous_divergingx")
+> ### * scale_colour_continuous_divergingx
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_continuous_divergingx
+> ### Title: HCL-Based Continuous Flexible Diverging Scales for ggplot2
+> ### Aliases: scale_colour_continuous_divergingx
+> ###   scale_color_continuous_divergingx scale_fill_continuous_divergingx
+> 
+> ### ** Examples
+> 
+> # *** Examples for sequential CARTO scales ***
+> 
+> # base plot
+> library(ggplot2)
+> gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
++   geom_jitter(width = 0.3) + theme_minimal()
+> 
+> # default settings
+> gg + scale_color_continuous_divergingx()
+> 
+> # switch palette to ArmyRose
+> gg + scale_color_continuous_divergingx(palette = "ArmyRose")
+> 
+> # select a range out of the entire palette
+> gg + scale_color_continuous_divergingx(palette = "ArmyRose", begin = .2, end = .8)
+> 
+> # volcano plot
+> nx = 87
+> ny = 61
+> df <- data.frame(height = c(volcano), x = rep(1:nx, ny), y = rep(1:ny, each = nx))
+> ggplot(df, aes(x, y, fill=height)) + 
++   geom_raster() + scale_fill_continuous_divergingx(palette = "Fall", rev = TRUE) +
++   coord_fixed(expand = FALSE)
+> 
+> 
+> # *** Examples for diverging CARTO scales ***
+> 
+> # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
+> 
+> # generate dataset and base plot
+> library(ggplot2)
+> set.seed(100)
+> df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
+> df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors
+> gg <- ggplot(df, aes(x = country, y = V, fill = V)) +
++   geom_bar(stat = "identity") +
++   labs(y = "Under/over valuation in %", x = "Country") +
++   coord_flip() + theme_minimal()
+>   
+> # plot with diverging scale "Geyser"
+> gg + scale_fill_continuous_divergingx(palette = "Geyser")
+> 
+> # plot with diverging scale "ArmyRose"
+> gg + scale_fill_continuous_divergingx(palette = "ArmyRose")
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_continuous_qualitative")
+> ### * scale_colour_continuous_qualitative
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_continuous_qualitative
+> ### Title: HCL-Based Continuous Qualitative Color Scales for ggplot2
+> ### Aliases: scale_colour_continuous_qualitative
+> ###   scale_color_continuous_qualitative scale_fill_continuous_qualitative
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+> 
+> # none of these examples are necessarily good ideas
+> gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
++   geom_jitter(width = 0.3) + theme_minimal()
+>   
+> gg + scale_color_continuous_qualitative(palette = "Warm")
+> gg + scale_color_continuous_qualitative(palette = "Cold", l1 = 60)
+> gg + scale_color_continuous_qualitative(palette = "Harmonic", rev = TRUE)
+> 
+> nx = 87
+> ny = 61
+> df <- data.frame(height = c(volcano), x = rep(1:nx, ny), y = rep(1:ny, each = nx))
+> ggplot(df, aes(x, y, fill=height)) + 
++   geom_raster() + scale_fill_continuous_qualitative(palette = "Dark 3") +
++   coord_fixed(expand = FALSE)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_continuous_sequential")
+> ### * scale_colour_continuous_sequential
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_continuous_sequential
+> ### Title: HCL-Based Continuous Sequential Color Scales for ggplot2
+> ### Aliases: scale_colour_continuous_sequential
+> ###   scale_color_continuous_sequential scale_fill_continuous_sequential
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+> 
+> # base plot
+> gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
++   geom_jitter(width = 0.3) + theme_minimal()
+> 
+> # default settings
+> gg + scale_color_continuous_sequential()
+> 
+> # switch palette and overwrite some default values
+> gg + scale_color_continuous_sequential(palette = "Reds", l1 = 20, c2 = 70, p1 = 1)
+> 
+> # select a range out of the entire palette
+> gg + scale_color_continuous_sequential(palette = "Heat", begin = 0.2, end = 0.8)
+> 
+> # volcano plot
+> df <- data.frame(height = c(volcano), x = c(row(volcano)), y = c(col(volcano)))
+> ggplot(df, aes(x, y, fill = height)) + 
++   geom_raster() + scale_fill_continuous_sequential(palette = "Terrain", rev = FALSE) +
++   coord_fixed(expand = FALSE)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_discrete_diverging")
+> ### * scale_colour_discrete_diverging
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_discrete_diverging
+> ### Title: HCL-Based Discrete Diverging Color Scales for ggplot2
+> ### Aliases: scale_colour_discrete_diverging scale_color_discrete_diverging
+> ###   scale_fill_discrete_diverging
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+> 
+> # default colors with slightly darkened midpoint
+> ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
++   geom_point() + theme_minimal() + 
++   scale_color_discrete_diverging(l2=75)
+> 
+> # color scale "Green-Orange"
+> ggplot(iris, aes(Sepal.Length, fill = Species)) +
++   geom_density(alpha = 0.7) + theme_classic() +
++     scale_fill_discrete_diverging(palette = "Green-Orange", rev = TRUE)
+>     
+> # use `nmax` and `order` to skip some colors
+> ggplot(iris, aes(Sepal.Length, fill = Species)) +
++   geom_density(alpha = 0.7) + theme_classic() +
++     scale_fill_discrete_diverging(palette = "Green-Orange", nmax = 5, order = c(1, 4, 5))
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_discrete_divergingx")
+> ### * scale_colour_discrete_divergingx
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_discrete_divergingx
+> ### Title: HCL-Based Discrete Flexible Diverging Scales for ggplot2
+> ### Aliases: scale_colour_discrete_divergingx
+> ###   scale_color_discrete_divergingx scale_fill_discrete_divergingx
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+> 
+> # default color scale
+> ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
++   geom_point() + theme_minimal() + 
++   scale_color_discrete_divergingx()
+> 
+> # color scale "Tropic"
+> ggplot(iris, aes(Sepal.Length, fill = Species)) +
++   geom_density(alpha = 0.7) + theme_classic() +
++     scale_fill_discrete_divergingx(palette = "Tropic", rev = TRUE)
+>     
+> # use `nmax` and `order` to skip some colors
+> ggplot(iris, aes(Sepal.Length, fill = Species)) +
++   geom_density(alpha = 0.7) + theme_classic() +
++     scale_fill_discrete_divergingx(palette = "Tropic", nmax = 5, order = c(1, 4, 5))
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_discrete_qualitative")
+> ### * scale_colour_discrete_qualitative
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_discrete_qualitative
+> ### Title: HCL-Based Discrete Qualitative Color Scales for ggplot2
+> ### Aliases: scale_colour_discrete_qualitative
+> ###   scale_color_discrete_qualitative scale_fill_discrete_qualitative
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+> 
+> # default colors
+> ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
++   geom_point() + theme_minimal() +
++   scale_color_discrete_qualitative()
+>  
+> # color scale "Harmonic"
+> ggplot(iris, aes(Sepal.Length, fill = Species)) +
++   geom_density(alpha = 0.7) + scale_fill_discrete_qualitative(palette = "Harmonic")
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_discrete_sequential")
+> ### * scale_colour_discrete_sequential
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_discrete_sequential
+> ### Title: HCL-Based Discrete Sequential Color Scales for ggplot2
+> ### Aliases: scale_colour_discrete_sequential
+> ###   scale_color_discrete_sequential scale_fill_discrete_sequential
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+> 
+> # default colors
+> ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
++   geom_point() + scale_color_discrete_sequential() + theme_classic()
+> 
+> # customization of named palette  
+> ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
++   geom_point() + scale_colour_discrete_sequential(palette = "Reds", nmax = 4, p2 = 1.5) +
++   theme_classic()
+>  
+> # color scale "Terrain"
+> ggplot(iris, aes(Sepal.Length, fill = Species)) +
++   geom_density(alpha = 0.7) + scale_fill_discrete_sequential(palette = "Terrain") + theme_minimal()
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("simulate_cvd")
+> ### * simulate_cvd
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: simulate_cvd
+> ### Title: Simulate Color Vision Deficiency
+> ### Aliases: simulate_cvd deutan protan tritan interpolate_cvd_transform
+> ### Keywords: colorblind colors cvd
+> 
+> ### ** Examples
+> 
+> # simulate color-vision deficiency by calling `simulate_cvd` with specified matrix
+> simulate_cvd(c("#005000", "blue", "#00BB00"), tritanomaly_cvd["6"][[1]])
+[1] "#004D19" "#000FAD" "#00B53B"
+> 
+> # simulate color-vision deficiency by calling the shortcut high-level function
+> tritan(c("#005000", "blue", "#00BB00"), severity = 0.6)
+[1] "#004D19" "#000FAD" "#00B53B"
+> 
+> # simulate color-vision deficiency by calling `simulate_cvd` with interpolated cvd matrix
+> simulate_cvd(c("#005000", "blue", "#00BB00"),
++              interpolate_cvd_transform(tritanomaly_cvd, severity = 0.6))
+[1] "#004D19" "#000FAD" "#00B53B"
+> 
+> # apply CVD directly on RGB matrix
+> RGB <- t(hex2RGB(rainbow(3))@coords*255)
+> deutan(RGB)
+  [,1] [,2] [,3]
+R   94  219    0
+G   71  171   12
+B    0   11  247
+> 
+> 
+> 
+> 
+> cleanEx()
 > nameEx("specplot")
 > ### * specplot
 > 
@@ -623,34 +1314,21 @@ Type 'q()' to quit R.
 > ### Name: specplot
 > ### Title: Color Spectrum Plot
 > ### Aliases: specplot
-> ### Keywords: misc
+> ### Keywords: hplot
 > 
 > ### ** Examples
 > 
-> ## spectrum of the (in)famous RGB rainbow palette
-> specplot(rainbow(100))
+> ## spectrum of the (in)famous RGB rainbow palette (in both RGB and HCL)
+> specplot(rainbow(100), rgb = TRUE)
 > 
 > ## spectrum of HCL-based palettes: qualitative/sequential/diverging
-> specplot(rainbow_hcl(100))
-> specplot(sequential_hcl(100))
-> specplot(diverge_hcl(100))
+> specplot(qualitative_hcl(100, "Set 2"))
+> specplot(sequential_hcl(100, "Blues 2"))
+> specplot(diverging_hcl(100, "Blue-Red"))
 > 
 > ## return computed RGB and HCL coordinates
 > res <- specplot(rainbow(10), plot = FALSE)
 > print(res)
-$RGB
-        R   G   B
- [1,] 1.0 0.0 0.0
- [2,] 1.0 0.6 0.0
- [3,] 0.8 1.0 0.0
- [4,] 0.2 1.0 0.0
- [5,] 0.0 1.0 0.4
- [6,] 0.0 1.0 1.0
- [7,] 0.0 0.4 1.0
- [8,] 0.2 0.0 1.0
- [9,] 0.8 0.0 1.0
-[10,] 1.0 0.0 0.6
-
 $HCL
               H         C        L
  [1,]  12.17395 179.04076 53.24059
@@ -664,10 +1342,93 @@ $HCL
  [9,] 291.97946 133.06241 51.90335
 [10,] 346.98811 133.87809 55.65064
 
+$RGB
+        R   G   B
+ [1,] 1.0 0.0 0.0
+ [2,] 1.0 0.6 0.0
+ [3,] 0.8 1.0 0.0
+ [4,] 0.2 1.0 0.0
+ [5,] 0.0 1.0 0.4
+ [6,] 0.0 1.0 1.0
+ [7,] 0.0 0.4 1.0
+ [8,] 0.2 0.0 1.0
+ [9,] 0.8 0.0 1.0
+[10,] 1.0 0.0 0.6
+
 $hex
  [1] "#FF0000FF" "#FF9900FF" "#CCFF00FF" "#33FF00FF" "#00FF66FF" "#00FFFFFF"
  [7] "#0066FFFF" "#3300FFFF" "#CC00FFFF" "#FF0099FF"
 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("swatchplot")
+> ### * swatchplot
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: swatchplot
+> ### Title: Palette Swatch Plot
+> ### Aliases: swatchplot
+> ### Keywords: hplot
+> 
+> ### ** Examples
+> 
+> ## swatches of several palette vectors
+> swatchplot(
++   "Hue"       = sequential_hcl(5, h = c(0, 300), c = c(60, 60), l = 65),
++   "Chroma"    = sequential_hcl(5, h = 0, c = c(100, 0), l = 65, rev = TRUE, power = 1),
++   "Luminance" = sequential_hcl(5, h = 260, c = c(25, 25), l = c(25, 90), rev = TRUE, power = 1),
++   off = 0
++ )
+> 
+> ## swatches of named palette matrices
+> bprg <- c("Blues", "Purples", "Reds", "Greens")
+> swatchplot(
++   "Single-hue"            = t(sapply(paste(bprg, 2), sequential_hcl, n = 7)),
++   "Single-hue (advanced)" = t(sapply(paste(bprg, 3), sequential_hcl, n = 7)),
++   "Multi-hue (advanced)"  = t(sapply(bprg,           sequential_hcl, n = 7)),
++   nrow = 5
++ )
+> 
+> 
+> 
+> cleanEx()
+> nameEx("whitepoint")
+> ### * whitepoint
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: whitepoint
+> ### Title: Access or Modify the Whitepoint
+> ### Aliases: whitepoint
+> ### Keywords: color
+> 
+> ### ** Examples
+> 
+> # query current whitepoint (D65 by default)
+> whitepoint()
+          X   Y       Z
+[1,] 95.047 100 108.883
+> 
+> # Illuminant E 
+> whitepoint(XYZ(100, 100, 100))
+> 
+> # equivalently
+> whitepoint(100, 100, 100)
+> whitepoint(c(100, 100, 100))
+> whitepoint(cbind(100, 100, 100))
+> 
+> whitepoint()
+       X   Y   Z
+[1,] 100 100 100
+> 
+> ## reset
+> whitepoint(NULL)
+> whitepoint()
+          X   Y       Z
+[1,] 95.047 100 108.883
 > 
 > 
 > 
@@ -693,9 +1454,10 @@ $hex
 > 
 > ### * <FOOTER>
 > ###
+> cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.404 0.032 0.436 0 0 
+Time elapsed:  7.38 0.079 7.482 0 0 
 > grDevices::dev.off()
 null device 
           1 
