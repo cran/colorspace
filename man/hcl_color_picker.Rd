@@ -33,6 +33,11 @@ go along with \code{\link{choose_palette}}. Another alias is \code{hclcolorpicke
 hcl_color_picker()
 }
 }
+\references{
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+}
 \seealso{
 \code{\link{choose_palette}}
 }

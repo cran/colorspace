@@ -20,7 +20,7 @@
 #' @param ... common discrete scale parameters: \code{name}, \code{breaks}, \code{labels}, \code{na.value}, \code{limits} and \code{guide}. See
 #'  \code{\link[ggplot2]{discrete_scale}} for more details.
 #' @examples
-#' library(ggplot2)
+#' library("ggplot2")
 #' 
 #' # default colors
 #' ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -90,7 +90,7 @@ scale_fill_discrete_qualitative <- function(..., aesthetics = "fill")
 #' @param ... common continuous scale parameters: `name`, `breaks`, `labels`, and `limits`. See
 #'  \code{\link[ggplot2]{continuous_scale}} for more details.
 #' @examples
-#' library(ggplot2)
+#' library("ggplot2")
 #' 
 #' # none of these examples are necessarily good ideas
 #' gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 

@@ -15,8 +15,9 @@
 #' between the two arms.
 #'
 #' With this additional flexibility various diverging palettes suggested by
-#' \url{http://ColorBrewer.org/} and CARTO (\url{https://carto.com/carto-colors/})
-#' can be emulated.
+#' \url{http://ColorBrewer.org/} and CARTO (\url{https://carto.com/carto-colors/}),
+#' can be emulated along with the Zissou 1 palette from \pkg{wesanderson} and
+#' Cividis from \pkg{viridis}.
 #'
 #' Available CARTO palettes: ArmyRose, Earth, Fall, Geyser, TealRose, Temps, and
 #' Tropic (with Tropic also available in \code{diverging_hcl}).
@@ -26,7 +27,10 @@
 #' 
 #' @param n the number of colors (\eqn{\ge 1}{>= 1}) to be in the palette.
 #' @param palette character with the name (see details).
-#' @param \dots arguments passed to \code{\link{sequential_hcl}}.
+#' @param \dots arguments passed to \code{\link{hex}}.
+#' @param fixup logical. Should the color be corrected to a valid RGB value?
+#' @param alpha numeric vector of values in the range \code{[0, 1]} for alpha
+#' transparency channel (0 means transparent and 1 means opaque).
 #' @param rev logical. Should the palette be reversed?
 #' @param h1 numeric. Starting hue coordinate.
 #' @param h2 numeric. Center hue coordinate.
@@ -47,6 +51,9 @@
 #'
 #' @return A character vector with (s)RGB codings of the colors in the palette.
 #' @seealso \code{\link[colorspace]{sequential_hcl}}, \code{\link[colorspace]{diverging_hcl}}
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords color
 #' @examples
 #' ## show emulated CARTO/ColorBrewer.org palettes
@@ -58,16 +65,15 @@
 #' @rdname divergingx_hcl
 
 #' @export
-divergingx_hcl <- function(n, palette = "Geyser", ..., rev = FALSE,
+divergingx_hcl <- function(n, palette = "Geyser", ...,
+  fixup = TRUE, alpha = 1, rev = FALSE,
   h1, h2, h3, c1, c2, c3, l1, l2, l3, p1, p2, p3, p4, cmax1, cmax2)
 {
     ## empty palette
     if(n < 1L) return(character(0L))
 
-    ## obtained stored coordinates    
-    palette <- match.arg(palette, names(divex_pals))
-    pals <- divex_pals[[palette]]
-    names(pals) <- c("h1", "h2", "h3", "c1", "c2", "c3", "l1", "l2", "l3", "p1", "p2", "p3", "p4", "cmax1", "cmax2")
+    ## obtained stored coordinates
+    pals <- as.matrix(divergingx_palettes(palette = palette)[, -1L])[1L, ]
 
     ## replace coordinates (if specified)
     if(!missing(h1)) pals["h1"] <- h1
@@ -103,15 +109,21 @@ divergingx_hcl <- function(n, palette = "Geyser", ..., rev = FALSE,
 
     ## call sequential_hcl() once or twice
     n2 <- ceiling(n/2)    
-    rval <- sequential_hcl(n2, rev = TRUE,
-    	h1 = pals["h1"], h2 = pals["h2"], c1 = pals["c1"], c2 = pals["c2"],
-    	l1 = pals["l1"], l2 = pals["l2"], p1 = pals["p1"], p2 = pals["p2"],
-	cmax = pals["cmax1"], ...)
-    if(floor(n/2) < n2) rval <- rval[-1L]
-    rval <- c(rev(rval), sequential_hcl(n2, rev = TRUE,
-    	h1 = pals["h3"], h2 = pals["h2"], c1 = pals["c3"], c2 = pals["c2"],
-    	l1 = pals["l3"], l2 = pals["l2"], p1 = pals["p3"], p2 = pals["p4"],
-	cmax = pals["cmax2"], ...))
+    rval <- seq.int(1, by = -2/(n - 1), length.out = n2)
+    rval <- c(seqhcl(rval, pals["h1"], if(is.na(pals["h2"])) pals["h1"] else pals["h2"], pals["c1"], pals["c2"],
+                     pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax1"], fixup, ...),
+    	  rev(seqhcl(rval, pals["h3"], if(is.na(pals["h2"])) pals["h3"] else pals["h2"], pals["c3"], pals["c2"],
+	             pals["l3"], pals["l2"], pals["p3"], pals["p4"], pals["cmax2"], fixup, ...)))
+    if(floor(n/2) < n2) rval <- rval[-n2]
+
+    ## alpha transparency
+    if(!missing(alpha)) {
+        alpha <- pmax(pmin(alpha, 1), 0)
+        alpha <- format(as.hexmode(round(alpha * 255 + 0.0001)), width = 2L, upper.case = TRUE)
+        rval <- ifelse(is.na(rval), NA, paste(rval, alpha, sep = ""))
+    }
+
+    ## return value
     if(rev) rval <- rev(rval)
     return(rval)   
 }
@@ -177,3 +189,9 @@ divex_pals[["BrBG"]]     <- c( 55,  NA, 180,  40,   0,  30,  25,  97,  20, 0.8, 
 divex_pals[["RdYlBu"]]   <- c( 10,  85, 260, 105,  45,  70,  35,  98,  35, 1.5, 1.2, 0.6, 1.2, 150, 10)
 divex_pals[["RdYlGn"]]   <- c( 10,  85, 140, 105,  45,  50,  35,  98,  35, 1.5, 1.2, 0.8, 1.2, 150, 75)
 divex_pals[["Spectral"]] <- c(  0,  85, 270,  90,  45,  65,  37,  98,  37, 1.0, 1.2, 1.0, 1.2, 120, NA)
+
+## wesanderson
+divex_pals[["Zissou 1"]] <- c(218,  71,  12,  46,  88, 165,  59,  82,  52, 0.2, 1.0, 3.0, 1.0,  33, NA)
+
+## Cividis
+divex_pals[["Cividis"]]  <- c(255,  NA,  75,  30,   0,  95,  13,  52,  92, 1.1, 1.0, 1.0,  NA,  47, NA)

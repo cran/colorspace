@@ -46,6 +46,9 @@
 #'   are replaced by \code{NA}.
 #' @return A character vector with (s)RGB codings of the colors in the palette.
 #' @seealso \code{\link[colorspace]{polarLUV}}, \code{\link[colorspace]{hex}}, \code{\link[colorspace]{desaturate}}
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords color
 #' @examples
 #' # lighten dark colors, example 1

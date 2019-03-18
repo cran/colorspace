@@ -15,6 +15,9 @@
 #' @return \code{demoplot} returns invisibly what the respective base graphics
 #' functions return that are called internally.
 #' @seealso \code{\link{specplot}}, \code{\link{hclplot}}
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords hplot
 #' @examples
 #' ## all built-in demos with the same sequential heat color palette

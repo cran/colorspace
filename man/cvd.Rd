@@ -33,6 +33,10 @@ Machado GM, Oliveira MM, Fernandes LAF (2009).
   \doi{10.1109/TVCG.2009.113}
   Online version with supplements at
   \url{http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html}.
+
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 }
 \seealso{
 \code{\link{simulate_cvd}}

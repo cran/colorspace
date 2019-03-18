@@ -51,7 +51,7 @@ color), minimal/maximal chroma (colorfulness), minimal maximal luminance
 (brightness, amount of gray), and a power transformations that control how
 quickly/slowly chroma and/or luminance are changed through the palette.
 Subsets of the parameters may not be applicable depending on the type of
-palette chosen. See \code{\link{qualitative_hcl}} and Zeileis et al. (2009) for
+palette chosen. See \code{\link{qualitative_hcl}} and Zeileis et al. (2009, 2019) for
 a more detailed explanation of the different arguments. Stauffer et al.
 (2015) provide more examples and guidance.
 
@@ -94,6 +94,10 @@ Rainbow: How to Make Effective Use of Colors in Meteorological
 Visualizations.  \emph{Bulletin of the American Meteorological Society},
 \bold{96}(2), 203--216.
 \doi{10.1175/BAMS-D-13-00155.1}
+
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 }
 \seealso{
 \code{\link{simulate_cvd}}, \code{\link{desaturate}}, \code{\link{qualitative_hcl}}.

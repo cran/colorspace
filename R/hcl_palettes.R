@@ -91,8 +91,8 @@
 #' provided in the package and can be specified by a name instead of a set of
 #' parameters/coordinates. The examples have been taken from the literature and many
 #' approximate color palettes from other software packages such as ColorBrewer.org
-#' (\pkg{RColorBrewer}), CARTO colors (\pkg{rcartocolor}), or \pkg{scico}. The function
-#' \code{hcl_palettes} can be used to query the available pre-specified palettes. It
+#' (\pkg{RColorBrewer}), CARTO colors (\pkg{rcartocolor}), \pkg{scico}, or \pkg{virids}. The
+#' function \code{hcl_palettes} can be used to query the available pre-specified palettes. It
 #' comes with a \code{print} method (listing names and types), a \code{summary} method
 #' (additionally listing the underlying parameters/coordinates), and a \code{plot}
 #' method that creates a \code{\link{swatchplot}} with suitable labels.
@@ -133,6 +133,10 @@
 #' Visualizations.  \emph{Bulletin of the American Meteorological Society},
 #' \bold{96}(2), 203--216.
 #' \doi{10.1175/BAMS-D-13-00155.1}
+#'
+#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords color
 #' @examples
 #' ## overview of all _named_ HCL palettes
@@ -390,6 +394,25 @@ qualitative_hcl <- function(n, h = c(0, 360 * (n - 1)/n), c = 80, l = 60,
     if(register) invisible(rval) else return(rval)
 }
 
+## trajectories
+lintrj <- function(i, p1, p2) p2 - (p2 - p1) * i
+tritrj <- function(i, j, p1, p2, pm) ifelse(i <= j,
+  p2 - (p2 - pm) * i/j,
+  pm - (pm - p1) * abs((i - j)/(1 - j)))
+
+## HCL sequence
+seqhcl <- function(i, h1, h2, c1, c2, l1, l2, p1, p2, cmax, fixup, ...) {
+    j <- 1/(1 + abs(cmax - c1) / abs(cmax - c2))
+    if (!is.na(j) && (j <= 0 | j >= 1)) j <- NA
+    hex(polarLUV(
+      L = lintrj(i^p2, l1, l2),
+      C = if(is.na(j)) lintrj(i^p1, c1, c2) else tritrj(i^p1, j, c1, c2, cmax),
+      H = lintrj(i, h1, h2)),
+      fixup = fixup, ...
+    )
+}
+
+
 #' @rdname hcl_palettes
 #' @export
 sequential_hcl <- function(n, h = 260, c = 80, l = c(30, 90), power = 1.5,
@@ -467,21 +490,8 @@ sequential_hcl <- function(n, h = 260, c = 80, l = c(30, 90), power = 1.5,
     if(is.na(pals["p2"])) pals["p2"] <- pals["p1"]
 
     ## HCL trajectory
-    cmaxat <- 1/(1 + abs(pals["cmax"] - pals["c1"]) / abs(pals["cmax"] - pals["c2"]))
-    if ( ! is.na(cmaxat) && (cmaxat <= 0 | cmaxat >= 1) ) cmaxat <- NA
     rval <- seq(1, 0, length = n)
-    rval <- hex(polarLUV(
-        L = pals["l2"] - (pals["l2"] - pals["l1"]) * rval^pals["p2"],
-        C = if(is.na(cmaxat)) {
-              pals["c2"] - (pals["c2"] - pals["c1"]) * rval^pals["p1"]
-            } else {
-              ifelse(rval^pals["p1"] <= cmaxat,
-                     pals["c2"] - (pals["c2"] - pals["cmax"]) * (rval^pals["p1"])/cmaxat,
-                     pals["cmax"] - (pals["cmax"] - pals["c1"]) * ((rval^pals["p1"] - cmaxat)/(1 - cmaxat))
-              )
-            },
-        H = pals["h2"] - (pals["h2"] - pals["h1"]) * rval),
-        fixup = as.logical(pals["fixup"]), ...)
+    rval <- seqhcl(rval, pals["h1"], pals["h2"], pals["c1"], pals["c2"], pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...)
 
     ## alpha transparency
     if(!missing(alpha)) {
@@ -563,21 +573,11 @@ diverging_hcl <- function(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
     if(is.na(pals["p2"])) pals["p2"] <- pals["p1"]
 
     ## HCL trajectory
-    cmaxat <- 1/(1 + abs(pals["cmax"] - pals["c1"]) / pals["cmax"])
-    if ( ! is.na(cmaxat) && (cmaxat <= 0 | cmaxat >= 1) ) cmaxat <- NA
-    rval <- seq(1, -1, length = n)
-    rval <- hex(polarLUV(
-        L = pals["l2"] - (pals["l2"] - pals["l1"]) * abs(rval)^pals["p2"],
-        C = if(is.na(cmaxat)) {
-              pals["c1"] * abs(rval)^pals["p1"]
-            } else {
-              ifelse(abs(rval)^pals["p1"] <= cmaxat,
-                pals["cmax"] * (abs(rval)^pals["p1"])/cmaxat,
-                    pals["cmax"] - (pals["cmax"] - pals["c1"]) * ((abs(rval)^pals["p1"] - cmaxat)/(1 - cmaxat))
-              )
-            },
-        H = ifelse(rval > 0, pals["h1"], pals["h2"])),
-        fixup = as.logical(pals["fixup"]), ...)
+    n2 <- ceiling(n/2)    
+    rval <- seq.int(1, by = -2/(n - 1), length.out = n2)
+    rval <- c(seqhcl(rval, pals["h1"], pals["h1"], pals["c1"], 0, pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...),
+    	  rev(seqhcl(rval, pals["h2"], pals["h2"], pals["c1"], 0, pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...)))
+    if(floor(n/2) < n2) rval <- rval[-n2]
 
     ## alpha transparency
     if(!missing(alpha)) {
@@ -632,6 +632,7 @@ seqm.pals[["Purple-Blue"]] <- c(300,  200,  60,  0, 25, 95, 0.7, 1.3,  NA, 1) # 
 seqm.pals[["Red-Purple"]]  <- c( 10,  -80,  80,  5, 25, 95, 0.7, 1.3,  NA, 1) # ColorBrewer.org: PuRd
 seqm.pals[["Red-Blue"]]    <- c(  0, -100,  80, 40, 40, 75, 1.0, 1.0,  NA, 1) # Z+KH+PM-09, Fig.5: Red-Blue
 seqm.pals[["Purple-Orange"]]<-c(-83,   20,  65, 18, 32, 90, 0.5, 1.0,  NA, 1) # CARTO: PurpOr
+seqm.pals[["Purple-Yellow"]]<-c(320,   80,  60, 20, 30, 95, 0.7, 1.3,  65, 1) # RS+GM+MD+Z-15, similar to Fig.4: Precipitation
 seqm.pals[["Blue-Yellow"]] <- c(265,   80,  60, 10, 25, 95, 0.7, 2.0,  NA, 1) # ColorBrewer.org: YlGnBu
 seqm.pals[["Green-Yellow"]]<- c(140,   80,  50, 10, 40, 97, 0.7, 1.8,  NA, 1) # ColorBrewer.org: YlGn
 seqm.pals[["Red-Yellow"]]  <- c( 10,   85,  80, 10, 25, 95, 0.4, 1.3,  NA, 1) # ColorBrewer.org: YlOrRd
@@ -815,7 +816,7 @@ GetPaletteConfig <- function(gui = NULL) {
            "Red-Yellow", "Heat", "PinkYl", "Green-Yellow", "Terrain 2",
 	   "Dark Mint", "BluYl", "Blue-Yellow", "Viridis", "Plasma",
            # Sequential multiple-hues advanced
-           "YlGnBu", "Greens", "BuGn", "Teal", "Peach", "Blues", "BuPu", "Purples",
+           "Purple-Yellow", "YlGnBu", "Greens", "BuGn", "Teal", "Peach", "Blues", "BuPu", "Purples",
            "Purp", "Burg", "Reds", "YlOrRd", "Sunset", "RdPu", "Inferno",
            "Lajolla", "Turku",
            # Base color maps (for shiny)

@@ -96,6 +96,10 @@ Rainbow: How to Make Effective Use of Colors in Meteorological
 Visualizations.  \emph{Bulletin of the American Meteorological Society},
 \bold{96}(2), 203--216.
 \doi{10.1175/BAMS-D-13-00155.1}
+
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 }
 \seealso{
 \code{\link{hcl_palettes}}, \code{\link{hclplot}}

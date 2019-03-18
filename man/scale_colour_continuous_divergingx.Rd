@@ -66,7 +66,7 @@ named palette. This enables easy customization of named palettes.
 # *** Examples for sequential CARTO scales ***
 
 # base plot
-library(ggplot2)
+library("ggplot2")
 gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
   geom_jitter(width = 0.3) + theme_minimal()
 
@@ -93,7 +93,7 @@ ggplot(df, aes(x, y, fill=height)) +
 # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 
 # generate dataset and base plot
-library(ggplot2)
+library("ggplot2")
 set.seed(100)
 df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
 df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors

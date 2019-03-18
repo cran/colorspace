@@ -465,11 +465,11 @@ Names: Grays, Light Grays, Blues 2, Blues 3, Purples 2, Purples 3, Reds 2,
        Reds 3, Greens 2, Greens 3, Oslo
 
 Type:  Sequential (multi-hue) 
-Names: Purple-Blue, Red-Purple, Red-Blue, Purple-Orange, Blue-Yellow,
-       Green-Yellow, Red-Yellow, Heat, Heat 2, Terrain, Terrain 2,
-       Viridis, Plasma, Inferno, Dark Mint, Mint, BluGrn, Teal,
-       TealGrn, Emrld, BluYl, ag_GrnYl, Peach, PinkYl, Burg, BurgYl,
-       RedOr, OrYel, Purp, PurpOr, Sunset, Magenta, SunsetDark,
+Names: Purple-Blue, Red-Purple, Red-Blue, Purple-Orange, Purple-Yellow,
+       Blue-Yellow, Green-Yellow, Red-Yellow, Heat, Heat 2, Terrain,
+       Terrain 2, Viridis, Plasma, Inferno, Dark Mint, Mint, BluGrn,
+       Teal, TealGrn, Emrld, BluYl, ag_GrnYl, Peach, PinkYl, Burg,
+       BurgYl, RedOr, OrYel, Purp, PurpOr, Sunset, Magenta, SunsetDark,
        ag_Sunset, BrwnYl, YlOrRd, YlOrBr, OrRd, Oranges, YlGn, YlGnBu,
        Reds, RdPu, PuRd, Purples, PuBuGn, PuBu, Greens, BuGn, GnBu,
        BuPu, Blues, Lajolla, Turku
@@ -795,7 +795,7 @@ Parameter ranges:
 > 
 > ### Name: polarLUV
 > ### Title: Create polarLUV (HCL) Colors
-> ### Aliases: polarLUV
+> ### Aliases: polarLUV HCL
 > ### Keywords: color
 > 
 > ### ** Examples
@@ -974,7 +974,7 @@ Parameter ranges:
 > 
 > # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # generate dataset and base plot
 > set.seed(100)
@@ -1015,7 +1015,7 @@ detaching ‘package:ggplot2’
 > # *** Examples for sequential CARTO scales ***
 > 
 > # base plot
-> library(ggplot2)
+> library("ggplot2")
 > gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
 +   geom_jitter(width = 0.3) + theme_minimal()
 > 
@@ -1042,7 +1042,7 @@ detaching ‘package:ggplot2’
 > # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 > 
 > # generate dataset and base plot
-> library(ggplot2)
+> library("ggplot2")
 > set.seed(100)
 > df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
 > df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors
@@ -1075,7 +1075,7 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # none of these examples are necessarily good ideas
 > gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
@@ -1110,7 +1110,7 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # base plot
 > gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
@@ -1149,7 +1149,7 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # default colors with slightly darkened midpoint
 > ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -1184,7 +1184,7 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # default color scale
 > ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -1219,7 +1219,7 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # default colors
 > ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -1248,7 +1248,7 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> library(ggplot2)
+> library("ggplot2")
 > 
 > # default colors
 > ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +

@@ -68,6 +68,11 @@ demoplot(diverging_hcl(9, "Berlin"), "scatter")
 demoplot(diverging_hcl(9, "Cyan-Magenta", l2 = 20), "lines")
 
 }
+\references{
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+}
 \seealso{
 \code{\link{specplot}}, \code{\link{hclplot}}
 }

@@ -24,6 +24,11 @@ and a desaturated version (monochromatic vision).
 Allows a rapid check whether the colors used in the image show some
 constraints with respect to color deficiency or color blindness.
 }
+\references{
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+}
 \author{
 Reto Stauffer, Claus O. Wilke, Achim Zeileis
 }

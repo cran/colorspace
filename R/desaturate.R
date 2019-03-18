@@ -32,6 +32,9 @@
 #' if input \code{col} is a vector. If input \code{col} is a matrix with R/G/B
 #' values a matrix of the same form and size will be returned.
 #' @seealso \code{\link[colorspace]{polarLUV}}, \code{\link[colorspace]{hex}}, \code{\link[colorspace]{lighten}}
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords color
 #' @examples
 #' ## rainbow of colors and their desaturated counterparts

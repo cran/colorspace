@@ -21,7 +21,7 @@
 #' @param ... common discrete scale parameters: \code{name}, \code{breaks}, \code{labels}, \code{na.value}, \code{limits} and \code{guide}. See
 #'  \code{\link[ggplot2]{discrete_scale}} for more details.
 #' @examples
-#' library(ggplot2)
+#' library("ggplot2")
 #' 
 #' # default color scale
 #' ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -115,7 +115,7 @@ scale_fill_discrete_divergingx <- function(..., aesthetics = "fill")
 #' # *** Examples for sequential CARTO scales ***
 #' 
 #' # base plot
-#' library(ggplot2)
+#' library("ggplot2")
 #' gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
 #'   geom_jitter(width = 0.3) + theme_minimal()
 #' 
@@ -142,7 +142,7 @@ scale_fill_discrete_divergingx <- function(..., aesthetics = "fill")
 #' # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 #'
 #' # generate dataset and base plot
-#' library(ggplot2)
+#' library("ggplot2")
 #' set.seed(100)
 #' df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
 #' df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors

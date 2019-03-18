@@ -559,6 +559,7 @@ LUV <-
 #' coordinate \eqn{H} is measures hue. It is also known as the HCL
 #' (hue-chroma-luminance) space.
 #' 
+#' @aliases polarLUV HCL
 #' @param L,C,H these arguments give the L, C and H coordinates of the colors.
 #' The values can be provided in separate \code{L}, \code{C} and \code{H}
 #' vectors or in a three-column matrix passed as \code{L}.

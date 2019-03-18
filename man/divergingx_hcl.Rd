@@ -6,8 +6,9 @@
 \alias{divergingx_palettes}
 \title{(More) Flexible Diverging HCL Palettes}
 \usage{
-divergingx_hcl(n, palette = "Geyser", ..., rev = FALSE, h1, h2, h3, c1,
-  c2, c3, l1, l2, l3, p1, p2, p3, p4, cmax1, cmax2)
+divergingx_hcl(n, palette = "Geyser", ..., fixup = TRUE, alpha = 1,
+  rev = FALSE, h1, h2, h3, c1, c2, c3, l1, l2, l3, p1, p2, p3, p4, cmax1,
+  cmax2)
 
 divergingx_palettes(palette = NULL, plot = FALSE, n = 7L, ...)
 }
@@ -16,7 +17,12 @@ divergingx_palettes(palette = NULL, plot = FALSE, n = 7L, ...)
 
 \item{palette}{character with the name (see details).}
 
-\item{\dots}{arguments passed to \code{\link{sequential_hcl}}.}
+\item{\dots}{arguments passed to \code{\link{hex}}.}
+
+\item{fixup}{logical. Should the color be corrected to a valid RGB value?}
+
+\item{alpha}{numeric vector of values in the range \code{[0, 1]} for alpha
+transparency channel (0 means transparent and 1 means opaque).}
 
 \item{rev}{logical. Should the palette be reversed?}
 
@@ -72,8 +78,9 @@ yellow). Consequently, the chroma/luminance paths can be rather unbalanced
 between the two arms.
 
 With this additional flexibility various diverging palettes suggested by
-\url{http://ColorBrewer.org/} and CARTO (\url{https://carto.com/carto-colors/})
-can be emulated.
+\url{http://ColorBrewer.org/} and CARTO (\url{https://carto.com/carto-colors/}),
+can be emulated along with the Zissou 1 palette from \pkg{wesanderson} and
+Cividis from \pkg{viridis}.
 
 Available CARTO palettes: ArmyRose, Earth, Fall, Geyser, TealRose, Temps, and
 Tropic (with Tropic also available in \code{diverging_hcl}).
@@ -88,6 +95,11 @@ divergingx_palettes(plot = TRUE)
 ## compared to diverging_hcl() the diverging CARTO palettes are typically warmer
 ## but also less balanced with respect to chroma/luminance, see e.g.,
 specplot(divergingx_hcl(7, "ArmyRose"))
+}
+\references{
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 }
 \seealso{
 \code{\link[colorspace]{sequential_hcl}}, \code{\link[colorspace]{diverging_hcl}}

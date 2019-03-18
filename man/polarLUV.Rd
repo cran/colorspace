@@ -2,6 +2,7 @@
 % Please edit documentation in R/colorspace.R
 \name{polarLUV}
 \alias{polarLUV}
+\alias{HCL}
 \title{Create polarLUV (HCL) Colors}
 \usage{
 polarLUV(L, C, H, names)

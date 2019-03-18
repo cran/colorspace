@@ -65,7 +65,7 @@ named palette. This enables easy customization of named palettes.
 \examples{
 # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 
-library(ggplot2)
+library("ggplot2")
 
 # generate dataset and base plot
 set.seed(100)

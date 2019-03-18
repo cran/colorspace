@@ -168,8 +168,8 @@ To facilitate using HCL-based palettes a wide range of example palettes are
 provided in the package and can be specified by a name instead of a set of
 parameters/coordinates. The examples have been taken from the literature and many
 approximate color palettes from other software packages such as ColorBrewer.org
-(\pkg{RColorBrewer}), CARTO colors (\pkg{rcartocolor}), or \pkg{scico}. The function
-\code{hcl_palettes} can be used to query the available pre-specified palettes. It
+(\pkg{RColorBrewer}), CARTO colors (\pkg{rcartocolor}), \pkg{scico}, or \pkg{virids}. The
+function \code{hcl_palettes} can be used to query the available pre-specified palettes. It
 comes with a \code{print} method (listing names and types), a \code{summary} method
 (additionally listing the underlying parameters/coordinates), and a \code{plot}
 method that creates a \code{\link{swatchplot}} with suitable labels.
@@ -250,6 +250,10 @@ Rainbow: How to Make Effective Use of Colors in Meteorological
 Visualizations.  \emph{Bulletin of the American Meteorological Society},
 \bold{96}(2), 203--216.
 \doi{10.1175/BAMS-D-13-00155.1}
+
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 }
 \seealso{
 \code{\link{divergingx_hcl}}

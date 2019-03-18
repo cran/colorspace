@@ -72,7 +72,7 @@ colorful colors for larger values on the scale. This is typically the better def
 backgrounds.
 }
 \examples{
-library(ggplot2)
+library("ggplot2")
 
 # base plot
 gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 

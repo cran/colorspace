@@ -4,7 +4,9 @@
 #' based on a CVD transform matrix.
 #'
 #' Using the physiologically-based model for simulating color vision deficiency (CVD)
-#' of Machado et al. (2009), deutanope, protanope, and tritanope vision can be emulated.
+#' of Machado et al. (2009), different kinds of limitations can be
+#' emulated: deuteranope (green cone cells defective), protanope (red cone cells defective),
+#' and tritanope (blue cone cells defective).
 #' The workhorse function to do so is \code{simulate_cvd} which can take any vector
 #' of valid R colors and transform them according to a certain CVD transformation
 #' matrix (see \code{\link{cvd}}) and transformation equation.
@@ -33,6 +35,10 @@
 #'   \doi{10.1109/TVCG.2009.113}
 #'   Online version with supplements at
 #'   \url{http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html}.
+#'
+#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords colors cvd colorblind
 #' @seealso \code{\link{cvd}}
 #' @export

@@ -24,7 +24,7 @@
 #' @param ... common discrete scale parameters: \code{name}, \code{breaks}, \code{labels}, \code{na.value}, \code{limits} and \code{guide}. See
 #'  \code{\link[ggplot2]{discrete_scale}} for more details.
 #' @examples
-#' library(ggplot2)
+#' library("ggplot2")
 #' 
 #' # default colors with slightly darkened midpoint
 #' ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -102,7 +102,7 @@ scale_fill_discrete_diverging <- function(..., aesthetics = "fill")
 #' @examples
 #' # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 #' 
-#' library(ggplot2)
+#' library("ggplot2")
 #'
 #' # generate dataset and base plot
 #' set.seed(100)

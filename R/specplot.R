@@ -57,6 +57,10 @@
 #' Visualizations.  \emph{Bulletin of the American Meteorological Society},
 #' \bold{96}(2), 203--216.
 #' \doi{10.1175/BAMS-D-13-00155.1}
+#'
+#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @keywords hplot
 #' @examples
 #' ## spectrum of the (in)famous RGB rainbow palette (in both RGB and HCL)
@@ -265,17 +269,19 @@ specplot <- function(x, y = NULL, rgb = FALSE, hcl = TRUE, fix = TRUE, cex = 1,
 
     # HCL spectrum
     if(show_hcl) {
-      plot(0, type = "n", ylim = c(0, pmax(max(HCL[, "C"], na.rm = TRUE) * 1.005, 100)), xlim = c(1, length(x)))
+      ymax <- pmax(max(HCL[, "C"], na.rm = TRUE) * 1.005, 100)
+      yrad <- 360/ymax
+      plot(0, type = "n", ylim = c(0, ymax), xlim = c(1, length(x)))
       if ( min(HCL[,"H"], na.rm = TRUE) >= -1 ) {
          labels <- seq(   0, 360, length.out = 5)
-         axis(side = 4, at = labels/3.6, labels = labels)
-         lines((HCL[, "H"])/3.6, lwd = lwd[1L], lty = lty[1L], col = hcl[1L], type = type[1L], pch = pch[1L])
-     if(y) lines((yspec$HCL[, "H"])/3.6, lwd = lwd[1L], lty = lty[1L] + 1L, col = hcl[1L], type = type[1L], pch = pch[1L])
+         axis(side = 4, at = labels/yrad, labels = labels)
+         lines((HCL[, "H"])/yrad, lwd = lwd[1L], lty = lty[1L], col = hcl[1L], type = type[1L], pch = pch[1L])
+     if(y) lines((yspec$HCL[, "H"])/yrad, lwd = lwd[1L], lty = lty[1L] + 1L, col = hcl[1L], type = type[1L], pch = pch[1L])
       } else {
          labels <- seq(-360, 360, length.out = 5)
-         axis(side = 4, at = labels/7.2 + 50, labels = labels)
-         lines((HCL[, "H"] + 360)/7.2, lwd = lwd[1L], lty = lty[1L], col = hcl[1L], type = type[1L], pch = pch[1L])
-         if(y) lines((yspec$HCL[, "H"] + 360)/7.2, lwd = lwd[1L], lty = lty[1L] + 1L, col = hcl[1L], type = type[1L], pch = pch[1L])
+         axis(side = 4, at = labels/(2 * yrad) + ymax/2, labels = labels)
+         lines((HCL[, "H"] + 360)/(2 * yrad), lwd = lwd[1L], lty = lty[1L], col = hcl[1L], type = type[1L], pch = pch[1L])
+         if(y) lines((yspec$HCL[, "H"] + 360)/(2 * yrad), lwd = lwd[1L], lty = lty[1L] + 1L, col = hcl[1L], type = type[1L], pch = pch[1L])
       }
       lines(HCL[, "C"], lwd = lwd[2L], lty = lty[2L], col = hcl[2L], type = type[1L], pch = pch[1L])
       lines(HCL[, "L"], lwd = lwd[3L], lty = lty[3L], col = hcl[3L], type = type[1L], pch = pch[1L])

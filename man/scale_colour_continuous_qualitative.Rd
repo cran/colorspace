@@ -55,7 +55,7 @@ If both a valid palette name and palette parameters are provided then the provid
 named palette. This enables easy customization of named palettes.
 }
 \examples{
-library(ggplot2)
+library("ggplot2")
 
 # none of these examples are necessarily good ideas
 gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 

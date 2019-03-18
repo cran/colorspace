@@ -15,6 +15,9 @@
 #'    output when the GUI is started (development flag). 
 #' @author Reto Stauffer, Claus O. Wilke, Achim Zeileis
 #' @rdname cvd_emulator
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
 #' @export
 cvd_emulator <- function(file, overwrite = FALSE, shiny.trace = FALSE) {
 

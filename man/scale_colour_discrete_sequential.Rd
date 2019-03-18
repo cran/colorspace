@@ -67,7 +67,7 @@ colorful colors for larger values on the scale. This is typically the better def
 backgrounds.
 }
 \examples{
-library(ggplot2)
+library("ggplot2")
 
 # default colors
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +

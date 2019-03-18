@@ -54,7 +54,7 @@ If both a valid palette name and palette parameters are provided then the provid
 named palette. This enables easy customization of named palettes.
 }
 \examples{
-library(ggplot2)
+library("ggplot2")
 
 # default color scale
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
