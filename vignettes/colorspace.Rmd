@@ -7,6 +7,7 @@ output:
     toc_float: true
     theme: flatly
 bibliography: color.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes}
   %\VignetteEngine{knitr::rmarkdown}
@@ -29,7 +30,7 @@ colors or color palettes, manipulating these colors, and employing
 them in various kinds of visualizations.
 
 At the core of the package there are various utilities for computing with
-color spaces (as the name conveys). Thus, the package helps to map various three-dimensional
+color spaces (as the name of the package conveys). Thus, the package helps to map various three-dimensional
 representations of color to each other. A particularly important
 mapping is the one from the perceptually-based and device-independent color model
 HCL (Hue-Chroma-Luminance) to standard Red-Green-Blue (sRGB) which is the basis for color
@@ -130,7 +131,7 @@ HCL palettes are provided by `divergingx_hcl()`.
 ## Usage with base graphics
 
 The color vectors returned by the HCL palette functions can usually be passed directly
-to most base graphics function, typically through the `col` argument. Here, the `q4`
+to most base graphics, typically through the `col` argument. Here, the `q4`
 vector created above is used in a time series display:
 
 ```{r eustockmarkets, eval = FALSE}
@@ -149,15 +150,15 @@ As another example for a sequential palette, we demonstrate how to create a spin
 displaying the proportion of Titanic passengers that survived per class.
 The `Purples 3` palette is used, which is quite similar to the **ColorBrewer.org**
 palette `Purples`. Here, only two colors are employed, yielding a dark purple
-and light gray.
+and a light gray.
 
 ```{r titanic, eval = FALSE}
-ttnc <- margin.table(Titanic, c(1, 4))[, 2:1]
+ttnc <- margin.table(Titanic, c(1, 4))
 spineplot(ttnc, col = sequential_hcl(2, palette = "Purples 3"))
 ```
 
 ```{r titanic-plot, echo = FALSE, message = FALSE, warning = FALSE, fig.align = "left", fig.height = 4, fig.width = 6, dpi = 48, out.width = "100%"}
-ttnc <- margin.table(Titanic, c(1, 4))[, 2:1]
+ttnc <- margin.table(Titanic, c(1, 4))
 par(mar = c(5, 4, 1, 1))
 spineplot(ttnc, col = sequential_hcl(2, "Purples 3"))
 ```
@@ -166,7 +167,7 @@ spineplot(ttnc, col = sequential_hcl(2, "Purples 3"))
 ## Usage with _ggplot2_
 
 To provide access to the HCL color palettes from within _ggplot2_ graphics suitable discrete and/or
-continuous _gglot2_ color scales are provided. The scales are named via the scheme
+continuous _ggplot2_ color scales are provided. The scales are named via the scheme
 `scale_<aesthetic>_<datatype>_<colorscale>()`, where `<aesthetic>` is the name
 of the aesthetic (`fill`, `color`, `colour`), `<datatype>` is the type of the
 variable plotted (`discrete` or `continuous`) and `<colorscale>` sets the type
@@ -263,5 +264,5 @@ using dark colors to give emphasis to higher elevations.
 
 The other two displays show that hue is constant in the palette while luminance and chroma vary.
 Luminance increases monotonically from dark to light (as required for a proper sequential palette).
-Chroma is triangular-shaped which allows to better distinguish the middle colors in the palette
+Chroma is triangular-shaped which allows the viewer to better distinguish the middle colors in the palette
 when compared to a monotonic chroma trajectory.

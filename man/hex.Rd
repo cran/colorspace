@@ -30,7 +30,7 @@ are either corrected to valid RGB values by translating the the individual
 primary values so that they lie between 0 and 255.
 }
 \examples{
-hsv <- HSV(seq(0, 360, length = 7)[-7], 1, 1)
+hsv <- HSV(seq(0, 360, length.out = 7)[-7], 1, 1)
 hsv
 hex(hsv)
 barplot(rep(1,6), col = hex(hsv))

@@ -5,8 +5,13 @@
 \alias{darken}
 \title{Algorithmically Lighten or Darken Colors}
 \usage{
-lighten(col, amount = 0.1, method = c("relative", "absolute"),
-  space = c("HCL", "HLS", "combined"), fixup = TRUE)
+lighten(
+  col,
+  amount = 0.1,
+  method = c("relative", "absolute"),
+  space = c("HCL", "HLS", "combined"),
+  fixup = TRUE
+)
 
 darken(col, amount = 0.1, space = "combined", ...)
 }
@@ -58,7 +63,7 @@ respectively.
 Regardless of the chosen color space, the adjustment of the L component can occur by two methods, relative
 (the default) and absolute. Under the absolute method, the adjustment is \code{L +/- 100 * amount} when
 lightening/darkening colors. Under the relative method, the adjustment is \code{100 - (100 - L) * (1 - amount)} when
-lightening colors and \code{L * (1 - amount)} when darkening colors.
+lightening colors and \code{L * (1 - amount)} when darkening colors. 
 
 Programmatically lightening and darkening colors can yield unexpected results (see examples). In HCL space,
 colors can become either too gray or overly colorful. By contrast, in HLS space it can happen that the
@@ -129,9 +134,9 @@ swatchplot(list(
 )
 }
 \references{
-Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+\emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{
 \code{\link[colorspace]{polarLUV}}, \code{\link[colorspace]{hex}}, \code{\link[colorspace]{desaturate}}

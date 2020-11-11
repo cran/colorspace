@@ -326,9 +326,10 @@ XYZ <-
 #' The \code{L}, \code{A} and \code{B} values give the coordinates of the
 #' colors in the CIE \eqn{L^*a^*b^*}{L*a*b*} space.  This is a transformation
 #' of the 1931 CIE XYZ space which attempts to produce perceptually based axes.
-#' Luminance takes values between 0 and 100, and the other coordinates take
-#' values between -100 and 100.  The \eqn{a} and \eqn{b} coordinates measure
-#' positions on green/red and blue/yellow axes.
+#' Luminance takes values between 0 and 100, and the other coordinates 
+#' typically take values between -100 and 100, although these values can also
+#' be exceeded by highly saturated colors. The \eqn{a} and \eqn{b} coordinates
+#' measure positions on green/red and blue/yellow axes.
 #' 
 #' @param L,A,B these arguments give the L, A and B coordinates of the colors.
 #' The values can be provided in separate \code{L}, \code{A} and \code{B}
@@ -421,10 +422,14 @@ polarLAB <-
 #' This function creates colors of class HSV; a subclass of the virtual
 #' \code{\link{color-class}} class.
 #' 
-#' This function creates colors in the HSV color space which corresponds to the
-#' standard sRGB color space (IEC standard 61966).  The hues should lie between
-#' between 0 and 360, and the saturations and values should lie between 0 and
-#' 1.
+#' This function creates colors in an HSV color space.  The hues should
+#' lie between between 0 and 360, and the saturations and values should
+#' lie between 0 and 1.
+#' 
+#' HSV is a relative color space; it is a transformation of an RGB color
+#' space.  Conversion of HSV colors to any other color space must first
+#' involve a conversion to a specific RGB color space, for example the
+#' standard \code{\link{sRGB}} color space (IEC standard 61966).
 #' 
 #' @param H,S,V These arguments give the hue, saturation and value of the
 #' colors. The values can be provided in separate \code{H}, \code{S} and
@@ -433,12 +438,12 @@ polarLAB <-
 #' \code{H} are used).
 #' @return An object of class \code{HSV} which inherits from class \code{color}.
 #' @author Ross Ihaka
-#' @seealso \code{\link{RGB}}, \code{\link{XYZ}}, \code{\link{LAB}},
+#' @seealso \code{\link{sRGB}}, \code{\link{RGB}}, \code{\link{XYZ}}, \code{\link{LAB}},
 #' \code{\link{polarLAB}}, \code{\link{LUV}}, \code{\link{polarLUV}}.
 #' @keywords color
 #' @examples
 #' # A rainbow of full-intensity hues
-#' HSV(seq(0, 360, length = 13)[-13], 1, 1)
+#' HSV(seq(0, 360, length.out = 13)[-13], 1, 1)
 #' @export HSV
 HSV <-
   function(H, S, V, names)
@@ -463,10 +468,14 @@ HSV <-
 #' This function creates colors of class HLS; a subclass of the virtual
 #' \code{\link{color-class}} class.
 #' 
-#' This function creates colors in the HLS color space which corresponds to the
-#' standard sRGB color space (IEC standard 61966).  The hues should lie between
-#' between 0 and 360, and the lightness and saturations should lie between 0
-#' and 1.
+#' This function creates colors in an HLS color space.  The hues should
+#' lie between between 0 and 360, and the lightness and saturations
+#' should lie between 0 and 1.
+#' 
+#' HLS is a relative color space; it is a transformation of an RGB color
+#' space.  Conversion of HLS colors to any other color space must first
+#' involve a conversion to a specific RGB color space, for example the
+#' standard \code{\link{sRGB}} color space (IEC standard 61966).
 #' 
 #' @param H,L,S These arguments give the hue, lightness, and saturation of the
 #' colors. The values can be provided in separate \code{H}, \code{L} and
@@ -475,12 +484,12 @@ HSV <-
 #' \code{H} are used).
 #' @return An object of class \code{HLS} which inherits from class \code{color}.
 #' @author Ross Ihaka
-#' @seealso \code{\link{RGB}}, \code{\link{XYZ}}, \code{\link{LAB}},
+#' @seealso \code{\link{sRGB}}, \code{\link{RGB}}, \code{\link{XYZ}}, \code{\link{LAB}},
 #' \code{\link{polarLAB}}, \code{\link{LUV}}, \code{\link{polarLUV}}.
 #' @keywords color
 #' @examples
 #' # A rainbow of full-intensity hues
-#' HLS(seq(0, 360, length = 13)[-13], 0.5, 1)
+#' HLS(seq(0, 360, length.out = 13)[-13], 0.5, 1)
 #' @export HLS
 HLS <-
   function(H, L, S, names)
@@ -508,8 +517,9 @@ HLS <-
 #' The \code{L}, \code{U} and \code{V} values give the coordinates of the
 #' colors in the CIE (1976) \eqn{L^*u^*v^*}{L*u*v*} space.  This is a
 #' transformation of the 1931 CIE XYZ space which attempts to produce
-#' perceptually based axes.  Luminance takes values between 0 and 100, and the
-#' other coordinates take values between -100 and 100.  The \eqn{a} and \eqn{b}
+#' perceptually based axes.  Luminance takes values between 0 and 100, and the other coordinates 
+#' typically take values between -100 and 100, although these values can also
+#' be exceeded by highly saturated colors. The \eqn{u} and \eqn{v}
 #' coordinates measure positions on green/red and blue/yellow axes.
 #' 
 #' @param L,U,V these arguments give the L, U and V coordinates of the colors.
@@ -553,8 +563,8 @@ LUV <-
 #' This function creates colors of class ``polarLUV''; a subclass of the
 #' virtual \code{\link{color-class}} class.
 #' 
-#' The polarLUV space is a transformation of the CIE \eqn{L^*u^*u^*}{L*u*u*}
-#' space so that the \eqn{u} and \eqn{u} values are converted to polar
+#' The polarLUV space is a transformation of the CIE \eqn{L^*u^*v^*}{L*u*v*}
+#' space so that the \eqn{u} and \eqn{v} values are converted to polar
 #' coordinates.  The radial component \eqn{C} measures chroma and the angular
 #' coordinate \eqn{H} is measures hue. It is also known as the HCL
 #' (hue-chroma-luminance) space.
@@ -666,7 +676,7 @@ setAs("color", "polarLUV", function(from)
 #' \code{\link{polarLAB}}, \code{\link{LUV}}, \code{\link{polarLUV}}.
 #' @keywords color
 #' @examples
-#' hsv <- HSV(seq(0, 360, length = 7)[-7], 1, 1)
+#' hsv <- HSV(seq(0, 360, length.out = 7)[-7], 1, 1)
 #' hsv
 #' hex(hsv)
 #' barplot(rep(1,6), col = hex(hsv))
@@ -804,7 +814,9 @@ readhex <-
 #' @examples
 #' set.seed(1)
 #' x <- RGB(runif(10), runif(10), runif(10))
-#' writehex(x, "random.txt")
+#' ## IGNORE_RDIFF_BEGIN
+#' writehex(x, file.path(tempdir(), "random.txt"))
+#' ## IGNORE_RDIFF_END
 #' @export writehex
 writehex <-
   function(x, file="")

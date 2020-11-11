@@ -4,10 +4,25 @@
 \alias{specplot}
 \title{Color Spectrum Plot}
 \usage{
-specplot(x, y = NULL, rgb = FALSE, hcl = TRUE, fix = TRUE,
-  cex = 1, type = "l", lwd = 2 * cex, lty = 1, pch = NULL,
-  mar = NULL, oma = NULL, main = NULL, legend = TRUE,
-  palette = TRUE, plot = TRUE, ...)
+specplot(
+  x,
+  y = NULL,
+  rgb = FALSE,
+  hcl = TRUE,
+  fix = TRUE,
+  cex = 1,
+  type = "l",
+  lwd = 2 * cex,
+  lty = 1,
+  pch = NULL,
+  mar = NULL,
+  oma = NULL,
+  main = NULL,
+  legend = TRUE,
+  palette = TRUE,
+  plot = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{character vector containing color hex codes.}
@@ -64,7 +79,17 @@ versa, the hue coordinates are shifted suitably.
 
 By default (\code{plot = TRUE}), the resulting HCL and optionally RGB coordinates are
 visualized by simple line plots along with the color palette \code{x}
-itself.
+itself. The x-axis simply gives the ordering of the colors in the palette
+The y-axis depicts the following information: (1) Hue is drawn in red and
+coordinates are indicated on the axis on the right with range [0, 360] or
+(if necessary) [-360, 360]. (2) Chroma is drawn in green with coordinates on
+the left axis. The range [0, 100] is used unless the palette necessitates
+higher chroma values. (3) Luminance is drawn in blue with coordinates on the
+left axis in the range [0, 100]. Luminance (and hence also chroma) is on
+the left axis because it is arguably most important for understanding the
+type of palette (qualitative vs. sequential vs. diverging). To facilitate
+reading the legend the reversed order Luminance / Chroma / Hue is used so that
+the legend labels are closer to the axis they pertain to.
 
 For comparing two palettes, \code{specplot(x, y)} can be used which adds
 lines (dashed, by default) corresponding to the \code{y} palette HCL/RGB
@@ -97,9 +122,9 @@ Visualizations.  \emph{Bulletin of the American Meteorological Society},
 \bold{96}(2), 203--216.
 \doi{10.1175/BAMS-D-13-00155.1}
 
-Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+\emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{
 \code{\link{hcl_palettes}}, \code{\link{hclplot}}

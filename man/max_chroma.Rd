@@ -38,8 +38,8 @@ still be very slightly larger than the actual maximum which can be avoided
 by taking the \code{floor} of the approximate value.
 }
 \examples{
-max_chroma(0:36 * 10, 50)
-max_chroma(120, 0:10 * 10)
+max_chroma(h = 0:36 * 10, l = 50)
+max_chroma(h = 120, l = 0:10 * 10)
 }
 \seealso{
 \code{\link[colorspace]{polarLUV}}, \code{\link[colorspace]{hex}}

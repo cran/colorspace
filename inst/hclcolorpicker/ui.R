@@ -19,9 +19,6 @@
 #  shiny::runApp(app)
 #}
 
-library("shiny")
-library("shinyjs")
-
 color_picker_sidebarPanel <- function() {
 
     # sidebar with controls to select the color
@@ -33,7 +30,7 @@ color_picker_sidebarPanel <- function() {
         shiny::sliderInput("L", "Luminance",
                            min = 0, max = 100, value = 60),
         shiny::splitLayout(
-            shiny::textInput("hexcolor", "RGB hex color", hex(polarLUV(60, 40, 60))),
+            shiny::textInput("hexcolor", "RGB hex color", colorspace::hex(colorspace::polarLUV(60, 40, 60))),
             shiny::div(class = 'form-group shiny-input-container',
               shiny::actionButton("set_hexcolor", "Set")
             ),
@@ -133,7 +130,7 @@ shiny::shinyUI(
            tags$link(rel = "stylesheet", type = "text/css", href = "hclcolorpicker.css"),
            tags$link(rel = "stylesheet", type = "text/css", href = "hclcolorpicker_darkmode.css")
         ),
-        useShinyjs(),
+        shinyjs::useShinyjs(),
         shiny::div(class = "version-info", shiny::htmlOutput("version_info")),
         shiny::sidebarLayout(
             # sidebar panel, defined above

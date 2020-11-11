@@ -11,28 +11,78 @@
 \alias{diverge_hcl}
 \title{HCL Color Palettes}
 \usage{
-hcl_palettes(type = NULL, palette = NULL, plot = FALSE, n = 5L,
-  ...)
+hcl_palettes(type = NULL, palette = NULL, plot = FALSE, n = 5L, ...)
 
 \method{print}{hcl_palettes}(x, ...)
 
 \method{summary}{hcl_palettes}(object, ...)
 
-\method{plot}{hcl_palettes}(x, n = 5L, fixup = TRUE, off = NULL,
-  border = NULL, ...)
+\method{plot}{hcl_palettes}(x, n = 5L, fixup = TRUE, off = NULL, border = NULL, ...)
 
-qualitative_hcl(n, h = c(0, 360 * (n - 1)/n), c = 80, l = 60,
-  fixup = TRUE, alpha = 1, palette = NULL, rev = FALSE,
-  register = "", ..., h1, h2, c1, l1)
+qualitative_hcl(
+  n,
+  h = c(0, 360 * (n - 1)/n),
+  c = 80,
+  l = 60,
+  fixup = TRUE,
+  alpha = 1,
+  palette = NULL,
+  rev = FALSE,
+  register = "",
+  ...,
+  h1,
+  h2,
+  c1,
+  l1
+)
 
-sequential_hcl(n, h = 260, c = 80, l = c(30, 90), power = 1.5,
-  gamma = NULL, fixup = TRUE, alpha = 1, palette = NULL,
-  rev = FALSE, register = "", ..., h1, h2, c1, c2, l1, l2, p1, p2,
-  cmax, c.)
+sequential_hcl(
+  n,
+  h = 260,
+  c = 80,
+  l = c(30, 90),
+  power = 1.5,
+  gamma = NULL,
+  fixup = TRUE,
+  alpha = 1,
+  palette = NULL,
+  rev = FALSE,
+  register = "",
+  ...,
+  h1,
+  h2,
+  c1,
+  c2,
+  l1,
+  l2,
+  p1,
+  p2,
+  cmax,
+  c.
+)
 
-diverging_hcl(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
-  gamma = NULL, fixup = TRUE, alpha = 1, palette = NULL,
-  rev = FALSE, register = "", ..., h1, h2, c1, l1, l2, p1, p2, cmax)
+diverging_hcl(
+  n,
+  h = c(260, 0),
+  c = 80,
+  l = c(30, 90),
+  power = 1.5,
+  gamma = NULL,
+  fixup = TRUE,
+  alpha = 1,
+  palette = NULL,
+  rev = FALSE,
+  register = "",
+  ...,
+  h1,
+  h2,
+  c1,
+  l1,
+  l2,
+  p1,
+  p2,
+  cmax
+)
 }
 \arguments{
 \item{type}{character indicating type of HCL palette.}
@@ -74,6 +124,15 @@ be increased (1 = linear, 2 = quadratic, etc.).}
 \item{gamma}{Deprecated.}
 
 \item{cmax}{Maximum chroma value in the HCL color description.}
+}
+\value{
+\code{qualitative_hcl}, \code{sequential_hcl}, \code{diverging_hcl} return
+a vector of \code{n} color strings (hex codes).
+
+The function \code{hcl_palettes} returns a data frame of class \code{"hcl_palettes"}
+where each row contains information about one of the requested palettes (name, type,
+HCL trajectory coordinates). Suitable \code{print}, \code{summary}, and \code{plot}
+methods are available.
 }
 \description{
 Qualitative, sequential (single-hue and multi-hue), and diverging
@@ -251,9 +310,9 @@ Visualizations.  \emph{Bulletin of the American Meteorological Society},
 \bold{96}(2), 203--216.
 \doi{10.1175/BAMS-D-13-00155.1}
 
-Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+\emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{
 \code{\link{divergingx_hcl}}

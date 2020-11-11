@@ -15,9 +15,6 @@
 #' @export
 #' @importFrom methods as
 
-library("shiny")
-library("shinyjs")
-
 ##options( shiny.trace = TRUE )
 
 shiny::shinyServer(function(input, output, session) {
@@ -45,7 +42,7 @@ shiny::shinyServer(function(input, output, session) {
     # ----------------------------------------------------------------
     shiny::observeEvent({input$HC_plot_click}, {
         # store the old colors
-        coords_old_LUV <- coords(as(polarLUV(as.numeric(input$L),
+        coords_old_LUV <- colorspace::coords(as(colorspace::polarLUV(as.numeric(input$L),
                                              as.numeric(input$C),
                                              as.numeric(input$H)), "LUV"))
         U    <- input$HC_plot_click$x
@@ -53,7 +50,7 @@ shiny::shinyServer(function(input, output, session) {
         V    <- input$HC_plot_click$y
         if (is.null(V)) V <- coords_old_LUV[3L]
         L    <- input$L
-        coords_HCL <- coords(as(LUV(L, U, V), "polarLUV"))
+        coords_HCL <- colorspace::coords(as(colorspace::LUV(L, U, V), "polarLUV"))
         shiny::updateSliderInput(session, "C", value = round(coords_HCL[2L]))
         shiny::updateSliderInput(session, "H", value = round(coords_HCL[3L]))
     })
@@ -82,8 +79,8 @@ shiny::shinyServer(function(input, output, session) {
         if ( length(picked_color_list$cl) == 0 ) return()
         if ( is.null(x) ) return()
         i <- ceiling(x * length(picked_color_list$cl))
-        col_RGB    <- hex2RGB(picked_color_list$cl[i])
-        coords_HCL <- coords(as(col_RGB, "polarLUV"))
+        col_RGB    <- colorspace::hex2RGB(picked_color_list$cl[i])
+        coords_HCL <- colorspace::coords(as(col_RGB, "polarLUV"))
         shiny::updateSliderInput(session, "L", value = round(coords_HCL[1L]))
         shiny::updateSliderInput(session, "C", value = round(coords_HCL[2L]))
         shiny::updateSliderInput(session, "H", value = round(coords_HCL[3L]))
@@ -121,8 +118,8 @@ shiny::shinyServer(function(input, output, session) {
     shiny::observeEvent({input$set_hexcolor}, {
       # only execute this on complete color hex codes
       if (grepl("^#[0123456789ABCDEFabcdef]{6}$", input$hexcolor)) {
-          col_RGB <- hex2RGB(input$hexcolor)
-          coords_HCL <- coords(as(col_RGB, "polarLUV"))
+          col_RGB <- colorspace::hex2RGB(input$hexcolor)
+          coords_HCL <- colorspace::coords(as(col_RGB, "polarLUV"))
           shiny::updateSliderInput(session, "L", value = round(coords_HCL[1L]))
           shiny::updateSliderInput(session, "C", value = round(coords_HCL[2L]))
           shiny::updateSliderInput(session, "H", value = round(coords_HCL[3L]))
@@ -135,7 +132,7 @@ shiny::shinyServer(function(input, output, session) {
     # ----------------------------------------------------------------
     shiny::observeEvent(input$color_picker, {
         # cannot rely on hex color in text-input field, so recalculate from set H, C, L values
-        hexcolor <- hex(polarLUV(as.numeric(input$L), as.numeric(input$C), as.numeric(input$H)))
+        hexcolor <- colorspace::hex(colorspace::polarLUV(as.numeric(input$L), as.numeric(input$C), as.numeric(input$H)))
         # only add color if it's not already in the list
         if ( ! is.na(hexcolor) && ! hexcolor %in% picked_color_list$cl) {
             picked_color_list$cl <- c(picked_color_list$cl, hexcolor)
@@ -169,7 +166,7 @@ shiny::shinyServer(function(input, output, session) {
     # ----------------------------------------------------------------
     shiny::observe({
         shiny::updateTextInput(session, "hexcolor",
-                               value = hex(polarLUV(as.numeric(input$L),
+                               value = colorspace::hex(colorspace::polarLUV(as.numeric(input$L),
                                                     as.numeric(input$C),
                                                     as.numeric(input$H))))
     })
@@ -179,7 +176,7 @@ shiny::shinyServer(function(input, output, session) {
     output$colorbox <- shiny::renderUI({
         shiny::tags$div(style=paste0("width: 100%; height: 40px; ",
                                      "border: 1px solid rgba(0, 0, 0, .2); background: ",
-                     hex(polarLUV(as.numeric(input$L),
+                     colorspace::hex(colorspace::polarLUV(as.numeric(input$L),
                                   as.numeric(input$C),
                                   as.numeric(input$H))), ";"))
     })
@@ -314,11 +311,11 @@ shiny::shinyServer(function(input, output, session) {
     getRGB <- function(int=FALSE) {
         colors <- picked_color_list$cl
         if ( int ) { scale = 255; digits = 0 } else { scale = 1; digits = 3 }
-        RGB <- round(attr(hex2RGB(colors), "coords")*scale, digits)
+        RGB <- round(attr(colorspace::hex2RGB(colors), "coords")*scale, digits)
         return(RGB)
     }
     getHCL <- function() {
-        HCL <- coords(as(hex2RGB(picked_color_list$cl), "polarLUV"))
+        HCL <- colorspace::coords(as(colorspace::hex2RGB(picked_color_list$cl), "polarLUV"))
         HCL <- round(HCL)[,c("H","C","L")]
         if ( is.null(nrow(HCL)) ) HCL <- as.matrix(t(HCL))
         return(HCL)
@@ -362,17 +359,17 @@ shiny::shinyServer(function(input, output, session) {
 
 color_picker_hue_chroma_plot <- function(L = 75, C = 20, H = 0, n = 200) {
 
-    Cmax  <- max(max_chroma(0:360, L))
+    Cmax  <- max(colorspace::max_chroma(0:360, L))
     Vmax  <- Cmax
     Umax  <- Cmax
     U     <- seq(-Umax, Umax, length.out = n)
     V     <- seq(Vmax, -Vmax, length.out = n)
     grid  <- expand.grid(U = U, V = V)
-    image <- matrix(hex(LUV(L, grid$U, grid$V)), nrow = n, byrow = TRUE)
+    image <- matrix(colorspace::hex(colorspace::LUV(L, grid$U, grid$V)), nrow = n, byrow = TRUE)
     grob  <- grid::rasterGrob(image)
 
-    sel_col <- polarLUV(L, C, H) # selected color in polar LUV
-    sel_pt  <- coords(as(sel_col, "LUV")) # coordinates of selected point in LUV
+    sel_col <- colorspace::polarLUV(L, C, H) # selected color in polar LUV
+    sel_pt  <- colorspace::coords(as(sel_col, "LUV")) # coordinates of selected point in LUV
     df_sel  <- data.frame(U = sel_pt[2L], V = sel_pt[3L])
 
     grid$hex <- as.vector(t(image))
@@ -387,7 +384,7 @@ color_picker_hue_chroma_plot <- function(L = 75, C = 20, H = 0, n = 200) {
     graphics::points(grid$V ~ grid$U, col = grid$hex, pch = 19)
 
     # Selected color
-    points(sel_pt[1,"V"] ~ sel_pt[1,"U"], cex = 2)
+    graphics::points(sel_pt[1,"V"] ~ sel_pt[1,"U"], cex = 2)
     sel_radius <- sqrt(sum(sel_pt[1, c("U", "V")]^2))
     graphics::lines(sin(seq(0, 2 * pi, length = 300)) * sel_radius,
                     cos(seq(0, 2 * pi, length = 300)) * sel_radius, col = "gray40")
@@ -405,10 +402,10 @@ color_picker_luminance_chroma_plot <- function(L = 75, C = 20, H = 0, n = 200) {
     grid    <- expand.grid(C = Cseq, L = Lseq)
     # Remove points with L == 0 & C > 0
     grid[which(grid$L == 0 & grid$C > 0),] <- NA
-    image   <- matrix(hex(polarLUV(grid$L, grid$C, H)), nrow = n, byrow = TRUE)
+    image   <- matrix(colorspace::hex(colorspace::polarLUV(grid$L, grid$C, H)), nrow = n, byrow = TRUE)
     grob    <- grid::rasterGrob(image, width = 1, height = 1)
 
-    sel_col <- polarLUV(L, C, H) # selected color in polar LUV
+    sel_col <- colorspace::polarLUV(L, C, H) # selected color in polar LUV
     df_sel  <- data.frame(C = C, L = L)
 
     grid$hex <- as.vector(t(image))
@@ -421,7 +418,7 @@ color_picker_luminance_chroma_plot <- function(L = 75, C = 20, H = 0, n = 200) {
     graphics::axis(side = 2, at = seq(limits$L[1L],limits$L[2L],by=25), col = NA, col.ticks = 1)
     graphics::points(grid$L ~ grid$C, col = grid$hex, pch = 19 )
     # Selected color
-    points(df_sel[1,"L"] ~ df_sel[1,"C"], cex = 2)
+    graphics::points(df_sel[1,"L"] ~ df_sel[1,"C"], cex = 2)
     # Box
     graphics::box(col = "gray40")
 
@@ -458,10 +455,10 @@ color_picker_C_gradient <- function(L = 75, C = 20, H = 0, n = 100) {
 
     Cmax    <- max(C + 5, 150)
     Cseq    <- seq(0, Cmax, length.out = n)
-    image   <- matrix(hex(polarLUV(L, Cseq, H)), nrow = 1, byrow = TRUE)
+    image   <- matrix(colorspace::hex(colorspace::polarLUV(L, Cseq, H)), nrow = 1, byrow = TRUE)
     grob    <- grid::rasterGrob(image, width = 1, height = 1)
 
-    sel_col <- hex(polarLUV(L, C, H))
+    sel_col <- colorspace::hex(colorspace::polarLUV(L, C, H))
     df_sel  <- data.frame(C = C, H = H, L = L, y = 0)
 
     # Craw color gradient/color bar
@@ -472,10 +469,10 @@ color_picker_C_gradient <- function(L = 75, C = 20, H = 0, n = 100) {
 color_picker_H_gradient <- function(L = 75, C = 20, H = 0, n = 100) {
 
     Hseq = seq(0, 360, length.out = n)
-    image <- matrix(hex(polarLUV(L, C, Hseq)), nrow = 1, byrow = TRUE)
+    image <- matrix(colorspace::hex(colorspace::polarLUV(L, C, Hseq)), nrow = 1, byrow = TRUE)
     grob <- grid::rasterGrob(image, width = 1, height = 1)
 
-    sel_col <- hex(polarLUV(L, C, H))
+    sel_col <- colorspace::hex(colorspace::polarLUV(L, C, H))
     df_sel <- data.frame(C = C, H = H, L = L, y = 0)
 
     # Craw color gradient/color bar
@@ -485,11 +482,11 @@ color_picker_H_gradient <- function(L = 75, C = 20, H = 0, n = 100) {
 color_picker_L_gradient <- function(L = 75, C = 20, H = 0, n = 100) {
 
     Lseq = seq(0, 100, length.out = n)
-    image <- matrix(hex(polarLUV(Lseq, C, H)), nrow = 1, byrow = TRUE)
+    image <- matrix(colorspace::hex(colorspace::polarLUV(Lseq, C, H)), nrow = 1, byrow = TRUE)
     if ( C > 0 ) image[1,1] <- "#ffffff"
     grob <- grid::rasterGrob(image, width = 1, height = 1)
 
-    sel_col <- hex(polarLUV(L, C, H))
+    sel_col <- colorspace::hex(colorspace::polarLUV(L, C, H))
     df_sel <- data.frame(C = C, H = H, L = L, y = 0)
 
     # Craw color gradient/color bar
@@ -508,9 +505,9 @@ pal_plot <- function(colors) {
     if ( n == 0 ) {
         text(0, 0.5, pos = 4, col = "#BFBEBD", "No colors selected")
     } else {
-        col      <- hex2RGB(colors)
+        col      <- colorspace::hex2RGB(colors)
         # Convert to HCL to define the text color
-        HCL <- as(hex2RGB(colors), "polarLUV")
+        HCL <- as(colorspace::hex2RGB(colors), "polarLUV")
         text_col <- cursor_color(HCL@coords[, 1L])
         # Calculate rectangle width/position
         if ( n == 1 ) {
@@ -545,7 +542,7 @@ generateExport <- function(output, colors) {
    # RAW
    # --------------------------
    # Generate RGB coordinates
-   sRGB <- hex2RGB(colors)
+   sRGB <- colorspace::hex2RGB(colors)
    RGB  <- attr( sRGB, "coords" )
    HCL  <- round(attr( as( sRGB, "polarLUV" ), "coords" ))
 
@@ -634,7 +631,7 @@ generateExport <- function(output, colors) {
    # -----------------------------
    # For Matlab
    # -----------------------------
-   RGB  <- attr(hex2RGB(colors),"coords")
+   RGB  <- attr(colorspace::hex2RGB(colors),"coords")
    mstr <- c()
    mstr <- append(mstr, "<div class=\"output-matlab\">")
    mstr <- append(mstr, "<comment>%% Define rgb matrix first (matrix size ncolors x 3)</comment>")

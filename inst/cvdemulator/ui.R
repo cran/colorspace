@@ -9,9 +9,6 @@
 # -------------------------------------------------------------------
 # - L@ST MODIFIED: 2018-10-08 18:57 on marvin
 # -------------------------------------------------------------------
-library("shiny")
-library("shinyjs")
-
 desc <- paste("Please select a file from your disc which you want",
               "to convert. Only PNG/JPG/JPEG files are allowed.",
               "Maximum allowed file size is 1 Megabyte.")
@@ -32,7 +29,7 @@ shiny::shinyUI(bootstrapPage(
         });
    });
    "),
-   useShinyjs(),
+   shinyjs::useShinyjs(),
 
    div(class = "version-info", htmlOutput("version_info")),
 

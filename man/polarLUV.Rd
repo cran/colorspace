@@ -23,8 +23,8 @@ This function creates colors of class ``polarLUV''; a subclass of the
 virtual \code{\link{color-class}} class.
 }
 \details{
-The polarLUV space is a transformation of the CIE \eqn{L^*u^*u^*}{L*u*u*}
-space so that the \eqn{u} and \eqn{u} values are converted to polar
+The polarLUV space is a transformation of the CIE \eqn{L^*u^*v^*}{L*u*v*}
+space so that the \eqn{u} and \eqn{v} values are converted to polar
 coordinates.  The radial component \eqn{C} measures chroma and the angular
 coordinate \eqn{H} is measures hue. It is also known as the HCL
 (hue-chroma-luminance) space.

@@ -31,10 +31,13 @@
 #' in the margin.
 #' @param cex,font numeric vectors of length 1 or 2. Specifications for the
 #' annotation text for the individual palettes and lists of palettes, respectively.
+#' @param cvd logical or character indicating whether color vision deficiencies
+#' should be emulated with \code{\link{desaturate}}, \code{\link{deutan}},
+#' \code{\link{protan}}, \code{\link{tritan}}.
 #' @return \code{swatchplot} invisibly returns a matrix with colors and annotations.
-#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 #' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+#' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 #' @keywords hplot
 #' @examples
 #' ## swatches of several palette vectors
@@ -53,10 +56,18 @@
 #'   "Multi-hue (advanced)"  = t(sapply(bprg,           sequential_hcl, n = 7)),
 #'   nrow = 5
 #' )
+#'
+#' ## swatches with color vision deficiency emulation
+#' swatchplot(sequential_hcl(7, "Viridis"), cvd = TRUE)
+#' swatchplot(
+#'   "YlGnBu"  = sequential_hcl(7, "YlGnBu"),
+#'   "Viridis" = sequential_hcl(7, "Viridis"),
+#'   cvd = c("deutan", "desaturate")
+#' )
 #' @export swatchplot
 #' @importFrom graphics rect mtext par plot
 swatchplot <- function(x, ..., nrow = 20, border = NULL, sborder = NULL, off = NULL,
-  mar = NULL, line = NULL, cex = NULL, font = 1:2)
+  mar = NULL, line = NULL, cex = NULL, font = 1:2, cvd = FALSE)
 {
   ## canonicalize specification to list of vectors/matrices
   x <- if(missing(x)) {
@@ -72,6 +83,28 @@ swatchplot <- function(x, ..., nrow = 20, border = NULL, sborder = NULL, off = N
   }
   if(!missing(...)) {
     x <- c(x, list(...))
+  }
+  
+  if(!identical(cvd, FALSE)) {
+    if(identical(cvd, TRUE)) cvd <- c("deutan", "protan", "tritan", "desaturate")
+    for(i in seq_along(cvd)) {
+      cvd[i] <- match.arg(tolower(cvd[i]), c("deutan", "deuteranope", "protanope", "tritanope", "desaturated"))
+      if(cvd[i] == "deutan") cvd[i] <- "deuteranope"
+    }
+    substr(cvd, 1L, 1L) <- toupper(substr(cvd, 1L, 1L))
+    cvd <- c("Original", cvd)
+    cvd_trafo <- function(y) {
+      y <- as.character(y)
+      y <- rbind(
+        "Original"    = y,
+	"Deuteranope" = deutan(y),
+	"Protanope"   = protan(y),
+	"Tritanope"   = tritan(y),
+	"Desaturated" = desaturate(y)
+      )
+      y <- y[cvd, , drop = FALSE]
+    }
+    x <- lapply(x, cvd_trafo)
   }
   
   ## expand to maximum number of palettes

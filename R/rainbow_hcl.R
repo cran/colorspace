@@ -153,7 +153,7 @@ diverging_hsv <- function(n, h = c(240, 0), s = 1, v = 1, power = 1,
     s <- s[1L]
     v <- v[1L]
     power <- power[1L]
-    rval <- seq(-s, s, length = n)
+    rval <- seq(-s, s, length.out = n)
     rval <- hex(as(HSV(H = ifelse(rval > 0, h[2L], h[1L]),
                        S = abs(rval)^power, V = v, ...), "RGB"),
                 fixup = fixup, ...)

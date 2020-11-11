@@ -6,19 +6,55 @@
 \alias{scale_fill_discrete_divergingx}
 \title{HCL-Based Discrete Flexible Diverging Scales for ggplot2}
 \usage{
-scale_colour_discrete_divergingx(palette = "Geyser", c1 = NULL,
-  c2 = NULL, c3 = NULL, l1 = NULL, l2 = NULL, l3 = NULL,
-  h1 = NULL, h2 = NULL, h3 = NULL, p1 = NULL, p2 = NULL,
-  p3 = NULL, p4 = NULL, cmax1 = NULL, cmax2 = NULL, alpha = 1,
-  rev = FALSE, nmax = NULL, order = NULL, aesthetics = "colour",
-  ...)
+scale_colour_discrete_divergingx(
+  palette = "Geyser",
+  c1 = NULL,
+  c2 = NULL,
+  c3 = NULL,
+  l1 = NULL,
+  l2 = NULL,
+  l3 = NULL,
+  h1 = NULL,
+  h2 = NULL,
+  h3 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  p3 = NULL,
+  p4 = NULL,
+  cmax1 = NULL,
+  cmax2 = NULL,
+  alpha = 1,
+  rev = FALSE,
+  nmax = NULL,
+  order = NULL,
+  aesthetics = "colour",
+  ...
+)
 
-scale_color_discrete_divergingx(palette = "Geyser", c1 = NULL,
-  c2 = NULL, c3 = NULL, l1 = NULL, l2 = NULL, l3 = NULL,
-  h1 = NULL, h2 = NULL, h3 = NULL, p1 = NULL, p2 = NULL,
-  p3 = NULL, p4 = NULL, cmax1 = NULL, cmax2 = NULL, alpha = 1,
-  rev = FALSE, nmax = NULL, order = NULL, aesthetics = "colour",
-  ...)
+scale_color_discrete_divergingx(
+  palette = "Geyser",
+  c1 = NULL,
+  c2 = NULL,
+  c3 = NULL,
+  l1 = NULL,
+  l2 = NULL,
+  l3 = NULL,
+  h1 = NULL,
+  h2 = NULL,
+  h3 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  p3 = NULL,
+  p4 = NULL,
+  cmax1 = NULL,
+  cmax2 = NULL,
+  alpha = 1,
+  rev = FALSE,
+  nmax = NULL,
+  order = NULL,
+  aesthetics = "colour",
+  ...
+)
 
 scale_fill_discrete_divergingx(..., aesthetics = "fill")
 }

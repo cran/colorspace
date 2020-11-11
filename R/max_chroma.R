@@ -22,8 +22,8 @@
 #' @seealso \code{\link[colorspace]{polarLUV}}, \code{\link[colorspace]{hex}}
 #' @keywords color
 #' @examples
-#' max_chroma(0:36 * 10, 50)
-#' max_chroma(120, 0:10 * 10)
+#' max_chroma(h = 0:36 * 10, l = 50)
+#' max_chroma(h = 120, l = 0:10 * 10)
 #' @export
 max_chroma <- function(h, l, floor = FALSE) {
   ## align h and l

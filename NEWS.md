@@ -1,3 +1,48 @@
+# colorspace 2.0-0
+
+* Release of version 2.0-0 accompanying the publication of the paper
+  "colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes"
+  in the _Journal of Statistcal Software_ at <https://doi.org/10.18637/jss.v096.i01>.
+  The paper is a compact version of the package web page
+  (<http://colorspace.R-Forge.R-project.org/>) including some more discussion
+  of related methods and software along with some more references to the
+  scientific literature.
+
+* New function `adjust_transparency()` that adjusts the alpha transparency
+  of some color specification and returns a hexadecimal string where
+  the alpha component is modified, added, or removed.
+
+* Added three more palettes from Fabio Crameri's scientific color maps
+  (_scico_), namely `"Hawaii"` and `"Batlow"` in `sequential_hcl()` and
+  `"Roma"` in `divergingx_hcl()`.
+
+* Additional option `cvd` in `swatchplot()` so that color vision deficiency
+  emulation can be included on the fly.
+
+* Added _binned_ _ggplot2_ color scales (in addition to _discrete_ and
+  _continuous_).
+
+* Changed the default colors in `specplot()` from `rainbow_hcl(3)` to
+  `qualitative_hcl(3)` which is darker and has more chroma. Also, the order
+  of the legend has been reversed (Luminance / Chroma / Hue) so that the
+  legend labels are closer to the axis that they pertain to.
+
+* Improve the documentation of the `LUV()` and `LAB()` color spaces,
+  pointing out that the `U`/`V` and `A`/`B` coordinates are _typically_
+  in [-100, 100] but can actually be exceeded by highly saturated colors.
+
+* Bug fix in `diverging_hcl()` and `divergingx_hcl()` where the central color
+  of the diverging palette could sometimes collapse to transparent white
+  due to numerical inaccuracies on 32-bit platforms.
+
+* Improve the documentation of the `HSV()` and `HLS()` color spaces.
+  These do NOT necessarily correspond to sRGB;  we can convert from
+  these to any RGB space that we choose (linear or non-linear, 
+  any whitepoint).  In particular, if we want to convert from one of
+  these color spaces to XYZ or beyond, we must first convert to a 
+  specific RGB color space.
+
+
 # colorspace 1.4-1
 
 * New article/vignette "Somewhere over the Rainbow" with published examples
@@ -32,7 +77,7 @@
 # colorspace 1.4-0
 
 * Major update of the package that enhances many of its capabilities,
-  e.g., more refined palettes, named palettes, ggplot2 color scales,
+  e.g., more refined palettes, named palettes, _ggplot2_ color scales,
   visualizations for assessing palettes, more and enhanced shiny and
   Tcl/Tk apps, color vision deficiency emulation, and much more. See
   below for further details. A new web site presenting and documenting

@@ -7,12 +7,9 @@
 # -------------------------------------------------------------------
 # - EDITORIAL:   2015-05-01, RS: Created file on thinkreto.
 # -------------------------------------------------------------------
-# - L@ST MODIFIED: 2019-01-13 11:36 on marvin
+# - L@ST MODIFIED: 2019-01-13 12:02 on marvin
 # -------------------------------------------------------------------
 
-
-library("shiny")
-library("shinyjs")
 
 # - Configuration
 ticks <- FALSE # to show ticks or not to show ticks
@@ -69,7 +66,7 @@ shinyUI(fluidPage(
            </script>")
        
    ),
-   useShinyjs(),
+   shinyjs::useShinyjs(),
    div(class = "version-info", htmlOutput("version_info")),
 
    # ----------------------------------------------------------------
@@ -261,7 +258,7 @@ shinyUI(fluidPage(
             textInput("P2val", label="POWER 2", width = NULL),
             actionButton("P2set","SET")
          )),
-         withTags(div(class = "hcl-slidervalue-compact", "P1"))
+         withTags(div(class = "hcl-slidervalue-compact", "P2"))
       )),
 
       # -------------------------------------------------------------
@@ -371,7 +368,7 @@ shinyUI(fluidPage(
                      tabPanel("Register",
                         includeHTML("html/Register.html"),
                         withTags(span(class = "registerpalette",
-                            textInput("registerpalettename", labe = NA, width = "200px"),
+                            textInput("registerpalettename", label = NULL, width = "200px"),
                             actionButton("registerpalettebutton","Register")
                         )),
                         includeHTML("html/RegisterRcode.html"),

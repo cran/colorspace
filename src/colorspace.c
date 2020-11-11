@@ -602,13 +602,6 @@ static void CheckWhite(SEXP white, double *Xn, double *Yn, double *Zn)
     }
 }
 
-static void CheckGamma(SEXP gamma, double *gammaval)
-{
-    *gammaval = asReal(gamma);
-    if (!R_FINITE(*gammaval) || *gammaval <= 0)
-	error("invalid gamma value");
-}
-
 static void CheckFixup(SEXP fixup, int *fixupval)
 {
     *fixupval = asLogical(fixup);

@@ -4,8 +4,19 @@
 \alias{swatchplot}
 \title{Palette Swatch Plot}
 \usage{
-swatchplot(x, ..., nrow = 20, border = NULL, sborder = NULL,
-  off = NULL, mar = NULL, line = NULL, cex = NULL, font = 1:2)
+swatchplot(
+  x,
+  ...,
+  nrow = 20,
+  border = NULL,
+  sborder = NULL,
+  off = NULL,
+  mar = NULL,
+  line = NULL,
+  cex = NULL,
+  font = 1:2,
+  cvd = FALSE
+)
 }
 \arguments{
 \item{x}{character vector/matrix (or list of character vectors/matrices)
@@ -37,6 +48,10 @@ in the margin.}
 
 \item{cex, font}{numeric vectors of length 1 or 2. Specifications for the
 annotation text for the individual palettes and lists of palettes, respectively.}
+
+\item{cvd}{logical or character indicating whether color vision deficiencies
+should be emulated with \code{\link{desaturate}}, \code{\link{deutan}},
+\code{\link{protan}}, \code{\link{tritan}}.}
 }
 \value{
 \code{swatchplot} invisibly returns a matrix with colors and annotations.
@@ -70,10 +85,18 @@ swatchplot(
   "Multi-hue (advanced)"  = t(sapply(bprg,           sequential_hcl, n = 7)),
   nrow = 5
 )
+
+## swatches with color vision deficiency emulation
+swatchplot(sequential_hcl(7, "Viridis"), cvd = TRUE)
+swatchplot(
+  "YlGnBu"  = sequential_hcl(7, "YlGnBu"),
+  "Viridis" = sequential_hcl(7, "Viridis"),
+  cvd = c("deutan", "desaturate")
+)
 }
 \references{
-Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+\emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \keyword{hplot}

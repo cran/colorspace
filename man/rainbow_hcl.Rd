@@ -8,17 +8,53 @@
 \alias{diverge_hsv}
 \title{HCL (and HSV) Color Palettes Corresponding to Base R Palettes}
 \usage{
-rainbow_hcl(n, c = 50, l = 70, start = 0, end = 360 * (n - 1)/n,
-  gamma = NULL, fixup = TRUE, alpha = 1, ...)
+rainbow_hcl(
+  n,
+  c = 50,
+  l = 70,
+  start = 0,
+  end = 360 * (n - 1)/n,
+  gamma = NULL,
+  fixup = TRUE,
+  alpha = 1,
+  ...
+)
 
-heat_hcl(n, h = c(0, 90), c. = c(100, 30), l = c(50, 90),
-  power = c(1/5, 1), gamma = NULL, fixup = TRUE, alpha = 1, ...)
+heat_hcl(
+  n,
+  h = c(0, 90),
+  c. = c(100, 30),
+  l = c(50, 90),
+  power = c(1/5, 1),
+  gamma = NULL,
+  fixup = TRUE,
+  alpha = 1,
+  ...
+)
 
-terrain_hcl(n, h = c(130, 0), c. = c(80, 0), l = c(60, 95),
-  power = c(1/10, 1), gamma = NULL, fixup = TRUE, alpha = 1, ...)
+terrain_hcl(
+  n,
+  h = c(130, 0),
+  c. = c(80, 0),
+  l = c(60, 95),
+  power = c(1/10, 1),
+  gamma = NULL,
+  fixup = TRUE,
+  alpha = 1,
+  ...
+)
 
-diverging_hsv(n, h = c(240, 0), s = 1, v = 1, power = 1,
-  gamma = NULL, fixup = TRUE, alpha = 1, ...)
+diverging_hsv(
+  n,
+  h = c(240, 0),
+  s = 1,
+  v = 1,
+  power = 1,
+  gamma = NULL,
+  fixup = TRUE,
+  alpha = 1,
+  ...
+)
 }
 \arguments{
 \item{n}{the number of colors (\eqn{\ge 1}{>= 1}) to be in the palette.}

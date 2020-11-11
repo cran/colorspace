@@ -10,9 +10,6 @@
 # - L@ST MODIFIED: 2019-01-13 10:05 on marvin
 # -------------------------------------------------------------------
 
-library("shiny")
-library("colorspace")
-
 #options( shiny.trace = TRUE )
 
 bpy <- eval(parse(text = "colorspace:::bpy"))
@@ -42,7 +39,7 @@ shinyServer(function(input, output, session) {
    # Package version information
    # ----------------------------------------------------------------
    output$version_info <- shiny::renderText(sprintf("<a href=\"%s\">R colorspace %s</a>",
-                                            "https://cran.r-project.org/package=colorspace",
+                                            "https://CRAN.R-project.org/package=colorspace",
                                             packageVersion("colorspace")))
 
    # ----------------------------------------------------------------
@@ -80,7 +77,7 @@ shinyServer(function(input, output, session) {
           shinyjs::enable("registerpalettename")
       }
       for ( i in which(palettes$typ == input$typ) )
-         x[[sprintf("%s",rownames(palettes)[i])]] <- rownames(palettes)[i]
+         x[[sprintf("%s", rownames(palettes)[i])]] <- rownames(palettes)[i]
       updateSelectInput(session, "PAL", choices = x)
    })
 
@@ -159,10 +156,10 @@ shinyServer(function(input, output, session) {
    # When the user changes one of the values
    # ----------------------------------------------------------------
    setValueByUser <- function(elem) {
-      value = eval(parse(text = sprintf("input$%sval",elem)))
+      value = eval(parse(text = sprintf("input$%sval", elem)))
       if ( nchar(value) > 0 ) {
          updateSliderInput(session,elem,value = value)
-         updateTextInput(session, sprintf("%sval",elem), value = "")
+         updateTextInput(session, sprintf("%sval", elem), value = "")
       }
    }
    observeEvent(input$H1set,      { setValueByUser("H1")     })
@@ -202,7 +199,8 @@ shinyServer(function(input, output, session) {
          # Avoids running into shiny errors when the palette
          # switches faster than the type.
          if ( ! exists(input$PAL) ) return(NULL)
-         pal <- eval(parse(text = input$PAL))
+         base_pal <- eval(parse(text = input$PAL))
+	 pal <- function(..., fixup = FALSE) if(input$reverse) rev(base_pal(...)) else base_pal(...)
       } else {
          # Set elements of curPAL to "NA" for those elements which are 
          # NA in the palettes (palette config). Same is used to hide
@@ -226,11 +224,16 @@ shinyServer(function(input, output, session) {
       # If fun is set to FALSE: return values
       if ( ! fun ) {
          # Remove alpha (base color maps)
-         colors <- substr(pal(curPAL$N, fixup = input$fixup),0,7)
+         colors <- substr(pal(curPAL$N, fixup = input$fixup), 0, 7)
          # Add desaturation or constraints
-         if ( input$desaturate ) colors <- desaturate(colors)
-         if ( any(tolower(input$constraint) %in% c("protan","deutan","tritan")) )
-            colors <- do.call(tolower(input$constraint),list("col" = colors))
+         if ( input$desaturate ) colors <- colorspace::desaturate(colors)
+         if ( any(tolower(input$constraint) %in% c("protan", "deutan", "tritan")) ) {
+	    cvdfun <- switch(tolower(input$constraint),
+	      "protan" = colorspace::protan,
+	      "deutan" = colorspace::deutan,
+	      "tritan" = colorspace::tritan)
+            colors <- do.call(cvdfun, list("col" = colors))
+         }
          # Reverse if required
          #if ( input$reverse ) colors <- rev(colors)
          return(colors)
@@ -284,7 +287,7 @@ shinyServer(function(input, output, session) {
       colors <- getColors(100)
       fn <- sprintf(paste("fn <- function(colors, ...) {\n",
                           "   par(bg = \"%1$s\", fg = \"%2$s\", col.axis = \"%2$s\")\n",
-                          "   specplot(colors, cex = 1.4, plot = TRUE, rgb = TRUE, ...)\n",
+                          "   colorspace::specplot(colors, cex = 1.4, plot = TRUE, rgb = TRUE, ...)\n",
                           "}"),
                           ifelse(input$darkmode, "black", "white"), # background
                           ifelse(input$darkmode, "white", "black")) # foreground, col.axis
@@ -314,7 +317,7 @@ shinyServer(function(input, output, session) {
       }
       fn <- sprintf(paste("fn <- function(colors, type, ...) {\n",
                           "   par(bg = \"%1$s\", fg = \"%2$s\", col.axis = \"%2$s\")\n",
-                          "   hclplot(colors, type = type, cex = 1.4, ...)\n",
+                          "   colorspace::hclplot(colors, type = type, cex = 1.4, ...)\n",
                           "}"),
                           ifelse(input$darkmode, "black", "white"), # background
                           ifelse(input$darkmode, "white", "black")) # foreground, col.axis
@@ -331,7 +334,7 @@ shinyServer(function(input, output, session) {
       if ( nchar(input$EXAMPLE) > 0 ) {
           fn <- sprintf(paste("fn <- function(x, type, ...) {\n",
                               "   par(bg = \"%1$s\", fg = \"%2$s\", col.axis = \"%2$s\")\n",
-                              "   demoplot(x, type, ...)\n",
+                              "   colorspace::demoplot(x, type, ...)\n",
                               "}"),
                               ifelse(input$darkmode, "black", "white"), # background
                               ifelse(input$darkmode, "white", "black")) # foreground, col.axis
@@ -424,13 +427,13 @@ shinyServer(function(input, output, session) {
       # If visual constraints are selected: add wrapping function
       if ( nchar(register) == 0 ) {
           if ( input$desaturate )
-              result <- sprintf("desaturate(%s)", result)
+              result <- sprintf("colorspace::desaturate(%s)", result)
           if ( input$constraint == "Deutan" ) {
-              result <- sprintf("deutan(%s)", result)
+              result <- sprintf("colorspace::deutan(%s)", result)
           } else if ( input$constraint == "Protan" ) {
-              result <- sprintf("protan(%s)", result)
+              result <- sprintf("colorspace::protan(%s)", result)
           } else if ( input$constraint == "Tritan" ) {
-              result <- sprintf("tritan(%s)", result)
+              result <- sprintf("colorspace::tritan(%s)", result)
           }
       }
 
@@ -455,7 +458,7 @@ shinyServer(function(input, output, session) {
       # RAW
       # --------------------------
       # Generate RGB coordinates
-      sRGB <- hex2RGB(colors)
+      sRGB <- colorspace::hex2RGB(colors)
       RGB  <- attr( sRGB, "coords" )
       HCL  <- round(attr( as( sRGB, "polarLUV" ), "coords" ))
 
@@ -551,7 +554,7 @@ shinyServer(function(input, output, session) {
       # -----------------------------
       # For Matlab
       # -----------------------------
-      RGB  <- attr(hex2RGB(colors),"coords")
+      RGB  <- attr(colorspace::hex2RGB(colors), "coords")
       mstr <- c()
       mstr <- append(mstr, "<div class=\"output-matlab\">")
       mstr <- append(mstr, "<comment>%% Define rgb matrix first (matrix size ncolors x 3)</comment>")
@@ -606,7 +609,7 @@ shinyServer(function(input, output, session) {
        NAidx  <- which(is.na(colors))
        if (length(NAidx) > 0) colors[NAidx] <- "#FFFFFF"
        if (int) { scale = 255; digits = 0 } else { scale = 1; digits = 3 }
-       RGB <- round(attr(hex2RGB(colors), "coords")*scale, digits)
+       RGB <- round(attr(colorspace::hex2RGB(colors), "coords") * scale, digits)
        if (length(NAidx) > 0) RGB[NAidx,] <- NA
        return(RGB)
    }
@@ -614,7 +617,7 @@ shinyServer(function(input, output, session) {
        colors <- getColors()
        NAidx  <- which(is.na(colors))
        if (length(NAidx) > 0) colors[NAidx] <- "#FFFFFF"
-       HCL <- coords(as(hex2RGB(colors), "polarLUV"))
+       HCL <- colorspace::coords(as(colorspace::hex2RGB(colors), "polarLUV"))
        if (length(NAidx) > 0) HCL[NAidx,] <- NA
        return(round(HCL)[,c("H","C","L")])
    }

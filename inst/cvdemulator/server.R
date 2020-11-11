@@ -11,12 +11,6 @@
 # -------------------------------------------------------------------
 
 
-library("shiny")
-library("colorspace")
-library("png")  # Processing png images
-library("jpeg") # Processing jpeg images
-library("RCurl")
-
 # Check if we are on a shiny server (e.g., my uberspace account) or not.
 isUberspace <- function() {
     if ( Sys.getenv('SHINY_PORT') == "" ) { return(FALSE) } else { return(TRUE) }
@@ -29,12 +23,12 @@ if ( ! isUberspace() ) {
 }
 
 # Define server logic to read selected file ----
-shinyServer(function(input, output, session) {
+shiny::shinyServer(function(input, output, session) {
 
 
-   values <- reactiveValues(emulated = NULL)
+   values <- shiny::reactiveValues(emulated = NULL)
 
-   output$file_info <- renderText(paste("Select an image from your local",
+   output$file_info <- shiny::renderText(paste("Select an image from your local",
             "disc (PNG/JPG/JPEG) for which the color vision deficiency",
             "should be emulated. Please note that the file size is limited",
             sprintf("to %.1f Megabyte.", getOption("shiny.maxRequestSize") / 1024^2)))
@@ -42,11 +36,11 @@ shinyServer(function(input, output, session) {
    # ----------------------------------------------------------------
    # Package version information
    # ----------------------------------------------------------------
-   output$version_info <- renderText(sprintf("<a href=\"%s\">R colorspace %s</a>",
-                                     "https://cran.r-project.org/package=colorspace",
+   output$version_info <- shiny::renderText(sprintf("<a href=\"%s\">R colorspace %s</a>",
+                                     "https://CRAN.R-project.org/package=colorspace",
                                      packageVersion("colorspace")))
-   output$filebox <- renderUI({
-      fileInput("file", label=h2("Upload Image"),
+   output$filebox <- shiny::renderUI({
+      shiny::fileInput("file", label=h2("Upload Image"),
                 multiple = FALSE, width = "100%",
                 accept = c("image/png","image/jpeg"))
    })
@@ -54,7 +48,7 @@ shinyServer(function(input, output, session) {
    # ----------------------------------------------------------------
    # Dark mode on/off
    # ----------------------------------------------------------------
-   observeEvent(input$darkmode, {
+   shiny::observeEvent(input$darkmode, {
       if ( ! input$darkmode ) {
          shinyjs::removeClass(selector = "body", class = "darkmode")
       } else {
@@ -65,8 +59,8 @@ shinyServer(function(input, output, session) {
    # ----------------------------------------------------------------
    # Status observer
    # ----------------------------------------------------------------
-   observe({
-      output$status <- renderText({paste("Please upload an image first.",
+   shiny::observe({
+      output$status <- shiny::renderText({paste("Please upload an image first.",
          "After uploading the conversion needs few seconds, so please be patient!")})
       for ( type in c("orig","desaturate","deutan","protan","tritan") ) showInit(type,output)
    })
@@ -75,7 +69,7 @@ shinyServer(function(input, output, session) {
    # ----------------------------------------------------------------
    # Keyboard key bindings
    # ----------------------------------------------------------------
-   observe({
+   shiny::observe({
        if ( is.null(input$key_pressed) ) return()
        # Switch a/s/d/f/g
        if        ( input$key_pressed == 65 ) { # a
@@ -92,24 +86,24 @@ shinyServer(function(input, output, session) {
            selected = "All"
        } else { return() }
 
-       updateTabsetPanel(session, "maintabs", selected = selected)
+       shiny::updateTabsetPanel(session, "maintabs", selected = selected)
    })
 
-   observe({ if ( !is.null(input$file) ) values$emulated <- NULL })
+   shiny::observe({ if ( !is.null(input$file) ) values$emulated <- NULL })
 
    # ----------------------------------------------------------------
    # File observer: does basically everything
    # ----------------------------------------------------------------
-   observe({
+   shiny::observe({
 
        if ( !is.null(values$emulated) ) return(FALSE)
 
       # Info
       if ( ! is.null(input$file) ) {
-         output$status <- renderText({"File uploaded, starting conversion ..."})
-         updateTabsetPanel(session, "maintabs", selected = "Original")
-         output$filebox <- renderUI({
-             fileInput("file", label=h2("Upload Image"),
+         output$status <- shiny::renderText({"File uploaded, starting conversion ..."})
+         shiny::updateTabsetPanel(session, "maintabs", selected = "Original")
+         output$filebox <- shiny::renderUI({
+             shiny::fileInput("file", label=h2("Upload Image"),
                        multiple = FALSE, width = "100%",
                        accept = c("image/png","image/jpeg"))
          })
@@ -121,7 +115,7 @@ shinyServer(function(input, output, session) {
       # Is a data.frame containing one row (multiple file upload
       # is not allowed),
       # Columns: name, size, type (mime), datapath (temporary file location)
-      req(input$file)
+      shiny::req(input$file)
 
       ## Identify file type (file suffix)
       file     <- input$file$datapath[1]
@@ -131,9 +125,9 @@ shinyServer(function(input, output, session) {
       # If is either png or jpeg: go ahead
       if ( is_img$png | is_img$jpg ) { 
          if ( is_img$png ) {
-            img <- try( readPNG( file ) )
+            img <- try(png::readPNG(file))
          } else {
-            img <- try( readJPEG( file ) )
+            img <- try(jpeg::readJPEG(file))
          }
 
          # Broken image or no PNG/JPEG
@@ -141,7 +135,7 @@ shinyServer(function(input, output, session) {
             tmp <- paste("Sorry, image could not have been read. Seems that the file you",
                "uploaded was no png/jpg/jpeg file or a broken file. Please check your file",
                "and try again!")
-            output$status <- renderText({tmp})
+            output$status <- shiny::renderText({tmp})
             return(FALSE)
          }
 
@@ -158,14 +152,14 @@ shinyServer(function(input, output, session) {
          # Delete uploaded file
          file.remove( file )
          rm(list=c("img","is_img","file","filename"))
-         output$status <- renderText({"Image successfully converted."})
+         output$status <- shiny::renderText({"Image successfully converted."})
          values$emulated <- TRUE
 
          return(TRUE)
       } else {
          tmp <- paste("Uploaded image has had unknown file name extension!",
                   "Please upload png, jpg or jpeg (not case sensitive).")
-         output$status <- renderText({tmp})
+         output$status <- shiny::renderText({tmp})
          return(FALSE)
       }
    })
@@ -208,19 +202,19 @@ show <- function(img, type, output, severity = 1.0) {
    }
 
    # Base64-encode file
-   txt <- base64Encode(readBin(tmp, "raw", file.info(tmp)[1, "size"]), "txt")
+   txt <- RCurl::base64Encode(readBin(tmp, "raw", file.info(tmp)[1, "size"]), "txt")
    # Create inline image, save & open html file in browser 
    html <- sprintf('data:image/png;base64,%s', txt)
    # Rendering images
-   output[[sprintf("image%s",type)]]     <- renderUI({ img(src = html) })
-   output[[sprintf("all_image%s",type)]] <- renderUI({ img(src = html) })
+   output[[sprintf("image%s",type)]]     <- shiny::renderUI({ img(src = html) })
+   output[[sprintf("all_image%s",type)]] <- shiny::renderUI({ img(src = html) })
    # Delete temporary file
    if ( rm ) file.remove(tmp)
 }
 
 # Show images when loading the app (included in www/images)
 showInit <- function( type, output ) {
-   output[[sprintf("image%s",type)]]     <- renderUI({img(src = sprintf("images/rainbow_%s.png",type))})
-   output[[sprintf("all_image%s",type)]] <- renderUI({img(src = sprintf("images/rainbow_%s.png",type))})
+   output[[sprintf("image%s",type)]]     <- shiny::renderUI({img(src = sprintf("images/rainbow_%s.png",type))})
+   output[[sprintf("all_image%s",type)]] <- shiny::renderUI({img(src = sprintf("images/rainbow_%s.png",type))})
 }
 

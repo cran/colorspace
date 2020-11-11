@@ -25,8 +25,9 @@ This function creates colors of class ``LUV''; a subclass of the virtual
 The \code{L}, \code{U} and \code{V} values give the coordinates of the
 colors in the CIE (1976) \eqn{L^*u^*v^*}{L*u*v*} space.  This is a
 transformation of the 1931 CIE XYZ space which attempts to produce
-perceptually based axes.  Luminance takes values between 0 and 100, and the
-other coordinates take values between -100 and 100.  The \eqn{a} and \eqn{b}
+perceptually based axes.  Luminance takes values between 0 and 100, and the other coordinates 
+typically take values between -100 and 100, although these values can also
+be exceeded by highly saturated colors. The \eqn{u} and \eqn{v}
 coordinates measure positions on green/red and blue/yellow axes.
 }
 \examples{

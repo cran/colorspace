@@ -6,17 +6,49 @@
 \alias{scale_fill_continuous_sequential}
 \title{HCL-Based Continuous Sequential Color Scales for ggplot2}
 \usage{
-scale_colour_continuous_sequential(palette = NULL, c1 = NULL,
-  c2 = NULL, cmax = NULL, l1 = NULL, l2 = NULL, h1 = NULL,
-  h2 = NULL, p1 = NULL, p2 = NULL, rev = TRUE, begin = 0,
-  end = 1, na.value = "grey50", guide = "colourbar",
-  aesthetics = "colour", n_interp = 11, ...)
+scale_colour_continuous_sequential(
+  palette = NULL,
+  c1 = NULL,
+  c2 = NULL,
+  cmax = NULL,
+  l1 = NULL,
+  l2 = NULL,
+  h1 = NULL,
+  h2 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  alpha = 1,
+  rev = TRUE,
+  begin = 0,
+  end = 1,
+  na.value = "grey50",
+  guide = "colourbar",
+  aesthetics = "colour",
+  n_interp = 11,
+  ...
+)
 
-scale_color_continuous_sequential(palette = NULL, c1 = NULL,
-  c2 = NULL, cmax = NULL, l1 = NULL, l2 = NULL, h1 = NULL,
-  h2 = NULL, p1 = NULL, p2 = NULL, rev = TRUE, begin = 0,
-  end = 1, na.value = "grey50", guide = "colourbar",
-  aesthetics = "colour", n_interp = 11, ...)
+scale_color_continuous_sequential(
+  palette = NULL,
+  c1 = NULL,
+  c2 = NULL,
+  cmax = NULL,
+  l1 = NULL,
+  l2 = NULL,
+  h1 = NULL,
+  h2 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  alpha = 1,
+  rev = TRUE,
+  begin = 0,
+  end = 1,
+  na.value = "grey50",
+  guide = "colourbar",
+  aesthetics = "colour",
+  n_interp = 11,
+  ...
+)
 
 scale_fill_continuous_sequential(..., aesthetics = "fill")
 }
@@ -40,6 +72,8 @@ scale_fill_continuous_sequential(..., aesthetics = "fill")
 \item{p1}{Control parameter determining how chroma should vary (1 = linear, 2 = quadratic, etc.).}
 
 \item{p2}{Control parameter determining how luminance should vary (1 = linear, 2 = quadratic, etc.).}
+
+\item{alpha}{Numeric vector of values in the range \code{[0, 1]} for alpha transparency channel (0 means transparent and 1 means opaque).}
 
 \item{rev}{If \code{TRUE} (default), reverses the order of the colors in the color scale (compared to \code{\link{sequential_hcl}}).}
 

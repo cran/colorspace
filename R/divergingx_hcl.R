@@ -15,9 +15,9 @@
 #' between the two arms.
 #'
 #' With this additional flexibility various diverging palettes suggested by
-#' \url{http://ColorBrewer.org/} and CARTO (\url{https://carto.com/carto-colors/}),
-#' can be emulated along with the Zissou 1 palette from \pkg{wesanderson} and
-#' Cividis from \pkg{viridis}.
+#' \url{https://ColorBrewer2.org/} and CARTO (\url{https://carto.com/carto-colors/}),
+#' can be emulated along with the Zissou 1 palette from \pkg{wesanderson},
+#' Cividis from \pkg{viridis}, and Roma from \pkg{scico}.
 #'
 #' Available CARTO palettes: ArmyRose, Earth, Fall, Geyser, TealRose, Temps, and
 #' Tropic (with Tropic also available in \code{diverging_hcl}).
@@ -51,9 +51,9 @@
 #'
 #' @return A character vector with (s)RGB codings of the colors in the palette.
 #' @seealso \code{\link[colorspace]{sequential_hcl}}, \code{\link[colorspace]{diverging_hcl}}
-#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 #' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+#' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 #' @keywords color
 #' @examples
 #' ## show emulated CARTO/ColorBrewer.org palettes
@@ -109,7 +109,7 @@ divergingx_hcl <- function(n, palette = "Geyser", ...,
 
     ## call sequential_hcl() once or twice
     n2 <- ceiling(n/2)    
-    rval <- seq.int(1, by = -2/(n - 1), length.out = n2)
+    rval <- pmax(0, seq.int(1, by = -2/(n - 1), length.out = n2))
     rval <- c(seqhcl(rval, pals["h1"], if(is.na(pals["h2"])) pals["h1"] else pals["h2"], pals["c1"], pals["c2"],
                      pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax1"], fixup, ...),
     	  rev(seqhcl(rval, pals["h3"], if(is.na(pals["h2"])) pals["h3"] else pals["h2"], pals["c3"], pals["c2"],
@@ -195,3 +195,6 @@ divex_pals[["Zissou 1"]] <- c(218,  71,  12,  46,  88, 165,  59,  82,  52, 0.2, 
 
 ## Cividis
 divex_pals[["Cividis"]]  <- c(255,  NA,  75,  30,   0,  95,  13,  52,  92, 1.1, 1.0, 1.0,  NA,  47, NA)
+
+## scico
+divex_pals[["Roma"]]     <- c( 10, 120, 265,  80,  25,  80,  25,  92,  25, 0.4, 1.5, 1.0, 1.2,  NA, NA)

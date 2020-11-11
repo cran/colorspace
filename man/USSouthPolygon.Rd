@@ -5,9 +5,11 @@
 \alias{USSouthPolygon}
 \title{Polygon for County Map of US South States: Alabama, Georgia, and South
 Carolina}
-\format{A data frame with coordinates of the vertices of the county polygons
+\format{
+A data frame with coordinates of the vertices of the county polygons
 (\code{x}, \code{y}) and an artificial variable \code{z} constructed for
-illustrating colored maps.}
+illustrating colored maps.
+}
 \source{
 Polygon data taken from \pkg{maps} package of Becker, Wilks,
 Brownrigg, and Minka (2012). Version 2.2-6.

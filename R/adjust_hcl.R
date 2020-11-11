@@ -182,8 +182,8 @@ if ( FALSE ) {
    # ----------------------------------------------------------------
    multiverge_hcl <- function(n,h=c(10,100,230,290),l=60,lmax=90,fixup=FALSE) {
 
-      C <- seq(0,min(max_chroma(h,l)),length=n)
-      L <- seq(lmax,l,length=n)
+      C <- seq(0, min(max_chroma(h,l)), length.out = n)
+      L <- seq(lmax, l, length.out = n)
       cols <- matrix("NA",ncol=length(h),nrow=n)
       for ( i in 1:ncol(cols) ) {
          cols[,i] <- hex(polarLUV(H=h[i],C=C,L=L),fixup)

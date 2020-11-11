@@ -1,6 +1,6 @@
 
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
+Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -38,7 +38,7 @@ Type 'q()' to quit R.
 > ### ** Examples
 > 
 > # A rainbow of full-intensity hues
-> HLS(seq(0, 360, length = 13)[-13], 0.5, 1)
+> HLS(seq(0, 360, length.out = 13)[-13], 0.5, 1)
         H   L S
  [1,]   0 0.5 1
  [2,]  30 0.5 1
@@ -69,7 +69,7 @@ Type 'q()' to quit R.
 > ### ** Examples
 > 
 > # A rainbow of full-intensity hues
-> HSV(seq(0, 360, length = 13)[-13], 1, 1)
+> HSV(seq(0, 360, length.out = 13)[-13], 1, 1)
         H S V
  [1,]   0 1 1
  [2,]  30 1 1
@@ -222,6 +222,43 @@ Type 'q()' to quit R.
 > XYZ(95.047, 100.000, 108.883)
           X   Y       Z
 [1,] 95.047 100 108.883
+> 
+> 
+> 
+> cleanEx()
+> nameEx("adjust_transparency")
+> ### * adjust_transparency
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: adjust_transparency
+> ### Title: Adjust Transparency of Colors
+> ### Aliases: adjust_transparency
+> ### Keywords: color
+> 
+> ### ** Examples
+> 
+> ## modify transparency of a color (in different formats)
+> adjust_transparency("black",   alpha = c(0, 0.5, 1)) ## name
+[1] "#00000000" "#00000080" "#000000FF"
+> adjust_transparency("#000000", alpha = c(0, 0.5, 1)) ## hex string
+[1] "#00000000" "#00000080" "#000000FF"
+> adjust_transparency(1,         alpha = c(0, 0.5, 1)) ## palette() integer
+[1] "#00000000" "#00000080" "#000000FF"
+> 
+> ## three shades of gray (in different formats:
+> ## name/opaque, hex/opaque, hex/semi-transparent)
+> x <- c("gray", "#BEBEBE", "#BEBEBE80")
+> 
+> ## adjust transparency
+> adjust_transparency(x, alpha = NULL)  ## only if necessary
+[1] "#BEBEBE"   "#BEBEBE"   "#BEBEBE80"
+> adjust_transparency(x, alpha = TRUE)  ## add
+[1] "#BEBEBEFF" "#BEBEBEFF" "#BEBEBE80"
+> adjust_transparency(x, alpha = FALSE) ## remove
+[1] "#BEBEBE" "#BEBEBE" "#BEBEBE"
+> adjust_transparency(x, alpha = 0.8)   ## modify
+[1] "#BEBEBECC" "#BEBEBECC" "#BEBEBECC"
 > 
 > 
 > 
@@ -472,7 +509,7 @@ Names: Purple-Blue, Red-Purple, Red-Blue, Purple-Orange, Purple-Yellow,
        BurgYl, RedOr, OrYel, Purp, PurpOr, Sunset, Magenta, SunsetDark,
        ag_Sunset, BrwnYl, YlOrRd, YlOrBr, OrRd, Oranges, YlGn, YlGnBu,
        Reds, RdPu, PuRd, Purples, PuBuGn, PuBu, Greens, BuGn, GnBu,
-       BuPu, Blues, Lajolla, Turku
+       BuPu, Blues, Lajolla, Turku, Hawaii, Batlow
 
 Type:  Diverging 
 Names: Blue-Red, Blue-Red 2, Blue-Red 3, Red-Green, Purple-Green,
@@ -606,7 +643,7 @@ Parameter ranges:
 > 
 > ### ** Examples
 > 
-> hsv <- HSV(seq(0, 360, length = 7)[-7], 1, 1)
+> hsv <- HSV(seq(0, 360, length.out = 7)[-7], 1, 1)
 > hsv
        H S V
 [1,]   0 1 1
@@ -730,12 +767,12 @@ Parameter ranges:
 > 
 > ### ** Examples
 > 
-> max_chroma(0:36 * 10, 50)
+> max_chroma(h = 0:36 * 10, l = 50)
  [1] 137.96 161.61 121.85  91.86  75.55  65.86  59.99  56.66  55.28  55.61
 [11]  57.70  61.92  69.06  72.78  58.06  49.54  44.38  41.33  39.81  39.55
 [21]  40.52  42.87  47.04  53.90  65.45  86.65 124.44 123.87 127.15 131.17
 [31] 119.54 112.95 110.23 110.93 115.15 123.62 137.96
-> max_chroma(120, 0:10 * 10)
+> max_chroma(h = 120, l = 0:10 * 10)
  [1]   0.00  14.44  28.04  41.67  55.35  69.06  82.79  96.53 110.28 122.90
 [11]   0.00
 > 
@@ -960,6 +997,146 @@ Parameter ranges:
 > 
 > 
 > cleanEx()
+> nameEx("scale_colour_binned_diverging")
+> ### * scale_colour_binned_diverging
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_binned_diverging
+> ### Title: HCL-Based Binned Diverging Color Scales for ggplot2
+> ### Aliases: scale_colour_binned_diverging scale_color_binned_diverging
+> ###   scale_fill_binned_diverging
+> 
+> ### ** Examples
+> 
+> # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
+> 
+> library("ggplot2")
+> 
+> # generate dataset and base plot
+> set.seed(100)
+> df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
+> df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors
+> gg <- ggplot(df, aes(x = country, y = V, fill = V)) +
++   geom_bar(stat = "identity") +
++   labs(y = "Under/over valuation in %", x = "Country") +
++   coord_flip() + theme_minimal()
+>   
+> # plot with default diverging scale
+> gg + scale_fill_binned_diverging(n.breaks = 6)
+> 
+> # plot with alternative scale
+> gg + scale_fill_binned_diverging(palette = "Purple-Green", n.breaks = 6)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_binned_divergingx")
+> ### * scale_colour_binned_divergingx
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_binned_divergingx
+> ### Title: HCL-Based Binned Flexible Diverging Scales for ggplot2
+> ### Aliases: scale_colour_binned_divergingx scale_color_binned_divergingx
+> ###   scale_fill_binned_divergingx
+> 
+> ### ** Examples
+> 
+> library("ggplot2")
+> 
+> # volcano plot (difference from mean height)
+> nx = 87
+> ny = 61
+> df <- data.frame(diff = c(volcano) - mean(volcano), x = rep(1:nx, ny), y = rep(1:ny, each = nx))
+> ggplot(df, aes(x, y, fill=diff)) + 
++   geom_raster() + scale_fill_binned_divergingx(palette = "Fall", rev = TRUE) +
++   coord_fixed(expand = FALSE)
+> 
+> 
+> # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
+> 
+> # generate dataset and base plot
+> set.seed(100)
+> df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
+> df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors
+> gg <- ggplot(df, aes(x = country, y = V, fill = V)) +
++   geom_bar(stat = "identity") +
++   labs(y = "Under/over valuation in %", x = "Country") +
++   coord_flip() + theme_minimal()
+>   
+> # plot with diverging scale "Geyser"
+> gg + scale_fill_binned_divergingx(palette = "Geyser",  n.breaks = 6)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_binned_qualitative")
+> ### * scale_colour_binned_qualitative
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_binned_qualitative
+> ### Title: HCL-Based Binned Qualitative Color Scales for ggplot2
+> ### Aliases: scale_colour_binned_qualitative scale_color_binned_qualitative
+> ###   scale_fill_binned_qualitative
+> 
+> ### ** Examples
+> 
+> library("ggplot2")
+> 
+> # none of these examples are necessarily good ideas
+> gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
++   geom_jitter(width = 0.3) + theme_minimal()
+>   
+> gg + scale_color_binned_qualitative(palette = "Dynamic")
+> gg + scale_color_binned_qualitative(palette = "Dark3", l1 = 70)
+> 
+> nx = 87
+> ny = 61
+> df <- data.frame(height = c(volcano), x = rep(1:nx, ny), y = rep(1:ny, each = nx))
+> ggplot(df, aes(x, y, fill=height)) + 
++   geom_raster() + scale_fill_binned_qualitative(palette = "Dark 3") +
++   coord_fixed(expand = FALSE)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("scale_colour_binned_sequential")
+> ### * scale_colour_binned_sequential
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: scale_colour_binned_sequential
+> ### Title: HCL-Based Binned Sequential Color Scales for ggplot2
+> ### Aliases: scale_colour_binned_sequential scale_color_binned_sequential
+> ###   scale_fill_binned_sequential
+> 
+> ### ** Examples
+> 
+> library("ggplot2")
+> 
+> # volcano plot
+> df <- data.frame(height = c(volcano), x = c(row(volcano)), y = c(col(volcano)))
+> ggplot(df, aes(x, y, fill = height)) + 
++   geom_raster() + scale_fill_binned_sequential(palette = "Terrain", rev = FALSE) +
++   coord_fixed(expand = FALSE)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
 > nameEx("scale_colour_continuous_diverging")
 > ### * scale_colour_continuous_diverging
 > 
@@ -1012,37 +1189,20 @@ detaching ‘package:ggplot2’
 > 
 > ### ** Examples
 > 
-> # *** Examples for sequential CARTO scales ***
-> 
-> # base plot
 > library("ggplot2")
-> gg <- ggplot(iris, aes(x = Species, y = Sepal.Width, color = Sepal.Length)) + 
-+   geom_jitter(width = 0.3) + theme_minimal()
 > 
-> # default settings
-> gg + scale_color_continuous_divergingx()
-> 
-> # switch palette to ArmyRose
-> gg + scale_color_continuous_divergingx(palette = "ArmyRose")
-> 
-> # select a range out of the entire palette
-> gg + scale_color_continuous_divergingx(palette = "ArmyRose", begin = .2, end = .8)
-> 
-> # volcano plot
+> # volcano plot (difference from mean height)
 > nx = 87
 > ny = 61
-> df <- data.frame(height = c(volcano), x = rep(1:nx, ny), y = rep(1:ny, each = nx))
-> ggplot(df, aes(x, y, fill=height)) + 
+> df <- data.frame(diff = c(volcano) - mean(volcano), x = rep(1:nx, ny), y = rep(1:ny, each = nx))
+> ggplot(df, aes(x, y, fill=diff)) + 
 +   geom_raster() + scale_fill_continuous_divergingx(palette = "Fall", rev = TRUE) +
 +   coord_fixed(expand = FALSE)
 > 
 > 
-> # *** Examples for diverging CARTO scales ***
-> 
 > # adapted from stackoverflow: https://stackoverflow.com/a/20127706/4975218
 > 
 > # generate dataset and base plot
-> library("ggplot2")
 > set.seed(100)
 > df <- data.frame(country = LETTERS, V = runif(26, -40, 40))
 > df$country = factor(LETTERS, LETTERS[order(df$V)]) # reorder factors
@@ -1356,8 +1516,8 @@ $RGB
 [10,] 1.0 0.0 0.6
 
 $hex
- [1] "#FF0000FF" "#FF9900FF" "#CCFF00FF" "#33FF00FF" "#00FF66FF" "#00FFFFFF"
- [7] "#0066FFFF" "#3300FFFF" "#CC00FFFF" "#FF0099FF"
+ [1] "#FF0000" "#FF9900" "#CCFF00" "#33FF00" "#00FF66" "#00FFFF" "#0066FF"
+ [8] "#3300FF" "#CC00FF" "#FF0099"
 
 > 
 > 
@@ -1390,6 +1550,14 @@ $hex
 +   "Single-hue (advanced)" = t(sapply(paste(bprg, 3), sequential_hcl, n = 7)),
 +   "Multi-hue (advanced)"  = t(sapply(bprg,           sequential_hcl, n = 7)),
 +   nrow = 5
++ )
+> 
+> ## swatches with color vision deficiency emulation
+> swatchplot(sequential_hcl(7, "Viridis"), cvd = TRUE)
+> swatchplot(
++   "YlGnBu"  = sequential_hcl(7, "YlGnBu"),
++   "Viridis" = sequential_hcl(7, "Viridis"),
++   cvd = c("deutan", "desaturate")
 + )
 > 
 > 
@@ -1447,8 +1615,10 @@ $hex
 > 
 > set.seed(1)
 > x <- RGB(runif(10), runif(10), runif(10))
-> writehex(x, "random.txt")
-[1] "random.txt"
+> ## IGNORE_RDIFF_BEGIN
+> writehex(x, file.path(tempdir(), "random.txt"))
+[1] "/tmp/RtmpLS3KaK/random.txt"
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -1457,7 +1627,7 @@ $hex
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.38 0.079 7.482 0 0 
+Time elapsed:  9.612 0.177 9.768 0.002 0 
 > grDevices::dev.off()
 null device 
           1 

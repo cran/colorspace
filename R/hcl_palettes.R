@@ -120,6 +120,13 @@
 #' @param plot logical. Should the selected HCL color palettes be visualized?
 #' @param x,object A \code{hcl_palettes} object.
 #'
+#' @return \code{qualitative_hcl}, \code{sequential_hcl}, \code{diverging_hcl} return
+#' a vector of \code{n} color strings (hex codes).
+#'
+#' The function \code{hcl_palettes} returns a data frame of class \code{"hcl_palettes"}
+#' where each row contains information about one of the requested palettes (name, type,
+#' HCL trajectory coordinates). Suitable \code{print}, \code{summary}, and \code{plot}
+#' methods are available.
 #' @seealso \code{\link{divergingx_hcl}}
 #' @references Zeileis A, Hornik K, Murrell P (2009).  Escaping RGBland:
 #' Selecting Colors for Statistical Graphics.  \emph{Computational Statistics &
@@ -134,9 +141,9 @@
 #' \bold{96}(2), 203--216.
 #' \doi{10.1175/BAMS-D-13-00155.1}
 #'
-#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 #' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+#' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 #' @keywords color
 #' @examples
 #' ## overview of all _named_ HCL palettes
@@ -379,7 +386,7 @@ qualitative_hcl <- function(n, h = c(0, 360 * (n - 1)/n), c = 80, l = 60,
     rval <- hex(polarLUV(
         L = pals["l1"],
         C = pals["c1"],
-        H = seq(pals["h1"], pals["h2"], length = n)),
+        H = seq(pals["h1"], pals["h2"], length.out = n)),
         fixup = as.logical(pals["fixup"]), ...)
 
     ## alpha transparency
@@ -490,7 +497,7 @@ sequential_hcl <- function(n, h = 260, c = 80, l = c(30, 90), power = 1.5,
     if(is.na(pals["p2"])) pals["p2"] <- pals["p1"]
 
     ## HCL trajectory
-    rval <- seq(1, 0, length = n)
+    rval <- seq(1, 0, length.out = n)
     rval <- seqhcl(rval, pals["h1"], pals["h2"], pals["c1"], pals["c2"], pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...)
 
     ## alpha transparency
@@ -574,7 +581,7 @@ diverging_hcl <- function(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
 
     ## HCL trajectory
     n2 <- ceiling(n/2)    
-    rval <- seq.int(1, by = -2/(n - 1), length.out = n2)
+    rval <- pmax(0, seq.int(1, by = -2/(n - 1), length.out = n2))
     rval <- c(seqhcl(rval, pals["h1"], pals["h1"], pals["c1"], 0, pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...),
     	  rev(seqhcl(rval, pals["h2"], pals["h2"], pals["c1"], 0, pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...)))
     if(floor(n/2) < n2) rval <- rval[-n2]
@@ -686,6 +693,8 @@ seqm.pals[["BuPu"]]        <- c(320,  200,  40,  5, 15, 98, 1.2, 1.3,  65, 1) # 
 seqm.pals[["Blues"]]       <- c(260,  220,  45,  5, 25, 98, 1.2, 1.3,  70, 1) # ColorBrewer.org: Blues
 seqm.pals[["Lajolla"]]     <- c( 90,  -20,  40,  5, 99,  5, 0.7, 0.8, 100, 1) # scico: lajolla
 seqm.pals[["Turku"]]       <- c( 10,  120,  20,  0, 95,  1, 1.7, 0.8,  55, 1) # scico: turku
+seqm.pals[["Hawaii"]]      <- c(-30,  200,  70, 35, 30, 92, 0.3, 1.0,  75, 1) # scico: hawaii
+seqm.pals[["Batlow"]]      <- c(270,  -40,  35, 35, 12, 88, 0.6, 1.1,  75, 1) # scico: batlow
 
 dive.pals <- list()
 dive.pals[["Blue-Red"]]    <- c(260,    0,  80, NA, 30, 90, 1.5,  NA,  NA, 1) # Z+KH+PM-09, Fig.6: Blue-Red (high luminance contrast)
@@ -818,7 +827,7 @@ GetPaletteConfig <- function(gui = NULL) {
            # Sequential multiple-hues advanced
            "Purple-Yellow", "YlGnBu", "Greens", "BuGn", "Teal", "Peach", "Blues", "BuPu", "Purples",
            "Purp", "Burg", "Reds", "YlOrRd", "Sunset", "RdPu", "Inferno",
-           "Lajolla", "Turku",
+           "Lajolla", "Turku", "Hawaii", "Batlow",
            # Base color maps (for shiny)
            "rainbow", "heat.colors", "topo.colors", "terrain.colors", "cm.colors", "bpy"
        ) # end of variable definition for "take"

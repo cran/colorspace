@@ -6,9 +6,29 @@
 \alias{divergingx_palettes}
 \title{(More) Flexible Diverging HCL Palettes}
 \usage{
-divergingx_hcl(n, palette = "Geyser", ..., fixup = TRUE, alpha = 1,
-  rev = FALSE, h1, h2, h3, c1, c2, c3, l1, l2, l3, p1, p2, p3, p4, cmax1,
-  cmax2)
+divergingx_hcl(
+  n,
+  palette = "Geyser",
+  ...,
+  fixup = TRUE,
+  alpha = 1,
+  rev = FALSE,
+  h1,
+  h2,
+  h3,
+  c1,
+  c2,
+  c3,
+  l1,
+  l2,
+  l3,
+  p1,
+  p2,
+  p3,
+  p4,
+  cmax1,
+  cmax2
+)
 
 divergingx_palettes(palette = NULL, plot = FALSE, n = 7L, ...)
 }
@@ -78,9 +98,9 @@ yellow). Consequently, the chroma/luminance paths can be rather unbalanced
 between the two arms.
 
 With this additional flexibility various diverging palettes suggested by
-\url{http://ColorBrewer.org/} and CARTO (\url{https://carto.com/carto-colors/}),
-can be emulated along with the Zissou 1 palette from \pkg{wesanderson} and
-Cividis from \pkg{viridis}.
+\url{https://ColorBrewer2.org/} and CARTO (\url{https://carto.com/carto-colors/}),
+can be emulated along with the Zissou 1 palette from \pkg{wesanderson},
+Cividis from \pkg{viridis}, and Roma from \pkg{scico}.
 
 Available CARTO palettes: ArmyRose, Earth, Fall, Geyser, TealRose, Temps, and
 Tropic (with Tropic also available in \code{diverging_hcl}).
@@ -97,9 +117,9 @@ divergingx_palettes(plot = TRUE)
 specplot(divergingx_hcl(7, "ArmyRose"))
 }
 \references{
-Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+\emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{
 \code{\link[colorspace]{sequential_hcl}}, \code{\link[colorspace]{diverging_hcl}}

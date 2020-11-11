@@ -15,9 +15,9 @@
 #' @return \code{demoplot} returns invisibly what the respective base graphics
 #' functions return that are called internally.
 #' @seealso \code{\link{specplot}}, \code{\link{hclplot}}
-#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 #' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+#' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 #' @keywords hplot
 #' @examples
 #' ## all built-in demos with the same sequential heat color palette
@@ -162,7 +162,7 @@ plot_pie <- function(x, ...) {
 plot_perspective <- function(x, ...) {
    # Mixture of bivariate normals
    n <- 31
-   x1 <- x2 <- seq(-3, 3, length = n)
+   x1 <- x2 <- seq(-3, 3, length.out = n)
    y <- outer(x1, x2, 
             function(x, y) {
                 0.5 * stats::dnorm(x, mean = -1, sd = 0.80) * stats::dnorm(y, mean = -1, sd = 0.80) +

@@ -7,8 +7,10 @@
 \alias{deutanomaly_cvd}
 \alias{tritanomaly_cvd}
 \title{Color Vision Deficiency (CVD) Conversion Tables}
-\format{Lists of 3x3 RGB-color transformation matrices for the various types of CVD. Each list contains 11 transformation matrices 
-  representing increasingly severe color vision deficiency.}
+\format{
+Lists of 3x3 RGB-color transformation matrices for the various types of CVD. Each list contains 11 transformation matrices 
+  representing increasingly severe color vision deficiency.
+}
 \usage{
 protanomaly_cvd
 
@@ -34,9 +36,9 @@ Machado GM, Oliveira MM, Fernandes LAF (2009).
   Online version with supplements at
   \url{http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html}.
 
-Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+\emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{
 \code{\link{simulate_cvd}}

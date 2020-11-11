@@ -6,15 +6,41 @@
 \alias{scale_fill_discrete_diverging}
 \title{HCL-Based Discrete Diverging Color Scales for ggplot2}
 \usage{
-scale_colour_discrete_diverging(palette = NULL, c1 = NULL,
-  cmax = NULL, l1 = NULL, l2 = NULL, h1 = NULL, h2 = NULL,
-  p1 = NULL, p2 = NULL, alpha = 1, rev = FALSE, nmax = NULL,
-  order = NULL, aesthetics = "colour", ...)
+scale_colour_discrete_diverging(
+  palette = NULL,
+  c1 = NULL,
+  cmax = NULL,
+  l1 = NULL,
+  l2 = NULL,
+  h1 = NULL,
+  h2 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  alpha = 1,
+  rev = FALSE,
+  nmax = NULL,
+  order = NULL,
+  aesthetics = "colour",
+  ...
+)
 
-scale_color_discrete_diverging(palette = NULL, c1 = NULL,
-  cmax = NULL, l1 = NULL, l2 = NULL, h1 = NULL, h2 = NULL,
-  p1 = NULL, p2 = NULL, alpha = 1, rev = FALSE, nmax = NULL,
-  order = NULL, aesthetics = "colour", ...)
+scale_color_discrete_diverging(
+  palette = NULL,
+  c1 = NULL,
+  cmax = NULL,
+  l1 = NULL,
+  l2 = NULL,
+  h1 = NULL,
+  h2 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  alpha = 1,
+  rev = FALSE,
+  nmax = NULL,
+  order = NULL,
+  aesthetics = "colour",
+  ...
+)
 
 scale_fill_discrete_diverging(..., aesthetics = "fill")
 }

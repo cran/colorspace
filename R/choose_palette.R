@@ -61,9 +61,9 @@
 #' \bold{96}(2), 203--216.
 #' \doi{10.1175/BAMS-D-13-00155.1}
 #'
-#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2019).
+#' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 #' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
-#' arXiv:1903.06490, arXiv.org E-Print Archive. \url{http://arxiv.org/abs/1903.06490}
+#' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 #' @keywords misc
 #' @examples
 #' if(interactive()) {
