@@ -70,7 +70,7 @@ scale_fill_discrete_qualitative <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_discrete_qualitative, args)
+  do.call(scale_colour_discrete_qualitative, args, envir = parent.frame())
 }
 
 #' HCL-Based Continuous Qualitative Color Scales for ggplot2
@@ -141,7 +141,7 @@ scale_fill_continuous_qualitative <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_continuous_qualitative, args)
+  do.call(scale_colour_continuous_qualitative, args, envir = parent.frame())
 }
 
 #' HCL-Based Binned Qualitative Color Scales for ggplot2
@@ -214,6 +214,6 @@ scale_fill_binned_qualitative <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_binned_qualitative, args)
+  do.call(scale_colour_binned_qualitative, args, envir = parent.frame())
 }
 

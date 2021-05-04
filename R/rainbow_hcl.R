@@ -50,7 +50,7 @@
 #' Data Analysis}, \bold{53}, 3259--3270.
 #' \doi{10.1016/j.csda.2008.11.033}
 #' Preprint available from
-#' \url{https://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+#' \url{https://www.zeileis.org/papers/Zeileis+Hornik+Murrell-2009.pdf}.
 #' 
 #' Stauffer R, Mayr GJ, Dabernig M, Zeileis A (2015).  Somewhere over the
 #' Rainbow: How to Make Effective Use of Colors in Meteorological

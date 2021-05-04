@@ -80,7 +80,7 @@ scale_fill_discrete_divergingx <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_discrete_divergingx, args)
+  do.call(scale_colour_discrete_divergingx, args, envir = parent.frame())
 }
 
   
@@ -174,7 +174,7 @@ scale_fill_continuous_divergingx <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_continuous_divergingx, args)
+  do.call(scale_colour_continuous_divergingx, args, envir = parent.frame())
 }
 
 #' HCL-Based Binned Flexible Diverging Scales for ggplot2
@@ -265,5 +265,5 @@ scale_fill_binned_divergingx <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_binned_divergingx, args)
+  do.call(scale_colour_binned_divergingx, args, envir = parent.frame())
 }

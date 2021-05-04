@@ -1,6 +1,6 @@
-#' Adjust Transparency of Colors
+#' Adjust or Extract Transparency of Colors
 #' 
-#' Add, remove, or modify alpha transparency of a vector of colors.
+#' Adjust (i.e., add, remove, or modify) or extract alpha transparency of a vector of colors.
 #'
 #' Alpha transparency is useful for making colors semi-transparent, e.g., for
 #' overlaying different elements in graphics. An alpha value of 0 (or 00 in hex strings)
@@ -23,6 +23,15 @@
 #'       all colors set to the \code{alpha} argument (recycled if necessary).
 #' }
 #'
+#' The \code{extract_transparency} function can be used to extract the alpha transparency
+#' from a set of colors. It allows to specify the \code{default} value - that should be used
+#' for colors without an explicit alpha transparency (defaulting to fully opaque) - and
+#' \code{mode} of the return value. This can either be numeric (in [0, 1]), integer
+#' (0L, 1L, \dots, 255L), character (\dQuote{00}, \dQuote{01}, \dots, \dQuote{FF}),
+#' or an object of class \code{\link[base]{hexmode}} (internally represented as integer
+#' with printing as character). The \code{default} can use any of these modes as well
+#' (independent of the output \code{mode}) or be \code{NA}.
+#'
 #' @param col vector of R colors. Can be any of the three kinds of R colors,
 #' i.e., either a color name (an element of
 #' \code{\link[grDevices]{colors}}), a hexadecimal (hex) string of the form
@@ -30,13 +39,19 @@
 #' an integer \code{i} meaning \code{palette()[i]}. Additionally, \code{col} can be
 #' a formal \code{\link[colorspace]{color-class}} object or a matrix with three
 #' rows containing R/G/B (0-255) values.
-#' @param alpha either a new numeric alpha transparency value or logical (to add/remove alpha)
+#' @param alpha either a new alpha transparency value or logical (to add/remove alpha)
 #' or \code{NULL}. See details.
-#' @return A character vector with hexadecimal color strings with alpha transparency
-#' corresponding to \code{alpha} argument.
+#' @param mode character specifying the output mode for the alpha transparency, can be
+#' \code{"numeric"}, \code{"integer"}, \code{"character"} or \code{"hexmode"}. See details.
+#' @param default vector of length 1 specifying the default alpha transparency that should
+#' be returned for colors that do not specify any explicitly (defaulting to fully opaque).
+#' Can either be numeric, integer, character, or hexmode.
+#' @return For \code{adjust_transparency} character vector with hexadecimal color strings with alpha transparency
+#' corresponding to \code{alpha} argument. For \code{extract_transparency} a vector of
+#' alpha transparency values with the indicated \code{mode}.
 #' @seealso \code{\link[grDevices]{rgb}}, \code{\link[colorspace]{desaturate}}, \code{\link[colorspace]{lighten}}
 #' @references Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
-#' \dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+#' \dQuote{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
 #' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 #' @keywords color
 #' @examples
@@ -54,6 +69,18 @@
 #' adjust_transparency(x, alpha = TRUE)  ## add
 #' adjust_transparency(x, alpha = FALSE) ## remove
 #' adjust_transparency(x, alpha = 0.8)   ## modify
+#' 
+#' ## extract transparency in different formats
+#' extract_transparency(x, mode = "numeric") ## default
+#' extract_transparency(x, mode = "integer")
+#' extract_transparency(x, mode = "character")
+#' extract_transparency(x, mode = "hexmode")
+#'
+#' ## extract transparency with different default values
+#' extract_transparency(x, default = NA)
+#' extract_transparency(x, default = 0.5)
+#' extract_transparency(x, default = 128L)
+#' extract_transparency(x, default = "80", mode = "integer")
 #' @export adjust_transparency
 #' @importFrom grDevices rgb col2rgb
 
@@ -61,9 +88,7 @@ adjust_transparency <- function(col, alpha = TRUE) {
 
   ## alpha argument controls new alpha values
   new_alpha <- alpha
-  num_to_hex <- function(alpha) {
-    format(as.hexmode(round(alpha * 255 + 0.0001)), width = 2L, upper.case = TRUE)
-  }
+  if(inherits(new_alpha, "hexmode")) new_alpha <- unclass(new_alpha)
 
   ## support S4 color specifications as well (with default alpha = 1)
   if(inherits(col, "color")) col <- paste0(hex(col), "FF")
@@ -83,7 +108,7 @@ adjust_transparency <- function(col, alpha = TRUE) {
   } else {
     if(!(is.matrix(col) && is.numeric(col))) col <- col2rgb(col, alpha = TRUE)
     ## extract alpha values (if any)
-    alpha <- if(NROW(col) > 3L) num_to_hex(col[4L, ]/255) else rep.int("FF", n)
+    alpha <- if(NROW(col) > 3L) convert_transparency(col[4L, ]/255, mode = "character") else rep.int("FF", n)
     ## retain only RGB
     col <- rgb(col[1L, ], col[2L, ], col[3L, ], maxColorValue = 255)
   }
@@ -96,7 +121,7 @@ adjust_transparency <- function(col, alpha = TRUE) {
   } else if(identical(new_alpha, TRUE)) {
     alpha[alpha == ""] <- "FF"
   } else {
-    alpha <- num_to_hex(new_alpha)
+    alpha <- convert_transparency(new_alpha, mode = "character")
     if(length(alpha) != n) {
       n <- max(n, length(alpha))
       col <- rep_len(col, n)
@@ -110,3 +135,97 @@ adjust_transparency <- function(col, alpha = TRUE) {
 
   return(col)
 }
+
+#' @rdname adjust_transparency
+#' @export extract_transparency
+extract_transparency <- function(col, mode = "numeric", default = 1) {
+
+  ## handle mode of return value
+  mode <- match.arg(mode, c("numeric", "double", "integer", "character", "hexmode"))
+  if(mode == "double") mode <- "numeric"
+
+  ## handle default
+  if(length(default) > 1L) {
+    warning("'default' should be of length 1, first element used")
+    default <- default[1L]
+  } else if(length(default) < 1L) {
+    default <- NA
+  }
+  if(inherits(default, "hexmode")) default <- unclass(default)
+  if(mode == "hexmode") {
+    hexmode <- TRUE
+    mode <- "integer"
+  } else {
+    hexmode <- FALSE
+  }
+  na <- switch(mode,
+    "numeric" = NA_real_,
+    "character" = NA_character_,
+    NA_integer_)
+  if(is.na(default)) {
+    default <- na
+  } else if(is.character(default) | is.numeric(default)) {
+    default <- convert_transparency(default, mode = mode)
+  } else {
+    warning("unknown type of 'default' using NA instead")
+    default <- na
+  }
+
+  ## for S4 color specifications or RGB matrices the default is used
+  if(inherits(col, "color")) col <- coords(col)
+
+  ## number of colors and position of NA colors
+  if(is.matrix(col) && is.numeric(col)) {
+    n <- NCOL(col)
+    ina <- which(apply(is.na(col), 1L, any))
+  } else {
+    n <- length(col)
+    ina <- which(is.na(col))
+  }
+
+  ## cases where alpha can be extracted
+  ialpha <- if(is.character(col)) {
+    which(substr(col, 1L, 1L) == "#" & nchar(col) == 9L)
+  } else {
+    integer(0)
+  }
+
+  ## set up return value
+  alpha <- rep.int(default, n)
+  if(length(ialpha) > 0L) alpha[ialpha] <- convert_transparency(substr(col[ialpha], 8L, 9L), mode = mode)
+  alpha[ina] <- na
+  if(hexmode) alpha <- structure(alpha, class = "hexmode")
+  return(alpha)
+}
+
+## auxiliary function
+convert_transparency <- function(x, mode = "numeric") {
+  mode <- match.arg(mode, c("numeric", "integer", "character"))
+  if(is.character(x)) {
+    if(!all(toupper(x) %in% format(as.hexmode(0L:255L), width = 2L, upper.case = TRUE))) {
+      stop("invalid character specification of alpha transparency, must be in 00, 01, ..., FF")
+    }
+    x <- switch(mode,
+      "integer" = as.integer(as.hexmode(x)),
+      "numeric" = as.integer(as.hexmode(x))/255,
+      x)
+  } else if(is.integer(x)) {
+    if(!all(x %in% 0L:255L)) {
+      stop("invalid integer specification of alpha transparency, must be in 0L, 1L, ..., 255L")
+    }
+    x <- switch(mode,
+      "numeric" = x/255,
+      "character" = format(as.hexmode(x), width = 2L, upper.case = TRUE),
+      x)
+  } else if(is.numeric(x)) {
+    if(!all(x >= 0 & x <= 1)) {
+      stop("invalid numeric specification of alpha transparency, must be in [0, 1]")
+    }
+    x <- switch(mode,
+      "integer" = as.integer(round(x * 255 + 0.0001)),
+      "character" = format(as.hexmode(round(x * 255 + 0.0001)), width = 2L, upper.case = TRUE),
+      x)
+  }
+  return(x)
+}
+

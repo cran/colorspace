@@ -15,7 +15,7 @@
   This introduction to HCL-based color palettes in \proglang{R} package \pkg{colorspace}
   was written to accompany \cite{color:Zeileis+Hornik+Murrell:2009}. Since then the
   package's capabilities have been substantially extended and an up-to-date overview
-  is available at \url{http://colorspace.R-Forge.R-project.org/} which is recommended
+  is available at \url{https://colorspace.R-Forge.R-project.org/} which is recommended
   as the main reference. For historical completeness this PDF vignette is still
   preserved, though.
   
@@ -35,7 +35,7 @@
   Universit\"atsstra{\ss}e~15\\
   6020 Innsbruck, Austria\\
   E-mail: \email{Achim.Zeileis@R-project.org}\\
-  URL: \url{https://eeecon.uibk.ac.at/~zeileis/}\\
+  URL: \url{https://www.zeileis.org/}\\
   
   Kurt Hornik\\
   Institute for Statistics and Mathematics\\

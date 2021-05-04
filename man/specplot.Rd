@@ -114,7 +114,7 @@ Selecting Colors for Statistical Graphics.  \emph{Computational Statistics &
 Data Analysis}, \bold{53}, 3259--3270.
 \doi{10.1016/j.csda.2008.11.033}
 Preprint available from
-\url{https://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf}.
+\url{https://www.zeileis.org/papers/Zeileis+Hornik+Murrell-2009.pdf}.
 
 Stauffer R, Mayr GJ, Dabernig M, Zeileis A (2015).  Somewhere over the
 Rainbow: How to Make Effective Use of Colors in Meteorological
@@ -123,7 +123,7 @@ Visualizations.  \emph{Bulletin of the American Meteorological Society},
 \doi{10.1175/BAMS-D-13-00155.1}
 
 Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
-\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+\dQuote{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
 \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{

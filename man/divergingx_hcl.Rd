@@ -118,7 +118,7 @@ specplot(divergingx_hcl(7, "ArmyRose"))
 }
 \references{
 Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
-\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+\dQuote{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
 \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{

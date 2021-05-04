@@ -20,7 +20,7 @@ vignette: >
 library("colorspace")
 library("ggplot2")
 theme_set(theme_minimal())
-prefix <- "http://colorspace.R-Forge.R-project.org/articles/" ## ""
+prefix <- "https://colorspace.R-Forge.R-project.org/articles/" ## ""
 ```
 
 ## Overview
@@ -96,7 +96,7 @@ The development version of _colorspace_ is hosted on R-Forge at
 It can be installed via
 
 ```{r installation-rforge, eval=FALSE}
-install.packages("colorspace", repos = "http://R-Forge.R-project.org")
+install.packages("colorspace", repos = "https://R-Forge.R-project.org")
 ```
 
 For Python users a beta re-implementation of the full _colorspace_ package in

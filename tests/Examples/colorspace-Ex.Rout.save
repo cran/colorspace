@@ -1,6 +1,6 @@
 
-R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
-Copyright (C) 2020 The R Foundation for Statistical Computing
+R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -232,8 +232,8 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: adjust_transparency
-> ### Title: Adjust Transparency of Colors
-> ### Aliases: adjust_transparency
+> ### Title: Adjust or Extract Transparency of Colors
+> ### Aliases: adjust_transparency extract_transparency
 > ### Keywords: color
 > 
 > ### ** Examples
@@ -259,6 +259,26 @@ Type 'q()' to quit R.
 [1] "#BEBEBE" "#BEBEBE" "#BEBEBE"
 > adjust_transparency(x, alpha = 0.8)   ## modify
 [1] "#BEBEBECC" "#BEBEBECC" "#BEBEBECC"
+> 
+> ## extract transparency in different formats
+> extract_transparency(x, mode = "numeric") ## default
+[1] 1.0000000 1.0000000 0.5019608
+> extract_transparency(x, mode = "integer")
+[1] 255 255 128
+> extract_transparency(x, mode = "character")
+[1] "FF" "FF" "80"
+> extract_transparency(x, mode = "hexmode")
+[1] "ff" "ff" "80"
+> 
+> ## extract transparency with different default values
+> extract_transparency(x, default = NA)
+[1]        NA        NA 0.5019608
+> extract_transparency(x, default = 0.5)
+[1] 0.5000000 0.5000000 0.5019608
+> extract_transparency(x, default = 128L)
+[1] 0.5019608 0.5019608 0.5019608
+> extract_transparency(x, default = "80", mode = "integer")
+[1] 128 128 128
 > 
 > 
 > 
@@ -504,12 +524,12 @@ Names: Grays, Light Grays, Blues 2, Blues 3, Purples 2, Purples 3, Reds 2,
 Type:  Sequential (multi-hue) 
 Names: Purple-Blue, Red-Purple, Red-Blue, Purple-Orange, Purple-Yellow,
        Blue-Yellow, Green-Yellow, Red-Yellow, Heat, Heat 2, Terrain,
-       Terrain 2, Viridis, Plasma, Inferno, Dark Mint, Mint, BluGrn,
-       Teal, TealGrn, Emrld, BluYl, ag_GrnYl, Peach, PinkYl, Burg,
-       BurgYl, RedOr, OrYel, Purp, PurpOr, Sunset, Magenta, SunsetDark,
-       ag_Sunset, BrwnYl, YlOrRd, YlOrBr, OrRd, Oranges, YlGn, YlGnBu,
-       Reds, RdPu, PuRd, Purples, PuBuGn, PuBu, Greens, BuGn, GnBu,
-       BuPu, Blues, Lajolla, Turku, Hawaii, Batlow
+       Terrain 2, Viridis, Plasma, Inferno, Rocket, Mako, Dark Mint,
+       Mint, BluGrn, Teal, TealGrn, Emrld, BluYl, ag_GrnYl, Peach,
+       PinkYl, Burg, BurgYl, RedOr, OrYel, Purp, PurpOr, Sunset,
+       Magenta, SunsetDark, ag_Sunset, BrwnYl, YlOrRd, YlOrBr, OrRd,
+       Oranges, YlGn, YlGnBu, Reds, RdPu, PuRd, Purples, PuBuGn, PuBu,
+       Greens, BuGn, GnBu, BuPu, Blues, Lajolla, Turku, Hawaii, Batlow
 
 Type:  Diverging 
 Names: Blue-Red, Blue-Red 2, Blue-Red 3, Red-Green, Purple-Green,
@@ -1617,7 +1637,7 @@ $hex
 > x <- RGB(runif(10), runif(10), runif(10))
 > ## IGNORE_RDIFF_BEGIN
 > writehex(x, file.path(tempdir(), "random.txt"))
-[1] "/tmp/RtmpLS3KaK/random.txt"
+[1] "/tmp/Rtmpg2CRGD/random.txt"
 > ## IGNORE_RDIFF_END
 > 
 > 
@@ -1627,7 +1647,7 @@ $hex
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  9.612 0.177 9.768 0.002 0 
+Time elapsed:  12.683 0.199 12.885 0 0 
 > grDevices::dev.off()
 null device 
           1 

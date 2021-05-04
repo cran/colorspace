@@ -2,9 +2,12 @@
 % Please edit documentation in R/adjust_transparency.R
 \name{adjust_transparency}
 \alias{adjust_transparency}
-\title{Adjust Transparency of Colors}
+\alias{extract_transparency}
+\title{Adjust or Extract Transparency of Colors}
 \usage{
 adjust_transparency(col, alpha = TRUE)
+
+extract_transparency(col, mode = "numeric", default = 1)
 }
 \arguments{
 \item{col}{vector of R colors. Can be any of the three kinds of R colors,
@@ -15,15 +18,23 @@ an integer \code{i} meaning \code{palette()[i]}. Additionally, \code{col} can be
 a formal \code{\link[colorspace]{color-class}} object or a matrix with three
 rows containing R/G/B (0-255) values.}
 
-\item{alpha}{either a new numeric alpha transparency value or logical (to add/remove alpha)
+\item{alpha}{either a new alpha transparency value or logical (to add/remove alpha)
 or \code{NULL}. See details.}
+
+\item{mode}{character specifying the output mode for the alpha transparency, can be
+\code{"numeric"}, \code{"integer"}, \code{"character"} or \code{"hexmode"}. See details.}
+
+\item{default}{vector of length 1 specifying the default alpha transparency that should
+be returned for colors that do not specify any explicitly (defaulting to fully opaque).
+Can either be numeric, integer, character, or hexmode.}
 }
 \value{
-A character vector with hexadecimal color strings with alpha transparency
-corresponding to \code{alpha} argument.
+For \code{adjust_transparency} character vector with hexadecimal color strings with alpha transparency
+corresponding to \code{alpha} argument. For \code{extract_transparency} a vector of
+alpha transparency values with the indicated \code{mode}.
 }
 \description{
-Add, remove, or modify alpha transparency of a vector of colors.
+Adjust (i.e., add, remove, or modify) or extract alpha transparency of a vector of colors.
 }
 \details{
 Alpha transparency is useful for making colors semi-transparent, e.g., for
@@ -46,6 +57,15 @@ specification of \code{alpha}: \itemize{
 \item \code{alpha} numeric: Returns a hex vector with alpha transparency for
       all colors set to the \code{alpha} argument (recycled if necessary).
 }
+
+The \code{extract_transparency} function can be used to extract the alpha transparency
+from a set of colors. It allows to specify the \code{default} value - that should be used
+for colors without an explicit alpha transparency (defaulting to fully opaque) - and
+\code{mode} of the return value. This can either be numeric (in [0, 1]), integer
+(0L, 1L, \dots, 255L), character (\dQuote{00}, \dQuote{01}, \dots, \dQuote{FF}),
+or an object of class \code{\link[base]{hexmode}} (internally represented as integer
+with printing as character). The \code{default} can use any of these modes as well
+(independent of the output \code{mode}) or be \code{NA}.
 }
 \examples{
 ## modify transparency of a color (in different formats)
@@ -62,10 +82,22 @@ adjust_transparency(x, alpha = NULL)  ## only if necessary
 adjust_transparency(x, alpha = TRUE)  ## add
 adjust_transparency(x, alpha = FALSE) ## remove
 adjust_transparency(x, alpha = 0.8)   ## modify
+
+## extract transparency in different formats
+extract_transparency(x, mode = "numeric") ## default
+extract_transparency(x, mode = "integer")
+extract_transparency(x, mode = "character")
+extract_transparency(x, mode = "hexmode")
+
+## extract transparency with different default values
+extract_transparency(x, default = NA)
+extract_transparency(x, default = 0.5)
+extract_transparency(x, default = 128L)
+extract_transparency(x, default = "80", mode = "integer")
 }
 \references{
 Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
-\dQuote{ccolorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
+\dQuote{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
 \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
 }
 \seealso{

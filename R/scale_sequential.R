@@ -85,7 +85,7 @@ scale_fill_discrete_sequential <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_discrete_sequential, args)
+  do.call(scale_colour_discrete_sequential, args, envir = parent.frame())
 }
 
 #' HCL-Based Continuous Sequential Color Scales for ggplot2
@@ -167,7 +167,7 @@ scale_fill_continuous_sequential <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_continuous_sequential, args)
+  do.call(scale_colour_continuous_sequential, args, envir = parent.frame())
 }
 
 
@@ -243,7 +243,7 @@ scale_fill_binned_sequential <- function(..., aesthetics = "fill")
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   if (is.null(args[["aesthetics"]])) args$aesthetics <- "fill"
-  do.call(scale_colour_binned_sequential, args)
+  do.call(scale_colour_binned_sequential, args, envir = parent.frame())
 }
 
 
