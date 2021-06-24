@@ -1,3 +1,10 @@
+# colorspace 2.0-2
+
+* New function `contrast_ratio()` for computing and visualizing contrast ratios
+  of pairs of colors as defined in the Web Content Accessibility Guidelines (WCAG)
+  (<https://www.w3.org/TR/WCAG21/>) of the World Wide Web Consortium (W3C).
+
+
 # colorspace 2.0-1
 
 * Added two new palettes from the viridis family (_viridis_/_viridisLite_),

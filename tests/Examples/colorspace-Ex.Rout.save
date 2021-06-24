@@ -1,5 +1,5 @@
 
-R version 4.0.4 (2021-02-15) -- "Lost Library Book"
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -332,6 +332,30 @@ Type 'q()' to quit R.
 > 
 > x <- RGB(runif(1000), runif(1000), runif(1000))
 > plot(as(x, "LUV"))
+> 
+> 
+> 
+> cleanEx()
+> nameEx("contrast_ratio")
+> ### * contrast_ratio
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: contrast_ratio
+> ### Title: W3C Contrast Ratio
+> ### Aliases: contrast_ratio
+> ### Keywords: color
+> 
+> ### ** Examples
+> 
+> # check contrast ratio of default palette on white background
+> contrast_ratio(palette(), "white")
+[1] 21.000000  3.758588  1.973030  3.163940  1.603030  4.805641  1.608044
+[8]  2.679156
+> 
+> # visualize contrast ratio of default palette on white and black background
+> contrast_ratio(palette(), "white", plot = TRUE)
+> contrast_ratio(palette()[-1], "black", plot = TRUE)
 > 
 > 
 > 
@@ -1637,7 +1661,7 @@ $hex
 > x <- RGB(runif(10), runif(10), runif(10))
 > ## IGNORE_RDIFF_BEGIN
 > writehex(x, file.path(tempdir(), "random.txt"))
-[1] "/tmp/Rtmpg2CRGD/random.txt"
+[1] "/tmp/RtmpY77wFo/random.txt"
 > ## IGNORE_RDIFF_END
 > 
 > 
@@ -1647,7 +1671,7 @@ $hex
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  12.683 0.199 12.885 0 0 
+Time elapsed:  7.264 0.071 7.342 0 0 
 > grDevices::dev.off()
 null device 
           1 

@@ -1,12 +1,13 @@
-5a2a8aac6c9fe1e208826f021e78d16e *DESCRIPTION
+69628828489327102528ce8847a97b03 *DESCRIPTION
 fa68054159b9871ae8514fa705a54fa4 *LICENSE
-86971f14297f29a386864ce773914f3f *NAMESPACE
-d530d306d2546910307336ceba79d65e *NEWS.md
+d05170b7bdf4f9a4b263399a5e06bc73 *NAMESPACE
+8dbd101817851721ea47a94c4273494f *NEWS.md
 277ade867c1d5572bf88591130308098 *R/USSouthPolygon.R
 e0bda46dd6dd47c9a4dfafba3ea98249 *R/adjust_hcl.R
 bde9c3e9c2a697bc1eeb7be03f3fda07 *R/adjust_transparency.R
 4f1430847069a6b06d129d482772c255 *R/choose_palette.R
 efefae7f41f917e10782bdecd3be3d4e *R/colorspace.R
+c548379697839093f9ec5f795aeaea6d *R/contrast_ratio.R
 9ea83f231110dc95a05e0c60bcfa1cc4 *R/cvd.R
 2a8b5d09b39f8af4c9adb7ecc52a5b79 *R/cvd_image.R
 756ef44836ea689eebdc7ccaa250203a *R/demoplot.R
@@ -26,8 +27,8 @@ c5c0148b2b9424455a550d46f80a0824 *R/rescaler.R
 e69e4a8dcc77997e7175356cbb22f6a9 *R/simulate_cvd.R
 c612d801e8b0de5026671ae2b2dcb912 *R/specplot.R
 0dc79439294a58eee75767bda4e7c8b3 *R/swatchplot.R
-c57b8cfac8b29283967b3855a33bb5d0 *build/partial.rdb
-f334e2e2cf92c414dd9d36d1fb9c1e22 *build/vignette.rds
+5016a6500c6b8744a715e7ffcc206b5e *build/partial.rdb
+718d23479477b712833d831e97244b40 *build/vignette.rds
 cb874fc34bd972fe62aa6ced1bd4f072 *data/USSouthPolygon.rda
 25de18eba7d86be203ce689710786aae *data/max_chroma_table.rda
 edfa0b2ad4f586390f5ddbc867d3623d *demo/00Index
@@ -51,10 +52,10 @@ e25c879ba0ac5726f4ff27c94fb07dde *inst/cvdemulator/www/images/rainbow_protan.png
 84e3fd8dd2dceb8c584d7a2ec902188d *inst/cvdemulator/www/images/rainbow_tritan.png
 ac64c0b0bacb88347556a471e894cde1 *inst/doc/colorspace.R
 b890979461338e816af3e7e9179fb8da *inst/doc/colorspace.Rmd
-286054903492bc793c21892f45b3d157 *inst/doc/colorspace.html
+a25fb4f01b01267ab091d4101c408e90 *inst/doc/colorspace.html
 9c67c2b64085e580fb70fba67ad9da34 *inst/doc/hcl-colors.R
 0ebc62a74e5f9a5233e8fbb2c1fa2737 *inst/doc/hcl-colors.Rnw
-e5c8e32e65ee3ad4ca6fab141cd9bf45 *inst/doc/hcl-colors.pdf
+0d735f68b54b23a45ac167422b5619ed *inst/doc/hcl-colors.pdf
 2ebcba66590383a6249461ac360f59e4 *inst/hclcolorpicker/html/info.html
 d89df16dc9a87c3579fab281689c9a63 *inst/hclcolorpicker/prepareStaticContent.R
 3f9bef4794665fb0388e34a7ff2344ee *inst/hclcolorpicker/server.R
@@ -185,6 +186,7 @@ f099ffbcab5cc2a87b16502ada49b2de *man/LUV.Rd
 b17a70f0907fe499c2f5a05d67cec446 *man/adjust_transparency.Rd
 a2168b9d90f1ffb6d13ab1da976fd91c *man/choose_palette.Rd
 f056298063f5eaf846ebdd74fc9af427 *man/color-class.Rd
+f0a1b359241f855f47231639bfba86a9 *man/contrast_ratio.Rd
 6cf6292e6e9b78a0132b376de20a19ef *man/coords.Rd
 3fac3c0a09872e7e90ed984cb02f4952 *man/cvd.Rd
 0c2dfb234eba126fbadfd3e155758cb0 *man/cvd_emulator.Rd
@@ -225,7 +227,7 @@ b9f167f10b1926685250635476de420c *man/whitepoint.Rd
 155a4867856580477ee6260683ec23ef *man/writehex.Rd
 25de22929e45fe95693d1243c5473c97 *src/colorspace.c
 4ac5ec142bab094f6dc821c7ec04d41e *src/init.c
-7b7399dd611205490acc7c7a92436bcc *tests/Examples/colorspace-Ex.Rout.save
+e482054538666a43bb6d313327ac34bf *tests/Examples/colorspace-Ex.Rout.save
 7770f703cbf14b1be9ed0715964a2191 *tests/cvd.R
 081ef6ba17540ece8558bf556b1c6491 *tests/cvd.Rout.save
 2425011e4fac8a79ccb11df2f7f1df75 *tests/palettes.R
