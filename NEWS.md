@@ -1,3 +1,15 @@
+# colorspace 2.0-3
+
+* Added the advanced perceptual contrast algorithm (APCA) that is under
+  development for the next major revision of the WCAG as an alternative
+  `algorithm` in `contrast_ratio()`. See <https://github.com/Myndex/SAPC-APCA>.
+
+* Fixed a bug in `lighten()` and `darken()` for the case when some colors
+  were named (e.g., `"blue"`) rather than hex strings only. In that case
+  linear RGB rather than sRGB was incorrectly used internally (reported by
+  Colin Goodall).
+
+
 # colorspace 2.0-2
 
 * New function `contrast_ratio()` for computing and visualizing contrast ratios

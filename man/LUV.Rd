@@ -33,7 +33,7 @@ coordinates measure positions on green/red and blue/yellow axes.
 \examples{
 ## Show the LUV space
 set.seed(1)
-x <- RGB(runif(1000), runif(1000), runif(1000))
+x <- sRGB(runif(1000), runif(1000), runif(1000))
 y <- as(x, "LUV")
 head(x)
 head(y)

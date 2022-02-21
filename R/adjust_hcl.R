@@ -26,7 +26,7 @@ adjust_hcl <- function(col, h = 0, c = 0, l = 0, method = "relative", fixup = TR
     alpha <- format(as.hexmode(col[4L, ]), width = 2L, upper.case = TRUE)
     alpha[alpha == "FF"] <- ""
     ## retain only RGB
-    col <- RGB(t(col[1L:3L, ])/255)
+    col <- sRGB(t(col[1L:3L, ])/255)
   }
   
   ## convert to HCL and remove chroma
@@ -87,7 +87,7 @@ lightdark <- function(col, amount = 0.1,
     alpha <- format(as.hexmode(col[4L, ]), width = 2L, upper.case = TRUE)
     alpha[alpha == "FF"] <- ""
     ## retain only RGB
-    col <- RGB(t(col[1L:3L, ])/255)
+    col <- sRGB(t(col[1L:3L, ])/255)
   }
   
   if(space == "HCL") {
@@ -273,7 +273,7 @@ lightdark2 <- function(col, amount = 0.1,
     alpha <- format(as.hexmode(col[4L, ]), width = 2L, upper.case = TRUE)
     alpha[alpha == "FF"] <- ""
     ## retain only RGB
-    col <- RGB(t(col[1L:3L, ])/255)
+    col <- sRGB(t(col[1L:3L, ])/255)
   }
   
   if (space == "HCL") {

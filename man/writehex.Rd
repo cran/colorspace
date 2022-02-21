@@ -25,7 +25,7 @@ the specified file.
 }
 \examples{
 set.seed(1)
-x <- RGB(runif(10), runif(10), runif(10))
+x <- sRGB(runif(10), runif(10), runif(10))
 ## IGNORE_RDIFF_BEGIN
 writehex(x, file.path(tempdir(), "random.txt"))
 ## IGNORE_RDIFF_END

@@ -7,6 +7,7 @@
 contrast_ratio(
   col,
   col2 = "white",
+  algorithm = c("WCAG", "APCA"),
   plot = FALSE,
   border = FALSE,
   cex = 2,
@@ -22,6 +23,9 @@ name (an element of \code{\link[grDevices]{colors}}), a hexadecimal string
 of the form \code{"#rrggbb"} or \code{"#rrggbbaa"} (see
 \code{\link[grDevices]{rgb}}), or an integer \code{i} meaning
 \code{palette()[i]}. Both can be vectors and are recycled as necessary.}
+
+\item{algorithm}{character specifying whether the established standard \code{"WCAG"} 2.1 algorithm
+should be used or the improved \code{"APCA"} 0.98G-4g algorithm, still under development.}
 
 \item{plot}{logical indicating whether the contrast ratios should also be
 visualized by simple color swatches. Can also be a vector of length 2, indicating
@@ -64,6 +68,13 @@ colors, respectively. The relative luminances are weighted sums of scaled sRGB c
 \code{0.2126 * R + 0.7152 * G + 0.0722 * B} where each of \code{R}, \code{G}, and \code{B}
 is defined as \code{ifelse(RGB <= 0.03928, RGB/12.92, ((RGB + 0.055)/1.055)^2.4)} based on
 the \code{RGB} coordinates between 0 and 1.
+
+For use in the next major revision of the WCAG a new advanced perceptual contrast algorithm
+(APCA) has been proposed by Somers (2022), see also Muth (2022) for more background and details.
+APCA is still under development, here version 0.98G-4g is implemented. Unlike the standard WCAG
+algorithm, APCA takes into account which color is the text and which is the background. Hence
+for the APCA algorithm a matrix with normal and reverse polarity is returned. An absolute
+value of 45 is "sort of" like a WCAG ratio of 3, 60 is "sort of" like 4.5.
 }
 \examples{
 # check contrast ratio of default palette on white background
@@ -72,10 +83,20 @@ contrast_ratio(palette(), "white")
 # visualize contrast ratio of default palette on white and black background
 contrast_ratio(palette(), "white", plot = TRUE)
 contrast_ratio(palette()[-1], "black", plot = TRUE)
+
+# APCA algorithm
+contrast_ratio(palette(), "white", algorithm = "APCA")
+contrast_ratio(palette(), "white", algorithm = "APCA", plot = TRUE, digits = 0)
 }
 \references{
 W3C (2018). \dQuote{Web Content Accessibility Guidelines (WCAG) 2.1.}
 \url{https://www.w3.org/TR/WCAG21/}
+
+Somers A (2022). \dQuote{Advanced Perceptual Contrast Algorithm.}
+\url{https://github.com/Myndex/SAPC-APCA}
+
+Muth LC (2022). \dQuote{It's Time for a More Sophisticated Color Contrast Check for Data Visualizations.}
+Datawrapper Blog. \url{https://blog.datawrapper.de/color-contrast-check-data-vis-wcag-apca/}
 }
 \seealso{
 \code{\link[colorspace]{desaturate}}

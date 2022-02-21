@@ -1,5 +1,5 @@
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
 Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -101,14 +101,14 @@ Type 'q()' to quit R.
 > 
 > ## Show the LAB space
 > set.seed(1)
-> x <- RGB(runif(1000), runif(1000), runif(1000))
+> x <- sRGB(runif(1000), runif(1000), runif(1000))
 > y <- as(x, "LAB")
 > head(x)
              R         G        B
 [1,] 0.2655087 0.5308088 0.871805
 > head(y)
-            L         A         B
-[1,] 76.00763 -4.987872 -28.84153
+            L        A         B
+[1,] 56.02127 6.894485 -50.58648
 > plot(y)
 > 
 > 
@@ -128,14 +128,14 @@ Type 'q()' to quit R.
 > 
 > ## Show the LUV space
 > set.seed(1)
-> x <- RGB(runif(1000), runif(1000), runif(1000))
+> x <- sRGB(runif(1000), runif(1000), runif(1000))
 > y <- as(x, "LUV")
 > head(x)
              R         G        B
 [1,] 0.2655087 0.5308088 0.871805
 > head(y)
-            L        U        V
-[1,] 76.00763 -25.7427 -45.3886
+            L         U         V
+[1,] 56.02127 -26.35485 -80.16156
 > plot(y)
 > 
 > 
@@ -330,7 +330,7 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> x <- RGB(runif(1000), runif(1000), runif(1000))
+> x <- sRGB(runif(1000), runif(1000), runif(1000))
 > plot(as(x, "LUV"))
 > 
 > 
@@ -357,6 +357,19 @@ Type 'q()' to quit R.
 > contrast_ratio(palette(), "white", plot = TRUE)
 > contrast_ratio(palette()[-1], "black", plot = TRUE)
 > 
+> # APCA algorithm
+> contrast_ratio(palette(), "white", algorithm = "APCA")
+        normal    reverse
+[1,] 106.04067 -107.88473
+[2,]  64.27800  -69.77386
+[3,]  37.72423  -42.10985
+[4,]  58.24111  -63.64142
+[5,]  26.62298  -30.08416
+[6,]  71.04046  -76.51234
+[7,]  27.09773  -30.60320
+[8,]  52.07286  -57.27345
+> contrast_ratio(palette(), "white", algorithm = "APCA", plot = TRUE, digits = 0)
+> 
 > 
 > 
 > cleanEx()
@@ -372,7 +385,7 @@ Type 'q()' to quit R.
 > 
 > ### ** Examples
 > 
-> x <- RGB(1, 0, 0)
+> x <- sRGB(1, 0, 0)
 > coords(as(x, "HSV"))
        H S V
 [1,] 360 1 1
@@ -835,7 +848,7 @@ Parameter ranges:
 > 
 > ### ** Examples
 > 
-> mixcolor(0.5, RGB(1, 0, 0), RGB(0, 1, 0))
+> mixcolor(0.5, sRGB(1, 0, 0), sRGB(0, 1, 0))
        R   G B
 [1,] 0.5 0.5 0
 > 
@@ -856,14 +869,14 @@ Parameter ranges:
 > 
 > ## Show the polarLAB space
 > set.seed(1)
-> x <- RGB(runif(1000), runif(1000), runif(1000))
+> x <- sRGB(runif(1000), runif(1000), runif(1000))
 > y <- as(x, "polarLAB")
 > head(x)
              R         G        B
 [1,] 0.2655087 0.5308088 0.871805
 > head(y)
             L        C        H
-[1,] 76.00763 29.26965 260.1883
+[1,] 56.02127 51.05415 277.7611
 > plot(y)
 > 
 > 
@@ -883,14 +896,14 @@ Parameter ranges:
 > 
 > ## Show the polarLUV space
 > set.seed(1)
-> x <- RGB(runif(1000), runif(1000), runif(1000))
+> x <- sRGB(runif(1000), runif(1000), runif(1000))
 > y <- as(x, "polarLUV")
 > head(x)
              R         G        B
 [1,] 0.2655087 0.5308088 0.871805
 > head(y)
             L        C        H
-[1,] 76.00763 52.18057 240.4397
+[1,] 56.02127 84.38279 251.8006
 > plot(y)
 > 
 > 
@@ -1658,10 +1671,10 @@ $hex
 > ### ** Examples
 > 
 > set.seed(1)
-> x <- RGB(runif(10), runif(10), runif(10))
+> x <- sRGB(runif(10), runif(10), runif(10))
 > ## IGNORE_RDIFF_BEGIN
 > writehex(x, file.path(tempdir(), "random.txt"))
-[1] "/tmp/RtmpY77wFo/random.txt"
+[1] "/tmp/RtmpIRE9VF/random.txt"
 > ## IGNORE_RDIFF_END
 > 
 > 
@@ -1671,7 +1684,7 @@ $hex
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.264 0.071 7.342 0 0 
+Time elapsed:  7.395 0.063 7.463 0 0 
 > grDevices::dev.off()
 null device 
           1 

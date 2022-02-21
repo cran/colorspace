@@ -146,8 +146,8 @@ lighten <- function(col, amount = 0.1,
     ## extract alpha values (if non-FF)
     alpha <- format(as.hexmode(col[4L, ]), width = 2L, upper.case = TRUE)
     alpha[alpha == "FF"] <- ""
-    ## retain only RGB
-    col <- RGB(t(col[1L:3L, ])/255)
+    ## retain only sRGB
+    col <- sRGB(t(col[1L:3L, ])/255)
   }
   
   if (space == "HCL") {
@@ -243,5 +243,5 @@ lighten <- function(col, amount = 0.1,
 #' @export
 darken <- function(col, amount = 0.1, space = "combined", ...)
 {
-  lighten(col, amount = -1*amount, space = space, ...)
+  lighten(col, amount = -1 * amount, space = space, ...)
 }

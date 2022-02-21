@@ -30,7 +30,7 @@ coordinate \eqn{H} is measures hue.
 \examples{
 ## Show the polarLAB space
 set.seed(1)
-x <- RGB(runif(1000), runif(1000), runif(1000))
+x <- sRGB(runif(1000), runif(1000), runif(1000))
 y <- as(x, "polarLAB")
 head(x)
 head(y)

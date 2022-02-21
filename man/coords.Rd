@@ -17,7 +17,7 @@ This function returns a matrix with three columns which give the coordinates
 of a color in its natural color space.
 }
 \examples{
-x <- RGB(1, 0, 0)
+x <- sRGB(1, 0, 0)
 coords(as(x, "HSV"))
 }
 \seealso{

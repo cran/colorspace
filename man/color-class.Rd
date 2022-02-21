@@ -75,7 +75,7 @@ subclasses of the virtual class \emph{color}.
 }
 
 \examples{
-x <- RGB(runif(1000), runif(1000), runif(1000))
+x <- sRGB(runif(1000), runif(1000), runif(1000))
 plot(as(x, "LUV"))
 }
 \seealso{

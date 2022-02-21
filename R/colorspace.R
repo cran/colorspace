@@ -105,7 +105,7 @@
 #' \code{\link{LUV}}, \code{\link{polarLUV}}, \code{\link{mixcolor}}.
 #' @keywords classes
 #' @examples
-#' x <- RGB(runif(1000), runif(1000), runif(1000))
+#' x <- sRGB(runif(1000), runif(1000), runif(1000))
 #' plot(as(x, "LUV"))
 #' @useDynLib colorspace, .registration = TRUE 
 #' @import methods
@@ -157,7 +157,7 @@ setClass("polarLUV", contains = "color")
 #' \code{\link{mixcolor}}.
 #' @keywords color
 #' @examples
-#' x <- RGB(1, 0, 0)
+#' x <- sRGB(1, 0, 0)
 #' coords(as(x, "HSV"))
 #' @export coords
 #' @importFrom graphics pairs
@@ -345,7 +345,7 @@ XYZ <-
 #' @examples
 #' ## Show the LAB space
 #' set.seed(1)
-#' x <- RGB(runif(1000), runif(1000), runif(1000))
+#' x <- sRGB(runif(1000), runif(1000), runif(1000))
 #' y <- as(x, "LAB")
 #' head(x)
 #' head(y)
@@ -393,7 +393,7 @@ LAB <-
 #' @examples
 #' ## Show the polarLAB space
 #' set.seed(1)
-#' x <- RGB(runif(1000), runif(1000), runif(1000))
+#' x <- sRGB(runif(1000), runif(1000), runif(1000))
 #' y <- as(x, "polarLAB")
 #' head(x)
 #' head(y)
@@ -535,7 +535,7 @@ HLS <-
 #' @examples
 #' ## Show the LUV space
 #' set.seed(1)
-#' x <- RGB(runif(1000), runif(1000), runif(1000))
+#' x <- sRGB(runif(1000), runif(1000), runif(1000))
 #' y <- as(x, "LUV")
 #' head(x)
 #' head(y)
@@ -584,7 +584,7 @@ LUV <-
 #' @examples
 #' ## Show the polarLUV space
 #' set.seed(1)
-#' x <- RGB(runif(1000), runif(1000), runif(1000))
+#' x <- sRGB(runif(1000), runif(1000), runif(1000))
 #' y <- as(x, "polarLUV")
 #' head(x)
 #' head(y)
@@ -813,7 +813,7 @@ readhex <-
 #' @keywords color
 #' @examples
 #' set.seed(1)
-#' x <- RGB(runif(10), runif(10), runif(10))
+#' x <- sRGB(runif(10), runif(10), runif(10))
 #' ## IGNORE_RDIFF_BEGIN
 #' writehex(x, file.path(tempdir(), "random.txt"))
 #' ## IGNORE_RDIFF_END
@@ -889,8 +889,8 @@ whitepoint(NULL)
 
 #' Compute the Convex Combination of Two Colors
 #' 
-#' This function can be used to compute the result of color mixing (it assumes
-#' additive mixing).
+#' This function can be used to compute the result of color mixing, assuming
+#' additive mixing (e.g., as appropriate for RGB or XYZ).
 #' 
 #' 
 #' @param alpha The mixed color is obtained by combining an amount
@@ -907,12 +907,15 @@ whitepoint(NULL)
 #' \code{\link{polarLUV}}.
 #' @keywords color
 #' @examples
-#' mixcolor(0.5, RGB(1, 0, 0), RGB(0, 1, 0))
+#' mixcolor(0.5, sRGB(1, 0, 0), sRGB(0, 1, 0))
 #' @export mixcolor
 mixcolor <- 
   function(alpha, color1, color2, where = class(color1))
   {
     alpha = as.numeric(alpha)
+    if(where %in% c("polarLUV", "polarLAB", "HSV", "HLS")) {
+      warning(sprintf("convex combination of colors in polar coordinates (%s) may not be appropriate", where))
+    }
     c1 = coords(as(color1, where))
     c2 = coords(as(color2, where))
     na = length(alpha)
