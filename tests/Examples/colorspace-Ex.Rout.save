@@ -1,6 +1,6 @@
 
-R version 4.1.2 (2021-11-01) -- "Bird Hippie"
-Copyright (C) 2021 The R Foundation for Statistical Computing
+R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
+Copyright (C) 2022 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -480,8 +480,9 @@ Type 'q()' to quit R.
 > wheel(desaturate(rainbow_hcl(12)))
 > wheel(desaturate(rainbow(12)))
 > 
-> ## apply desaturation directly on RGB values
-> RGB <- t(hex2RGB(rainbow(3))@coords * 255)
+> ## apply desaturation directly on wide RGB matrix (with R/G/B channels in rows)
+> RGB <- diag(3) * 255
+> rownames(RGB) <- c("R", "G", "B")
 > desaturate(RGB)
       [,1]     [,2]     [,3]
 R 127.1223 219.9281 75.94690
@@ -1500,24 +1501,25 @@ detaching ‘package:ggplot2’
 > 
 > # simulate color-vision deficiency by calling `simulate_cvd` with specified matrix
 > simulate_cvd(c("#005000", "blue", "#00BB00"), tritanomaly_cvd["6"][[1]])
-[1] "#004D19" "#000FAD" "#00B53B"
+[1] "#004F2C" "#0046D7" "#00B96F"
 > 
 > # simulate color-vision deficiency by calling the shortcut high-level function
 > tritan(c("#005000", "blue", "#00BB00"), severity = 0.6)
-[1] "#004D19" "#000FAD" "#00B53B"
+[1] "#004F2C" "#0046D7" "#00B96F"
 > 
 > # simulate color-vision deficiency by calling `simulate_cvd` with interpolated cvd matrix
 > simulate_cvd(c("#005000", "blue", "#00BB00"),
 +              interpolate_cvd_transform(tritanomaly_cvd, severity = 0.6))
-[1] "#004D19" "#000FAD" "#00B53B"
+[1] "#004F2C" "#0046D7" "#00B96F"
 > 
-> # apply CVD directly on RGB matrix
-> RGB <- t(hex2RGB(rainbow(3))@coords*255)
+> # apply CVD directly on wide RGB matrix (with R/G/B channels in rows)
+> RGB <- diag(3) * 255
+> rownames(RGB) <- c("R", "G", "B")
 > deutan(RGB)
-  [,1] [,2] [,3]
-R   94  219    0
-G   71  171   12
-B    0   11  247
+      [,1]     [,2]      [,3]
+R 93.66711 219.4647   0.00000
+G 71.42167 171.4878  12.09031
+B  0.00000  10.9497 247.06465
 > 
 > 
 > 
@@ -1674,7 +1676,7 @@ $hex
 > x <- sRGB(runif(10), runif(10), runif(10))
 > ## IGNORE_RDIFF_BEGIN
 > writehex(x, file.path(tempdir(), "random.txt"))
-[1] "/tmp/RtmpIRE9VF/random.txt"
+[1] "/tmp/RtmpcyMdPS/random.txt"
 > ## IGNORE_RDIFF_END
 > 
 > 
@@ -1684,7 +1686,7 @@ $hex
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.395 0.063 7.463 0 0 
+Time elapsed:  8.482 0.084 8.567 0 0 
 > grDevices::dev.off()
 null device 
           1 

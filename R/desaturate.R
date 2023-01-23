@@ -54,8 +54,9 @@
 #' wheel(desaturate(rainbow_hcl(12)))
 #' wheel(desaturate(rainbow(12)))
 #'
-#' ## apply desaturation directly on RGB values
-#' RGB <- t(hex2RGB(rainbow(3))@coords * 255)
+#' ## apply desaturation directly on wide RGB matrix (with R/G/B channels in rows)
+#' RGB <- diag(3) * 255
+#' rownames(RGB) <- c("R", "G", "B")
 #' desaturate(RGB)
 #' @export desaturate
 #' @importFrom grDevices col2rgb

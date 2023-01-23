@@ -58,6 +58,7 @@ scale_colour_discrete_sequential <- function(palette = NULL, c1 = NULL, c2 = NUL
   args <- as.list(match.call())
   args[[1]] <- NULL # remove the function call
   args <- args[na.omit(match(hcl_args, names(args)))] # remove other args
+  for(n in names(args)) args[[n]] <- get(n) # force evaluation of args
   
   pal <- function(n) {
     if (is.null(nmax)) nmax <- n
