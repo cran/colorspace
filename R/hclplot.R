@@ -174,20 +174,28 @@ hclplot <- function(x, type = NULL, h = NULL, c = NULL, l = NULL,
                 nd$H <- median(HCL[, "H"], na.rm = TRUE)
             } else {
                 m <- lm(H ~ C + L, data = as.data.frame(HCL))
-		sig <- summary(m)$sigma
+        		sig <- summary(m)$sigma
                 if(is.na(sig) || sig > 7.5) warning("cannot approximate H well as a linear function of C and L")
                 nd$H <- predict(m, nd)
             }
-            if(is.null(main)) {
-                main <- if(length(unique(nd$H)) <= 1L) {
-                    round(nd$H[1L])
-                } else {
-                    paste("[", round(min(nd$H, na.rm = TRUE)), ", ", round(max(nd$H, na.rm = TRUE)), "]", sep = "")
-                }
-                main <- paste("Hue =", main)
-            }
+
+            # Converting colors to HCL (no fixup), remove low-luminance colors
             HCL2 <- hex(polarLUV(H = nd$H, C = nd$C, L = nd$L), fixup = FALSE)
             HCL2[nd$L < 1 & nd$C > 0] <- NA
+            
+            # Auto-generate main title
+            if(is.null(main)) {
+                # Reducing 'nd' to valid colors (!is.na(HCL2))
+                tmp  <- nd[!is.na(HCL2), ]; tmp$H <- round(tmp$H)
+                main <- if (length(unique(tmp$H)) <= 1L) {
+                    tmp$H[1L]
+                } else {
+                    paste("[", min(tmp$H, na.rm = TRUE), ", ", max(tmp$H, na.rm = TRUE), "]", sep = "")
+                }
+                main <- paste("Hue =", main)
+                rm(tmp)
+            }
+
             plot(0, 0, type = "n", xlim = c(0, maxchroma), ylim = c(0, 100), xaxs = "i", yaxs = "i",
                  xlab = NA, ylab = NA, main = main, axes = axes)
             # Adding axis labels
@@ -211,7 +219,7 @@ hclplot <- function(x, type = NULL, h = NULL, c = NULL, l = NULL,
             nd$left <- nd$C < 0
             left  <- 1L:floor(n/2)
             left  <- left[HCL[left, "C"] > 10]
-            right <- ceiling(n/2):n
+            right <- (1 + ceiling(n/2)):n
             right <- right[HCL[right, "C"] > 10]
         
             if(!is.null(h)) {
@@ -235,18 +243,25 @@ hclplot <- function(x, type = NULL, h = NULL, c = NULL, l = NULL,
                 nd$H <- predict(m, nd)
                 nd$left <- nd$left == "TRUE"
             }
-            if(is.null(main)) {
-                main <- if(length(unique(nd$H)) <= 2L) {
-                    paste(round(nd$H[nd$left][1L]), "/", round(nd$H[!nd$left][1L]))
-                } else {
-                   paste("[",
-                       round(min(nd$H[nd$left], na.rm = TRUE)), ", ", round(max(nd$H[nd$left], na.rm = TRUE)), "] / [",
-                           round(min(nd$H[!nd$left], na.rm = TRUE)), ", ", round(max(nd$H[!nd$left], na.rm = TRUE)), "]", sep = "")
-                }
-                main <- paste("Hue =", main)
-            }
+
+            # Converting colors to HCL (no fixup), remove low-luminance colors
             HCL2 <- hex(polarLUV(H = nd$H, C = abs(nd$C), L = nd$L), fixup = FALSE)
             HCL2[nd$L < 1 & abs(nd$C) > 0] <- NA
+
+            # Auto-generate main title
+            if(is.null(main)) {
+                # Reducing 'nd' to valid colors (!is.na(HCL2))
+                tmp  <- nd[!is.na(HCL2), ]; tmp$H <- round(tmp$H)
+                main <- if(length(unique(tmp$H)) <= 2L) {
+                    paste(tmp$H[tmp$left][1L], "/", tmp$H[!tmp$left][1L])
+                } else {
+                   paste("[", min(tmp$H[tmp$left],  na.rm = TRUE), ", ", max(tmp$H[tmp$left],  na.rm = TRUE), "] / [",
+                              min(tmp$H[!tmp$left], na.rm = TRUE), ", ", max(tmp$H[!tmp$left], na.rm = TRUE), "]", sep = "")
+                }
+                main <- paste("Hue =", main)
+                rm(tmp)
+            }
+
             plot(0, 0, type = "n", xlim = c(-1, 1) * maxchroma, ylim = c(0, 100), xaxs = "i", yaxs = "i",
                  xlab = NA, ylab = NA, main = main, axes = FALSE)
             # Axis labels
@@ -283,16 +298,23 @@ hclplot <- function(x, type = NULL, h = NULL, c = NULL, l = NULL,
                 nd$L <- predict(m, nd)
                 nd$L <- pmin(100, pmax(0, nd$L))
             }
-            if(is.null(main)) {
-               main <- if(length(unique(nd$L)) <= 1L) {
-                  round(nd$L[1L])
-               } else {
-                  paste("[", round(min(nd$L, na.rm = TRUE)), ", ", round(max(nd$L, na.rm = TRUE)), "]", sep = "")
-               }
-               main <- paste("Luminance =", main)
-            }
+
+            # Converting colors to HCL (no fixup), remove low-luminance colors
             HCL2 <- hex(polarLUV(H = nd$H, C = nd$C, L = nd$L), fixup = FALSE)
             HCL2[nd$L < 1 & nd$C > 0] <- NA
+
+            # Auto-generate main title
+            if(is.null(main)) {
+                # Reducing 'nd' to valid colors (!is.na(HCL2))
+                tmp  <- nd[!is.na(HCL2), ]; tmp$L <- round(tmp$L)
+                main <- if (length(unique(tmp$L)) <= 1L) {
+                   tmp$L[1L]
+                } else {
+                   paste("[", min(tmp$L, na.rm = TRUE), ", ", max(tmp$L, na.rm = TRUE), "]", sep = "")
+                }
+                main <- paste("Luminance =", main)
+                rm(tmp)
+            }
 
             # fact: used for scaling
             fact <- 1.1 + (cex - 1) / 10

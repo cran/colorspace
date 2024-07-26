@@ -4,12 +4,13 @@
 \alias{cvd_image}
 \title{Convert Colors of an Image}
 \usage{
-cvd_image(img, type, file, severity = 1)
+cvd_image(img, type, file, severity = 1, linear = TRUE)
 }
 \arguments{
-\item{img}{\code{array} as returned by \code{readPNG} and \code{readJPEG}
+\item{img}{\code{character} or \code{array} as returned by \code{readPNG} and \code{readJPEG}
 of size \code{height x width x depth}. The depth coordinate contains
-R/G/B and alpha if given (png).}
+R/G/B and alpha if given (png). In case of a single character string \code{img}
+has to be the full path to an image of type png or jpg/jpeg.}
 
 \item{type}{\code{string} name of the function which will be used to
 convert the colors (\code{deutan}, \code{protan}, \code{tritan}, \code{desaturate}).
@@ -19,6 +20,10 @@ If set to \code{original} the image will be written as is.}
 be a png image name.}
 
 \item{severity}{numeric. Severity of the color vision defect, a number between 0 and 1.}
+
+\item{linear}{logical. Should the color vision deficiency transformation be applied to the
+linearized RGB coordinates (default)? If \code{FALSE}, the transformation is applied to the
+gamma-corrected sRGB coordinates (which was the default up to version 2.0-3 of the package).}
 }
 \description{
 Used in \code{cvd_emulator}. Takes an image object and converts

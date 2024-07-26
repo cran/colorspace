@@ -348,8 +348,7 @@ shinyUI(fluidPage(
                   # Python output
                   tabPanel("Python",
                      includeHTML("html/python.html"),
-                     htmlOutput("exportPython"),
-                     includeHTML("html/python-example.html")
+                     htmlOutput("exportPython")
                   ),
                   # Matlab output
                   tabPanel("matlab",

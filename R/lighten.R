@@ -122,8 +122,8 @@ lighten <- function(col, amount = 0.1,
   
   ## number of colors
   n <- max(c(length(col), length(amount)))
-  col <- rep_len(col, length.out = n)
-  amount <- rep_len(amount, length.out = n)
+  if(length(col) != n) col <- rep_len(col, length.out = n)
+  if(length(amount) != n) amount <- rep_len(amount, length.out = n)
   
   ## save original colors for later, to substitute any cases with amount == 0
   col_orig <- col
@@ -233,6 +233,9 @@ lighten <- function(col, amount = 0.1,
   
   ## return original colors whenever amount == 0
   col[amount == 0] <- col_orig[amount == 0]
+  
+  ## preserve names (if any)
+  if(!is.null(names(col_orig))) names(col) <- names(col_orig)
   
   return(col)
 }

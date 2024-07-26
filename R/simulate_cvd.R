@@ -125,16 +125,16 @@ simulate_cvd <- function(col, cvd_transform, linear = TRUE) {
 
     # Save transparency value for later
     alpha <- substr(col, 8L, 9L)
-    # keep indizes of NA colors
+    # keep indices of NA colors
     NAidx <- which(is.na(col))
-    col <- substr(col, 1L, 7L)
-    col <- grDevices::col2rgb(col)
+    col[] <- substr(col[], 1L, 7L)
+    col <- col2rgb(col)
 
   } else {
 
-    # keep indizes of NA colors
+    # keep indices of NA colors
     NAidx <- which(is.na(col))
-    col <- grDevices::col2rgb(col, alpha = TRUE)
+    col <- col2rgb(col, alpha = TRUE)
     ## extract alpha values (if non-FF)
     alpha <- format(as.hexmode(col[4L, ]), width = 2L, upper.case = TRUE)
     alpha[alpha == "FF"] <- ""
@@ -182,7 +182,8 @@ simulate_cvd <- function(col, cvd_transform, linear = TRUE) {
     col <- if(transpose) t(RGB) else RGB
   } else {
     RGB <- round(RGB)
-    col <- paste(grDevices::rgb(RGB[1L, ], RGB[2L, ], RGB[3L, ], maxColorValue = 255), alpha, sep = "")
+    col <- rgb(t(RGB[1L:3L, , drop = FALSE]), maxColorValue = 255, names = colnames(RGB))
+    col[] <- paste(col[], alpha, sep = "")
     if(length(NAidx) > 0L) col[NAidx] <- NA
   }
 

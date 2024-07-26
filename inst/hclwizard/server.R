@@ -442,6 +442,100 @@ shinyServer(function(input, output, session) {
 
 
    # ----------------------------------------------------------------
+   # Generates the call for Python colorspace
+   # ----------------------------------------------------------------
+   function_to_pythoncolorspace <- function(n) {
+
+      # It is possible that the function cannot be evaluated
+      # at the moment shiny changes the palette typ. In these
+      # cases "getColors" returns NULL. In these cases return
+      # "..."
+      pal <- getColors(fun = TRUE)
+      if ( is.null(pal) ) return("...")
+
+      arglist <- list()
+      for (arg in names(formals(pal))) {
+          if (arg == "...") break;
+          arglist[[arg]] <- formals(pal)[[arg]]
+      }
+
+      # Remove n, alpha, and register entries
+      arglist$n <- arglist$alpha <- arglist$register <- NULL
+
+      for (tmp in c("h", "c", "l", "power")) {
+          if (tmp %in% names(arglist)) {
+              arglist[[tmp]] <- as.vector(na.omit(arglist[[tmp]]))
+          }
+      }
+
+      # Remove defaults
+      if ("fixup" %in% names(arglist))
+          if (arglist[["fixup"]] == TRUE) arglist[["fixup"]] <- NULL
+      if ("rev" %in% names(arglist))
+          if (arglist[["rev"]]   == FALSE) arglist[["rev"]]   <- NULL
+
+      # Name of the method
+      if (input$typ %in% c("Qualitative", "qual")) {
+          fname <- "qualitative_hcl"
+      } else if (grepl("^seq", tolower(input$typ))) {
+          fname <- "sequential_hcl"
+      } else if (grepl("^div", tolower(input$typ))) {
+          fname <- "diverging_hcl"
+      } else {
+          fname <- input$PAL
+      }
+
+      # Deparse arguments and convert to python-style strings;
+      # * 'c(1, 2)' gets `[1, 2]`.
+      # * `NA` = `None` (if it occurs)
+      # * `TRUE` = `True`
+      # * `FALSE` = `False`
+      arglist <- lapply(arglist, function(x) {
+            x <- gsub("\\)$", "]", gsub("^c\\(", "[", deparse(x)))
+            x <- gsub("FALSE", "False", gsub("TRUE", "True", x))
+            gsub("NA", "None", x)
+      })
+
+      # Create the result
+      argstr <- paste(names(arglist), arglist, sep = " = ", collapse = ", ")
+      palcmd <- sprintf("%s(%s)", fname, argstr)
+
+      # Imports list used for "from colorspace import *"
+      imports <- fname
+
+      # Default palette, reversed?
+      if (input$typ == "base" & input$reverse) palcmd <- sprintf("rev(%s)", palcmd)
+      palcmd <- paste0("pal = ", palcmd)
+
+      # Command to extract N colors
+      colcmd <- sprintf("pal.colors(%s)", n)
+
+      # If visual constraints are selected: add wrapping function
+      if (input$desaturate)
+          colcmd <- sprintf("desaturate(%s)", colcmd)
+          imports <- c(imports, "desaturate")
+      if (input$constraint == "Deutan") {
+          colcmd <- sprintf("%s(%s)", tolower(input$constraint), colcmd)
+          imports <- c(imports, tolower(input$constraint))
+      } else if (input$constraint == "Protan") {
+          colcmd <- sprintf("%s(%s)", tolower(input$constraint), colcmd)
+          imports <- c(imports, tolower(input$constraint))
+      } else if (input$constraint == "Tritan") {
+          colcmd <- sprintf("%s(%s)", tolower(input$constraint), colcmd)
+          imports <- c(imports, tolower(input$constraint))
+      }
+
+      # Creating final result
+      pystr <- c("<comment>## Import and define palette</comment>", 
+                 sprintf("<code>from colorspace import %s</code>", paste(imports, collapse = ", ")),
+                 sprintf("<code>%s</code>", palcmd),
+                 sprintf("<comment>## To get %s colors simply call</comment>", input$N),
+                 sprintf("<code>%s</code>", colcmd))
+
+      return(paste(pystr, collapse = "\n"))
+   }
+
+   # ----------------------------------------------------------------
    # Export colors: generate export content
    # ----------------------------------------------------------------
    generateExport <- function() {
@@ -530,26 +624,20 @@ shinyServer(function(input, output, session) {
       gastr <- append(gastr, sprintf("<code>'set ccols %s'</code>",
                                      paste(1:nrow(RGB) + 19, collapse = " ")))
       gastr <- append(gastr, sprintf("<code>'set clevs %s'</code>",
-                                     paste(round(seq(0, 100, length=nrow(RGB) - 1), 1), collapse=" ")))
+                                     paste(round(seq(0, 100, length.out=nrow(RGB) - 1), 1), collapse=" ")))
       gastr <- append(gastr, "<comment>** Open data set via DODS</comment>")
       gastr <- append(gastr, "<comment>** Open data set via DODS</comment>")
       gastr <- append(gastr, strftime(Sys.Date() - 1, "<code>'sdfopen http://nomads.ncep.noaa.gov:9090/dods/gfs_1p00/gfs%Y%m%d/gfs_1p00_00z_anl'</code>"))
       output$exportGrADS <- renderText(paste(gastr, collapse = "\n"))
 
       # -----------------------------
-      # For Python
+      # For Python colorspacd
       # -----------------------------
-      pystr <- c()
-      pystr <- append(pystr, "<div class=\"output-python\">")
-      pystr <- append(pystr, "<comment>## Define choosen color palette first</comment>") 
-      pystr <- append(pystr, "<comment>## WARNING undefined colors in color map!</comment>") 
-      pycolors <- sprintf("\"%s\"", colors)
-      if ( length(colors.na) > 0 ) pycolors[colors.na] <- "None"
-      pystr <- append(pystr, sprintf("<code>colors = (%s)</code>",
-                      paste(sprintf("%s", pycolors), collapse = ",")))
-      pystr <- append(pystr, "</div>")
-
-      output$exportPython <- renderText(paste(pystr, collapse = "\n"))
+      if (input$typ != "base") {
+          output$exportPython <- renderText(function_to_pythoncolorspace(input$N))
+      } else {
+          output$exportPython <- renderText("<comment>## No equivalent to base R colors in Python colorspace</comment>")
+      }
 
       # -----------------------------
       # For Matlab

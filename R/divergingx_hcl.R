@@ -109,7 +109,7 @@ divergingx_hcl <- function(n, palette = "Geyser", ...,
 
     ## call sequential_hcl() once or twice
     n2 <- ceiling(n/2)    
-    rval <- pmax(0, seq.int(1, by = -2/(n - 1), length.out = n2))
+    rval <- if(n == 1L) 0 else pmax(0, seq.int(1, by = -2/(n - 1), length.out = n2))
     rval <- c(seqhcl(rval, pals["h1"], if(is.na(pals["h2"])) pals["h1"] else pals["h2"], pals["c1"], pals["c2"],
                      pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax1"], fixup, ...),
     	  rev(seqhcl(rval, pals["h3"], if(is.na(pals["h2"])) pals["h3"] else pals["h2"], pals["c3"], pals["c2"],

@@ -7,12 +7,13 @@
 desaturate(col, amount = 1, ...)
 }
 \arguments{
-\item{col}{vector of R colors. Can be any of the three kinds of R colors, i.e.,
-either a color name (an element of \code{\link[grDevices]{colors}}), a hexadecimal string
-of the form \code{"#rrggbb"} or \code{"#rrggbbaa"} (see
+\item{col}{vector of R colors. Can be any of the three kinds of R colors,
+i.e., either a color name (an element of \code{\link[grDevices]{colors}}), a hexadecimal (hex)
+string of the form \code{"#rrggbb"} or \code{"#rrggbbaa"} (see
 \code{\link[grDevices]{rgb}}), or an integer \code{i} meaning
-\code{palette()[i]}. Input \code{col} can also be a matrix with three
-rows containing R/G/B (0-255) values, see details.}
+\code{palette()[i]}. Additionally, \code{col} can be
+a formal \code{\link[colorspace]{color-class}} object or a matrix with three named
+rows (or columns) containing R/G/B (0-255) values.}
 
 \item{amount}{numeric specifying the amount of desaturation where \code{1}
 corresponds to complete desaturation, \code{0} to no desaturation, and
@@ -22,9 +23,8 @@ values in between to partial desaturation.}
 overrule the input argument \code{amount} (for convenience).}
 }
 \value{
-A character vector with (s)RGB codings of the colors in the palette
-if input \code{col} is a vector. If input \code{col} is a matrix with R/G/B
-values a matrix of the same form and size will be returned.
+A color object as specified in the input \code{col} (hexadecimal string, RGB matrix,
+or formal color class) with desaturated colors.
 }
 \description{
 Transform a vector of given colors to the corresponding colors with chroma
@@ -44,6 +44,9 @@ range \code{[0-255]}. The desaturation takes place in the HCL space as well.
 Instead of an (s)RGB color vector a matrix of the same size as the input
 \code{col} with desaturated Red-Green-Blue values will be returned.
 This can be handy to avoid too many conversions.
+
+Similarly, \code{col} can be a formal \code{\link[colorspace]{color-class}} object, in which
+case the desaturated colors are returned as a formal object of the same class as the input.
 }
 \examples{
 ## rainbow of colors and their desaturated counterparts

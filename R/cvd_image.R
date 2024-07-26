@@ -90,49 +90,42 @@ check_image_type <- function( x ) {
 #' \code{\link{tritan}}, \code{\link{desaturate}} functions. The image
 #' will be written to disc as a PNG file.
 #'
-#' @param img \code{array} as returned by \code{readPNG} and \code{readJPEG}
+#' @param img \code{character} or \code{array} as returned by \code{readPNG} and \code{readJPEG}
 #'    of size \code{height x width x depth}. The depth coordinate contains
-#'    R/G/B and alpha if given (png).
+#'    R/G/B and alpha if given (png). In case of a single character string \code{img}
+#'    has to be the full path to an image of type png or jpg/jpeg.
 #' @param type \code{string} name of the function which will be used to
 #'    convert the colors (\code{deutan}, \code{protan}, \code{tritan}, \code{desaturate}).
 #'    If set to \code{original} the image will be written as is.
 #' @param file \code{string} with (full) path to resulting image. Has to
 #'    be a png image name.
 #' @param severity numeric. Severity of the color vision defect, a number between 0 and 1.
-cvd_image <- function(img, type, file, severity = 1) {
+#' @param linear logical. Should the color vision deficiency transformation be applied to the
+#' linearized RGB coordinates (default)? If \code{FALSE}, the transformation is applied to the
+#' gamma-corrected sRGB coordinates (which was the default up to version 2.0-3 of the package).
+cvd_image <- function(img, type, file, severity = 1, linear = TRUE) {
 
-   # - Save original colors
-   if ( type == 'original' ) {
+   # read image if necessary
+   if(is.character(img) && length(img) == 1L) {
+     img_type <- check_image_type(img)
+     if (!img_type$png & !img_type$jpg) stop(sprintf("Image \"%s\" is neither png nor jpg/jpeg.", img))
+     img <- if (img_type$png) png::readPNG(img) else jpeg::readJPEG(img)
+   }
+
+   # optionally save original colors
+   if (type == "original") {
       png::writePNG(img, target = file)
       return(TRUE)
    }
-   # Picking data
-   RGB       <- matrix(as.numeric(img[,,1:3])*255,nrow=3,byrow=TRUE,
-                       dimnames=list(c("R","G","B"),NULL))
-   RGB       <- do.call(type,list(col = RGB, severity = severity))
-   img[,,1]  <- matrix( RGB["R",]/255, dim(img)[1], dim(img)[2])
-   img[,,2]  <- matrix( RGB["G",]/255, dim(img)[1], dim(img)[2])
-   img[,,3]  <- matrix( RGB["B",]/255, dim(img)[1], dim(img)[2])
+
+   # otherwise set up sRGB object, carry out cvd emulation, write back
+   RGB <- matrix(as.numeric(img[,,1L:3L]), ncol = 3L, dimnames = list(NULL, c("R", "G", "B")))
+   RGB <- colorspace::sRGB(RGB)
+   RGB <- do.call(type, list(col = RGB, severity = severity, linear = linear))
+   RGB <- colorspace::coords(RGB)
+   img[,,1L] <- matrix(RGB[,"R"], dim(img)[1L], dim(img)[2L])
+   img[,,2L] <- matrix(RGB[,"G"], dim(img)[1L], dim(img)[2L])
+   img[,,3L] <- matrix(RGB[,"B"], dim(img)[1L], dim(img)[2L])
    png::writePNG(img, target = file)
    return(TRUE)
-
-   # - Loading RGB values of the original image
-   R         <- as.vector(img[,,1])
-   G         <- as.vector(img[,,2])
-   B         <- as.vector(img[,,3])
-   # - Convert to hex colors 
-   hcols     <- colorspace::hex(sRGB(R=R,G=G,B=B))
-   # - Convert to color blindness  
-   hex       <- do.call(type,list("col"=hcols))
-   RGB       <- colorspace::hex2RGB(hex)
-   RGB       <- attr(RGB,'coords')
-   img2      <- img
-   img2[,,1] <- matrix( RGB[,'R'], dim(img)[1], dim(img)[2])
-   img2[,,2] <- matrix( RGB[,'G'], dim(img)[1], dim(img)[2])
-   img2[,,3] <- matrix( RGB[,'B'], dim(img)[1], dim(img)[2])
-
-   # Save image to disc
-   png::writePNG(img2, target = file)
-   return(TRUE)
-
 }

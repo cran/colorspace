@@ -83,6 +83,7 @@
 #' extract_transparency(x, default = "80", mode = "integer")
 #' @export adjust_transparency
 #' @importFrom grDevices rgb col2rgb
+#' @importFrom stats setNames
 
 adjust_transparency <- function(col, alpha = TRUE) {
 
@@ -91,7 +92,10 @@ adjust_transparency <- function(col, alpha = TRUE) {
   if(inherits(new_alpha, "hexmode")) new_alpha <- unclass(new_alpha)
 
   ## support S4 color specifications as well (with default alpha = 1)
-  if(inherits(col, "color")) col <- paste0(hex(col), "FF")
+  if(inherits(col, "color")) {
+    col <- hex(col)
+    col[] <- paste0(col[], "FF")
+  }
 
   ## keep indizes of NA colors
   NAidx <- which(is.na(col))
@@ -104,13 +108,13 @@ adjust_transparency <- function(col, alpha = TRUE) {
     ## extract alpha from hex (if any)
     alpha <- substr(col, 8L, 9L)
     ## retain only RGB in hex
-    col <- substr(col, 1L, 7L)
+    col <- setNames(substr(col, 1L, 7L), names(col))
   } else {
     if(!(is.matrix(col) && is.numeric(col))) col <- col2rgb(col, alpha = TRUE)
     ## extract alpha values (if any)
     alpha <- if(NROW(col) > 3L) convert_transparency(col[4L, ]/255, mode = "character") else rep.int("FF", n)
     ## retain only RGB
-    col <- rgb(col[1L, ], col[2L, ], col[3L, ], maxColorValue = 255)
+    col <- rgb(t(col[1L:3L, , drop = FALSE]), maxColorValue = 255, names = colnames(col))
   }
 
   ## adjust alpha transparency
@@ -124,13 +128,13 @@ adjust_transparency <- function(col, alpha = TRUE) {
     alpha <- convert_transparency(new_alpha, mode = "character")
     if(length(alpha) != n) {
       n <- max(n, length(alpha))
-      col <- rep_len(col, n)
-      alpha <- rep_len(alpha, n)
+      if(length(col) != n) col <- rep_len(col, n)
+      if(length(alpha) != n) alpha <- rep_len(alpha, n)
     }
   }
   
   ## add alpha again (if any) and manage NAs
-  col <- paste(col, alpha, sep = "")
+  col[] <- paste(col[], alpha, sep = "")
   if(length(NAidx) > 0) col[NAidx] <- NA
 
   return(col)

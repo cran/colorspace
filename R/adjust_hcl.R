@@ -5,10 +5,10 @@ adjust_hcl <- function(col, h = 0, c = 0, l = 0, method = "relative", fixup = TR
 
   ## number of colors
   n <- max(c(length(col), length(h), length(c), length(l)))
-  col <- rep_len(col, length.out = n)
-  h <- rep_len(h, length.out = n)
-  c <- rep_len(c, length.out = n)
-  l <- rep_len(l, length.out = n)
+  if(length(col) != n) col <- rep_len(col, length.out = n)
+  if(length(h) != n) h <- rep_len(h, length.out = n)
+  if(length(c) != n) c <- rep_len(c, length.out = n)
+  if(length(l) != n) l <- rep_len(l, length.out = n)
 
   ## col has to be hex code, otherwise col2rgb is used
   if(is.character(col) &&
@@ -51,7 +51,7 @@ adjust_hcl <- function(col, h = 0, c = 0, l = 0, method = "relative", fixup = TR
     col@coords[, "C"] <- pmin(col@coords[, "C"], max_chroma(col@coords[, "H"], col@coords[, "L"]))
   }
   
-  ## convert back to hex and add alpha again (if any)
+  ## convert back to hex and add alpha and names again (if any)
   col <- hex(col, fixup = fixup)
   col[!is.na(col)] <- paste(col[!is.na(col)], alpha[!is.na(col)], sep = "")
   return(col)

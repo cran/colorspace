@@ -177,7 +177,7 @@ All three palette functions specify trajectories in HCL space and hence need eit
 single values or intervals of the coordinates \code{h}, \code{c}, \code{l}. Their
 interfaces are always designed such that \code{h}, \code{c}, \code{l} can take vector
 arguments (as needed) but alternatively or additionally \code{h1}/\code{h2},
-\code{c1}/\code{c2}/\code{cmax}, and \code{l1}/\code{l2} can be specified. If so,
+\code{c1}/\code{cmax}/\code{c2}, and \code{l1}/\code{l2} can be specified. If so,
 the latter coordinates overwrite the former.
 
 \code{qualitative_hcl} distinguishes the underlying categories by a sequence of

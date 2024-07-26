@@ -41,7 +41,7 @@
 #' single values or intervals of the coordinates \code{h}, \code{c}, \code{l}. Their
 #' interfaces are always designed such that \code{h}, \code{c}, \code{l} can take vector
 #' arguments (as needed) but alternatively or additionally \code{h1}/\code{h2},
-#' \code{c1}/\code{c2}/\code{cmax}, and \code{l1}/\code{l2} can be specified. If so,
+#' \code{c1}/\code{cmax}/\code{c2}, and \code{l1}/\code{l2} can be specified. If so,
 #' the latter coordinates overwrite the former.
 #'
 #' \code{qualitative_hcl} distinguishes the underlying categories by a sequence of
@@ -581,7 +581,7 @@ diverging_hcl <- function(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
 
     ## HCL trajectory
     n2 <- ceiling(n/2)    
-    rval <- pmax(0, seq.int(1, by = -2/(n - 1), length.out = n2))
+    rval <- if(n == 1L) 0 else pmax(0, seq.int(1, by = -2/(n - 1), length.out = n2))
     rval <- c(seqhcl(rval, pals["h1"], pals["h1"], pals["c1"], 0, pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...),
     	  rev(seqhcl(rval, pals["h2"], pals["h2"], pals["c1"], 0, pals["l1"], pals["l2"], pals["p1"], pals["p2"], pals["cmax"], as.logical(pals["fixup"]), ...)))
     if(floor(n/2) < n2) rval <- rval[-n2]

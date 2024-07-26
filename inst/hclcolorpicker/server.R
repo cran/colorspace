@@ -386,8 +386,8 @@ color_picker_hue_chroma_plot <- function(L = 75, C = 20, H = 0, n = 200) {
     # Selected color
     graphics::points(sel_pt[1,"V"] ~ sel_pt[1,"U"], cex = 2)
     sel_radius <- sqrt(sum(sel_pt[1, c("U", "V")]^2))
-    graphics::lines(sin(seq(0, 2 * pi, length = 300)) * sel_radius,
-                    cos(seq(0, 2 * pi, length = 300)) * sel_radius, col = "gray40")
+    graphics::lines(sin(seq(0, 2 * pi, length.out = 300)) * sel_radius,
+                    cos(seq(0, 2 * pi, length.out = 300)) * sel_radius, col = "gray40")
 
     # Box
     graphics::box(col = "gray40")
@@ -435,7 +435,7 @@ plot_color_gradient <- function( seq, cols, sel, ylab = NA, ticks ) {
     par(mar = c(2, 2, .1, 1))
     # Compute args
     dx   <- 0.5 * median(diff(seq))
-    seq  <- seq(min(seq), max(seq), length=length(cols))
+    seq  <- seq(min(seq), max(seq), length.out=length(cols))
     args <- list(ybottom = rep(0,length(cols)), ytop = rep(1,length(cols)))
     args$xleft <- seq - dx;          args$xright <- seq + dx
     args$col   <- as.vector(cols);   args$border <- NA
@@ -607,7 +607,7 @@ generateExport <- function(output, colors) {
    gastr <- append(gastr, sprintf("<code>'set ccols %s'</code>",
                                   paste(1:nrow(RGB) + 19, collapse = " ")))
    gastr <- append(gastr, sprintf("<code>'set clevs %s'</code>",
-                                  paste(round(seq(0, 100, length=nrow(RGB) - 1), 1), collapse=" ")))
+                                  paste(round(seq(0, 100, length.out=nrow(RGB) - 1), 1), collapse=" ")))
    gastr <- append(gastr, "<comment>** Open data set via DODS</comment>")
    gastr <- append(gastr, "<comment>** Open data set via DODS</comment>")
    gastr <- append(gastr, strftime(Sys.Date() - 1, "<code>'sdfopen http://nomads.ncep.noaa.gov:9090/dods/gfs_1p00/gfs%Y%m%d/gfs_1p00_00z_anl'</code>"))
