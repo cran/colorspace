@@ -31,6 +31,12 @@ max_chroma <- function(h, l, floor = FALSE) {
   h <- rep_len(h, n)
   l <- rep_len(l, n)
 
+  ## create output vector (may contain NAs)
+  c0 <- h * 0 + l * 0
+  na <- is.na(c0)
+  h <- h[!na]
+  l <- l[!na]
+
   ## assure h in [0, 360]
   while(any(h < 0)) h[h < 0] <- h[h < 0] + 360
   while(any(h >= 360)) h[h >= 360] <- h[h >= 360] - 360
@@ -57,7 +63,9 @@ max_chroma <- function(h, l, floor = FALSE) {
   ## take floor to be "on the safe side"
   if(floor) c <- floor(c)
   
-  return(c)
+  ## insert non-NA values
+  c0[!na] <- c
+  return(c0)
 }
 
 #' @rdname max_chroma

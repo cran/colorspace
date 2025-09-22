@@ -10,6 +10,14 @@ adjust_hcl <- function(col, h = 0, c = 0, l = 0, method = "relative", fixup = TR
   if(length(c) != n) c <- rep_len(c, length.out = n)
   if(length(l) != n) l <- rep_len(l, length.out = n)
 
+  ## handle prismatic colors class (essentially character + class attribute)
+  if(is.character(col) && inherits(col, "colors")) {
+    col <- as.character(col) ## workaround for prismatic colors class
+    prismatic <- TRUE
+  } else {
+    prismatic <- FALSE
+  }
+
   ## col has to be hex code, otherwise col2rgb is used
   if(is.character(col) &&
     (all(substr(col, 1L, 1L) == "#") & all(nchar(col) %in% c(7L, 9L))))
@@ -54,6 +62,10 @@ adjust_hcl <- function(col, h = 0, c = 0, l = 0, method = "relative", fixup = TR
   ## convert back to hex and add alpha and names again (if any)
   col <- hex(col, fixup = fixup)
   col[!is.na(col)] <- paste(col[!is.na(col)], alpha[!is.na(col)], sep = "")
+
+  ## add prismatic colors class again (if applicable)
+  if(prismatic) attr(col, "class") <- "colors"
+
   return(col)
 }
 
@@ -70,6 +82,14 @@ lightdark <- function(col, amount = 0.1,
   n <- max(c(length(col), length(amount)))
   col <- rep_len(col, length.out = n)
   amount <- rep_len(amount, length.out = n)
+
+  ## handle prismatic colors class (essentially character + class attribute)
+  if(is.character(col) && inherits(col, "colors")) {
+    col <- as.character(col) ## workaround for prismatic colors class
+    prismatic <- TRUE
+  } else {
+    prismatic <- FALSE
+  }
 
   ## col has to be hex code, otherwise col2rgb is used
   if(is.character(col) &&
@@ -121,6 +141,10 @@ lightdark <- function(col, amount = 0.1,
   ## convert back to hex and add alpha again (if any)
   col <- hex(col, fixup = fixup)
   col[!is.na(col)] <- paste(col[!is.na(col)], alpha[!is.na(col)], sep = "")
+
+  ## add prismatic colors class again (if applicable)
+  if(prismatic) attr(col, "class") <- "colors"
+
   return(col)
 }
 
@@ -257,6 +281,14 @@ lightdark2 <- function(col, amount = 0.1,
   col <- rep_len(col, length.out = n)
   amount <- rep_len(amount, length.out = n)
   
+  ## handle prismatic colors class (essentially character + class attribute)
+  if(is.character(col) && inherits(col, "colors")) {
+    col <- as.character(col) ## workaround for prismatic colors class
+    prismatic <- TRUE
+  } else {
+    prismatic <- FALSE
+  }
+
   ## col has to be hex code, otherwise col2rgb is used
   if(is.character(col) &&
      (all(substr(col, 1L, 1L) == "#") & all(nchar(col) %in% c(7L, 9L))))
@@ -357,6 +389,10 @@ lightdark2 <- function(col, amount = 0.1,
   ## convert back to hex and add alpha again (if any)
   col <- hex(col, fixup = fixup)
   col[!is.na(col)] <- paste(col[!is.na(col)], alpha[!is.na(col)], sep = "")
+
+  ## add prismatic colors class again (if applicable)
+  if(prismatic) attr(col, "class") <- "colors"
+
   return(col)
 }
 

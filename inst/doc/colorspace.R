@@ -13,10 +13,10 @@ swatchplot(
 )
 
 ## ----installation-cran, eval=FALSE--------------------------------------------
-#  install.packages("colorspace")
+# install.packages("colorspace")
 
 ## ----installation-rforge, eval=FALSE------------------------------------------
-#  install.packages("colorspace", repos = "https://R-Forge.R-project.org")
+# install.packages("colorspace", repos = "https://R-Forge.R-project.org")
 
 ## ----hcl-palettes, message = FALSE, warning = FALSE, fig.align = "left", fig.height = 9, fig.width = 16, dpi = 48, out.width = "100%"----
 library("colorspace")
@@ -27,8 +27,8 @@ q4 <- qualitative_hcl(4, palette = "Dark 3")
 q4
 
 ## ----eustockmarkets, eval = FALSE---------------------------------------------
-#  plot(log(EuStockMarkets), plot.type = "single", col = q4, lwd = 2)
-#  legend("topleft", colnames(EuStockMarkets), col = q4, lwd = 3, bty = "n")
+# plot(log(EuStockMarkets), plot.type = "single", col = q4, lwd = 2)
+# legend("topleft", colnames(EuStockMarkets), col = q4, lwd = 3, bty = "n")
 
 ## ----eustockmarkets-plot, echo = FALSE, message = FALSE, warning = FALSE, fig.align = "left", fig.height = 4, fig.width = 6, dpi = 48, out.width = "100%"----
 q4 <- qualitative_hcl(4)
@@ -37,8 +37,8 @@ plot(log(EuStockMarkets), plot.type = "single", col = q4, lwd = 2)
 legend("topleft", colnames(EuStockMarkets), col = q4, lwd = 3, bty = "n")
 
 ## ----titanic, eval = FALSE----------------------------------------------------
-#  ttnc <- margin.table(Titanic, c(1, 4))
-#  spineplot(ttnc, col = sequential_hcl(2, palette = "Purples 3"))
+# ttnc <- margin.table(Titanic, c(1, 4))
+# spineplot(ttnc, col = sequential_hcl(2, palette = "Purples 3"))
 
 ## ----titanic-plot, echo = FALSE, message = FALSE, warning = FALSE, fig.align = "left", fig.height = 4, fig.width = 6, dpi = 48, out.width = "100%"----
 ttnc <- margin.table(Titanic, c(1, 4))
@@ -56,9 +56,9 @@ ggplot(dsamp, aes(carat, price, color = cut)) + geom_point() +
   scale_color_discrete_sequential(palette = "Purples 3", nmax = 6, order = 2:6)
 
 ## ----visualiation-qualitative, eval = FALSE-----------------------------------
-#  demoplot(q4, "bar")
-#  hclplot(q4)
-#  specplot(q4, type = "o")
+# demoplot(q4, "bar")
+# hclplot(q4)
+# specplot(q4, type = "o")
 
 ## ----allplots-qualitative, echo = FALSE, fig.height = 4.5, fig.width = 14, fig.align = "center", dev = "png", dpi = 48, out.width = "100%"----
 allplots <- function(palette, ...) {
@@ -74,10 +74,10 @@ allplots <- function(palette, ...) {
 allplots(q4, "bar")
 
 ## ----visualization-sequential, eval = FALSE-----------------------------------
-#  s9 <- sequential_hcl(9, "Purples 3")
-#  demoplot(s9, "heatmap")
-#  hclplot(s9)
-#  specplot(s9, type = "o")
+# s9 <- sequential_hcl(9, "Purples 3")
+# demoplot(s9, "heatmap")
+# hclplot(s9)
+# specplot(s9, type = "o")
 
 ## ----allplots-sequential, echo = FALSE, fig.height = 4.5, fig.width = 14, fig.align = "center", dev = "png", dpi = 48, out.width = "100%"----
 s9 <- sequential_hcl(9, "Purples 3")

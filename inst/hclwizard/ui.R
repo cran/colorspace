@@ -87,7 +87,7 @@ shinyUI(fluidPage(
                "Advanced: Sequential (single-hue)"  = "seqs_advanced",
                "Advanced: Sequential (multi-hue)"   = "seqm_advanced",
                "Advanced: Diverging"                = "dive_advanced",
-               "R default schemes"                  = "base"), 
+               "R legacy schemes"                   = "base"), 
            selected = "seqm")
       )),
       # Copy the line below to make a select box 
@@ -351,7 +351,7 @@ shinyUI(fluidPage(
                      htmlOutput("exportPython")
                   ),
                   # Matlab output
-                  tabPanel("matlab",
+                  tabPanel("MATLAB",
                      htmlOutput("exportMatlab"),
                      includeHTML("html/matlab.html")
                   ),

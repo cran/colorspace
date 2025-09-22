@@ -59,11 +59,11 @@ Web Consortium (W3C).
 \details{
 The W3C Content Accessibility Guidelines (WCAG) recommend a contrast
 ratio of at least 4.5 for the color of regular text on the background color, and
-a ratio of at least 3 for large text. See \url{https://www.w3.org/TR/WCAG21/#contrast-minimum}.
+a ratio of at least 3 for large text. See \url{https://www.w3.org/TR/WCAG22/#contrast-minimum}.
 
-The contrast ratio is defined in \url{https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio}
+The contrast ratio is defined in \url{https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio}
 as \code{(L1 + 0.05) / (L2 + 0.05)} where \code{L1} and \code{L2} are the relative luminances
-(see \url{https://www.w3.org/TR/WCAG21/#dfn-relative-luminance}) of the lighter and darker
+(see \url{https://www.w3.org/TR/WCAG22/#dfn-relative-luminance}) of the lighter and darker
 colors, respectively. The relative luminances are weighted sums of scaled sRGB coordinates:
 \code{0.2126 * R + 0.7152 * G + 0.0722 * B} where each of \code{R}, \code{G}, and \code{B}
 is defined as \code{ifelse(RGB <= 0.03928, RGB/12.92, ((RGB + 0.055)/1.055)^2.4)} based on
@@ -89,14 +89,14 @@ contrast_ratio(palette(), "white", algorithm = "APCA")
 contrast_ratio(palette(), "white", algorithm = "APCA", plot = TRUE, digits = 0)
 }
 \references{
-W3C (2018). \dQuote{Web Content Accessibility Guidelines (WCAG) 2.1.}
-\url{https://www.w3.org/TR/WCAG21/}
+W3C (2024). \dQuote{Web Content Accessibility Guidelines (WCAG) 2.2.}
+\url{https://www.w3.org/TR/WCAG22/}
 
 Somers A (2022). \dQuote{Advanced Perceptual Contrast Algorithm.}
 \url{https://github.com/Myndex/SAPC-APCA}
 
 Muth LC (2022). \dQuote{It's Time for a More Sophisticated Color Contrast Check for Data Visualizations.}
-Datawrapper Blog. \url{https://blog.datawrapper.de/color-contrast-check-data-vis-wcag-apca/}
+Datawrapper Blog. \url{https://www.datawrapper.de/blog/color-contrast-check-data-vis-wcag-apca/}
 }
 \seealso{
 \code{\link[colorspace]{desaturate}}

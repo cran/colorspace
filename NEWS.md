@@ -1,3 +1,22 @@
+# colorspace 2.1-2
+
+* Small improvements in `hclwizard()` shiny app, e.g., "R default schemes" are
+  now called "R legacy schemes" because base R color infrastructure was meanwhile
+  improved with `hcl.colors()` (prompted by the `colorspace` package) and
+  `palette.colors()`. See
+  [Zeileis & Murrell (2023, The R Journal)](https://doi.org/10.32614/RJ-2023-071).
+
+* In functions `lighten()`/`darken()`, `adjust_transparency()`, `desaturate()`,
+  and in the color vision deficiency simulation functions, try to preserve the
+  `"colors"` class (from `prismatic`) along with other attributes.
+
+* In `max_chroma()` missing values in the input arguments are supported now,
+  leading to missing values in the output. (Reported by Martin R. Smith.)
+
+* Update references and links in the documentation of `contrast_ratio()` due to
+  the release of the Web Content Accessibility Guidelines (WCAG) version 2.2.
+
+
 # colorspace 2.1-1
 
 * In the `hclwizard()` shiny app the Python export now leverages the Python

@@ -53,9 +53,11 @@ div.hcl-sliderwrapper.hcl-is-hidden, .hcl-is-hidden {
 /* Select box styling */
 img.select-pal {
    width:  100%;
-   height: 30px;
-   margin: 0 2px;
-   padding: 0px;
+   height: 25px;
+   padding: 0 0 4px 0;
+}
+img.select-pal.selected {
+    background-color: transparent;
 }
 
 /* Styling hcl-slider and hcl-slidervalue input elements */

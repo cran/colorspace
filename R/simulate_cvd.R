@@ -102,6 +102,9 @@ simulate_cvd <- function(col, cvd_transform, linear = TRUE) {
     "other"
   }
 
+  ## prismatic colors class is character + class attribute
+  prismatic <- input_type == "hex" && inherits(col, "colors")
+
   ## indexes of missing values (if hex)
   NAidx <- NULL
 
@@ -185,6 +188,7 @@ simulate_cvd <- function(col, cvd_transform, linear = TRUE) {
     col <- rgb(t(RGB[1L:3L, , drop = FALSE]), maxColorValue = 255, names = colnames(RGB))
     col[] <- paste(col[], alpha, sep = "")
     if(length(NAidx) > 0L) col[NAidx] <- NA
+    if(prismatic) attr(col, "class") <- "colors"
   }
 
   return(col)

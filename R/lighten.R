@@ -129,6 +129,7 @@ lighten <- function(col, amount = 0.1,
   col_orig <- col
   
   ## col has to be hex code, otherwise col2rgb is used
+  if(is.character(col) && inherits(col, "colors")) col <- as.character(col) ## workaround for prismatic colors class
   if(is.character(col) &&
      (all(substr(col, 1L, 1L) == "#") & all(nchar(col) %in% c(7L, 9L))))
   {
@@ -234,8 +235,9 @@ lighten <- function(col, amount = 0.1,
   ## return original colors whenever amount == 0
   col[amount == 0] <- col_orig[amount == 0]
   
-  ## preserve names (if any)
+  ## preserve names and colors class attribute (if any)
   if(!is.null(names(col_orig))) names(col) <- names(col_orig)
+  if(identical(attr(col_orig, "class"), "colors")) attr(col, "class") <- "colors" ## workaround for prismatic colors class
   
   return(col)
 }

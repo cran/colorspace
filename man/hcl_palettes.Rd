@@ -232,6 +232,11 @@ function \code{hcl_palettes} can be used to query the available pre-specified pa
 comes with a \code{print} method (listing names and types), a \code{summary} method
 (additionally listing the underlying parameters/coordinates), and a \code{plot}
 method that creates a \code{\link{swatchplot}} with suitable labels.
+
+The named HCL-based palettes have also been included in the \code{\link[grDevices]{hcl.colors}}
+function in base R in order to facilitate adoption in practice and in R packages.
+However, in \code{hcl.colors} it is only possible to obtain \code{n} colors from the
+given palette without the possibility for further modifications.
 }
 \examples{
 ## overview of all _named_ HCL palettes
@@ -313,8 +318,12 @@ Visualizations.  \emph{Bulletin of the American Meteorological Society},
 Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 \dQuote{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
 \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
+
+Zeileis A, Murrell P (2023).
+\dQuote{Coloring in R's Blind Spot.}
+\emph{The R Journal}, \bold{15}(3), 240--256. \doi{10.32614/RJ-2023-071}
 }
 \seealso{
-\code{\link{divergingx_hcl}}
+\code{\link{divergingx_hcl}} \code{\link[grDevices]{hcl.colors}}
 }
 \keyword{color}

@@ -101,6 +101,14 @@ adjust_transparency <- function(col, alpha = TRUE) {
   NAidx <- which(is.na(col))
   n <- if(is.matrix(col) && is.numeric(col)) NCOL(col) else length(col)
 
+  ## handle prismatic colors class (essentially character + class attribute)
+  if(is.character(col) && inherits(col, "colors")) {
+    col <- as.character(col) ## workaround for prismatic colors class
+    prismatic <- TRUE
+  } else {
+    prismatic <- FALSE
+  }
+
   ## col has to be hex code, otherwise col2rgb is used
   if(is.character(col) &&
     (all(substr(col, 1L, 1L) == "#") & all(nchar(col) %in% c(7L, 9L))))
@@ -136,6 +144,9 @@ adjust_transparency <- function(col, alpha = TRUE) {
   ## add alpha again (if any) and manage NAs
   col[] <- paste(col[], alpha, sep = "")
   if(length(NAidx) > 0) col[NAidx] <- NA
+  
+  ## add prismatic colors class again (if applicable)
+  if(prismatic) attr(col, "class") <- "colors"
 
   return(col)
 }

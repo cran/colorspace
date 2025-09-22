@@ -97,6 +97,11 @@
 #' (additionally listing the underlying parameters/coordinates), and a \code{plot}
 #' method that creates a \code{\link{swatchplot}} with suitable labels.
 #' 
+#' The named HCL-based palettes have also been included in the \code{\link[grDevices]{hcl.colors}}
+#' function in base R in order to facilitate adoption in practice and in R packages.
+#' However, in \code{hcl.colors} it is only possible to obtain \code{n} colors from the
+#' given palette without the possibility for further modifications.
+#' 
 #' @param n the number of colors (\eqn{\ge 1}{>= 1}) to be in the palette.
 #' @param h,h1,h2 hue value in the HCL color description, has to be in [0, 360].
 #' @param c,c.,c1,c2 chroma value in the HCL color description.
@@ -127,7 +132,7 @@
 #' where each row contains information about one of the requested palettes (name, type,
 #' HCL trajectory coordinates). Suitable \code{print}, \code{summary}, and \code{plot}
 #' methods are available.
-#' @seealso \code{\link{divergingx_hcl}}
+#' @seealso \code{\link{divergingx_hcl}} \code{\link[grDevices]{hcl.colors}}
 #' @references Zeileis A, Hornik K, Murrell P (2009).  Escaping RGBland:
 #' Selecting Colors for Statistical Graphics.  \emph{Computational Statistics &
 #' Data Analysis}, \bold{53}, 3259--3270.
@@ -144,6 +149,10 @@
 #' Zeileis A, Fisher JC, Hornik K, Ihaka R, McWhite CD, Murrell P, Stauffer R, Wilke CO (2020).
 #' \dQuote{colorspace: A Toolbox for Manipulating and Assessing Colors and Palettes.}
 #' \emph{Journal of Statistical Software}, \bold{96}(1), 1--49. \doi{10.18637/jss.v096.i01}
+#'
+#' Zeileis A, Murrell P (2023).
+#' \dQuote{Coloring in R's Blind Spot.}
+#' \emph{The R Journal}, \bold{15}(3), 240--256. \doi{10.32614/RJ-2023-071}
 #' @keywords color
 #' @examples
 #' ## overview of all _named_ HCL palettes

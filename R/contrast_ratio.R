@@ -5,11 +5,11 @@
 #' 
 #' The W3C Content Accessibility Guidelines (WCAG) recommend a contrast
 #' ratio of at least 4.5 for the color of regular text on the background color, and
-#' a ratio of at least 3 for large text. See \url{https://www.w3.org/TR/WCAG21/#contrast-minimum}.
+#' a ratio of at least 3 for large text. See \url{https://www.w3.org/TR/WCAG22/#contrast-minimum}.
 #'
-#' The contrast ratio is defined in \url{https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio}
+#' The contrast ratio is defined in \url{https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio}
 #' as \code{(L1 + 0.05) / (L2 + 0.05)} where \code{L1} and \code{L2} are the relative luminances
-#' (see \url{https://www.w3.org/TR/WCAG21/#dfn-relative-luminance}) of the lighter and darker
+#' (see \url{https://www.w3.org/TR/WCAG22/#dfn-relative-luminance}) of the lighter and darker
 #' colors, respectively. The relative luminances are weighted sums of scaled sRGB coordinates:
 #' \code{0.2126 * R + 0.7152 * G + 0.0722 * B} where each of \code{R}, \code{G}, and \code{B}
 #' is defined as \code{ifelse(RGB <= 0.03928, RGB/12.92, ((RGB + 0.055)/1.055)^2.4)} based on
@@ -47,14 +47,14 @@
 #'
 #' @return A numeric vector with the contrast ratios is returned (invisibly, if \code{plot} is \code{TRUE}).
 #' @seealso \code{\link[colorspace]{desaturate}}
-#' @references W3C (2018). \dQuote{Web Content Accessibility Guidelines (WCAG) 2.1.}
-#' \url{https://www.w3.org/TR/WCAG21/}
+#' @references W3C (2024). \dQuote{Web Content Accessibility Guidelines (WCAG) 2.2.}
+#' \url{https://www.w3.org/TR/WCAG22/}
 #'
 #' Somers A (2022). \dQuote{Advanced Perceptual Contrast Algorithm.}
 #' \url{https://github.com/Myndex/SAPC-APCA}
 #'
 #' Muth LC (2022). \dQuote{It's Time for a More Sophisticated Color Contrast Check for Data Visualizations.}
-#' Datawrapper Blog. \url{https://blog.datawrapper.de/color-contrast-check-data-vis-wcag-apca/}
+#' Datawrapper Blog. \url{https://www.datawrapper.de/blog/color-contrast-check-data-vis-wcag-apca/}
 #' @keywords color
 #' @examples
 #' # check contrast ratio of default palette on white background
@@ -76,7 +76,7 @@
 contrast_ratio <- function(col, col2 = "white", algorithm = c("WCAG", "APCA"),
   plot = FALSE, border = FALSE, cex = 2, off = 0.05, mar = rep(0.5, 4), digits = 2L, ...)
 {
-  ## https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio
+  ## https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio
   if(length(col) < 1L || length(col2) < 1L) stop("both 'col' and 'col2' need to specify at least one color")
 
   ## suitably recycle colors if necessary
@@ -151,7 +151,7 @@ relative_luminance <- function(col, algorithm = c("WCAG", "APCA")) {
   ## relative luminance is essentially (rgb^2.4) %*% coef
   ## but with slightly different adjustments for WCAG vs. APCA
   if(algorithm == "WCAG") {
-    ## https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
+    ## https://www.w3.org/TR/WCAG22/#dfn-relative-luminance
     rgb[] <- ifelse(rgb <= 0.03928, rgb/12.92, ((rgb + 0.055)/1.055)^2.4)
     rlum <- as.numeric(rgb %*% coef)
   } else {

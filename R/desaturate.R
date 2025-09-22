@@ -86,6 +86,9 @@ desaturate <- function(col, amount = 1, ...) {
     "other"
   }
 
+  ## prismatic colors class is character + class attribute
+  prismatic <- input_type == "hex" && inherits(col, "colors")
+
   ## convert input to color object (typically sRGB)
   if (input_type == "colorspace") {
 
@@ -144,6 +147,7 @@ desaturate <- function(col, amount = 1, ...) {
     col <- hex(col)
     col[] <- paste0(col[], alpha)
     if (length(NAidx) > 0L) col[NAidx] <- NA
+    if (prismatic) attr(col, "class") <- "colors"
   }
   return(col)
 }

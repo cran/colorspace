@@ -922,8 +922,8 @@ mixcolor <-
     n1 = nrow(c1)
     n2 = nrow(c2)
     n = max(na, n1, n2)
-    if (na < n) alpha = rep(alpha, length = n)
-    if (n1 < n) c1 = c1[rep(1:n1, length = n),]
-    if (n2 < n) c2 = c2[rep(1:n2, length = n),]
+    if (na < n) alpha = rep(alpha, length.out = n)
+    if (n1 < n) c1 = c1[rep(1:n1, length.out = n),]
+    if (n2 < n) c2 = c2[rep(1:n2, length.out = n),]
     get(where)((1 - alpha) * c1 + alpha * c2)
   }

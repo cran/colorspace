@@ -411,7 +411,7 @@ shinyServer(function(input, output, session) {
           fname <- input$PAL
       }
       if ( nchar(register) > 0 ) {
-          if ( grepl("^base$", input$typ ) ) return("# Not possible for default schemes.")
+          if ( grepl("^base$", input$typ ) ) return("# Not possible for legacy schemes.")
           fname <- sprintf("colorspace::%s", fname)
       }
 

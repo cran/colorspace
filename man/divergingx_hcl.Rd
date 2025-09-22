@@ -56,25 +56,25 @@ transparency channel (0 means transparent and 1 means opaque).}
 
 \item{c2}{numeric. Chroma coordinate corresponding to \code{h2} (if \code{NA}, set to 0).}
 
-\item{c3}{numeric. Chroma coordinate corresponding to \code{h3}.}
+\item{c3}{numeric. Chroma coordinate corresponding to \code{h3} (if \code{NA}, \code{c1} is used).}
 
 \item{l1}{numeric. Luminance coordinate corresponding to \code{h1}.}
 
-\item{l2}{numeric. Luminance coordinate corresponding to \code{h2}.}
+\item{l2}{numeric. Luminance coordinate corresponding to \code{h2} (if \code{NA}, \code{l1} is used).}
 
 \item{l3}{numeric. Luminance coordinate corresponding to \code{h3} (if \code{NA}, \code{l1} is used).}
 
-\item{p1}{numeric. Power parameter for chroma coordinates in first sequential palette.}
+\item{p1}{numeric. Power parameter for chroma coordinates in first sequential palette (if \code{NA}, \code{1} is used).}
 
 \item{p2}{numeric. Power parameter for luminance coordinates in first sequential palette (if \code{NA}, \code{p1} is used).}
 
 \item{p3}{numeric. Power parameter for chroma coordinates in second sequential palette (if \code{NA}, \code{p1} is used).}
 
-\item{p4}{numeric. Power parameter for luminance coordinates in second sequential palette (if \code{NA}, \code{p3} is used).}
+\item{p4}{numeric. Power parameter for luminance coordinates in second sequential palette (if \code{NA}, \code{p2} is used).}
 
 \item{cmax1}{numeric. Maximum chroma coordinate in first sequential palette (not used if \code{NA}).}
 
-\item{cmax2}{numeric. Maximum chroma coordinate in second sequential palette (if \code{NA}, \code{cmax1} is used).}
+\item{cmax2}{numeric. Maximum chroma coordinate in second sequential palette (not used if \code{NA}).}
 
 \item{plot}{logical. Should the selected HCL color palettes be visualized?}
 }
