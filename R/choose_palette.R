@@ -120,7 +120,7 @@ hcl_wizard <- function(n = 7L, gui = "shiny", ...)
     stop("arguments must be named")
   } else if(any(names(dots) == "")) {
     warning("ignoring unnamed arguments")
-    dots <- dots[names != ""]
+    dots <- dots[names(dots) != ""]
   }
   if(length(dots) > 0L) {
     for(i in names(dots)) {
