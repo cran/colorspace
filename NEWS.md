@@ -1,3 +1,10 @@
+# colorspace 2.1-3
+
+* Updated `structure()` calls to use `names = ...` instead of `.Names = ...` etc.
+
+* Small updates in legacy `vignette("hcl-colors")` for R CMD check.
+
+
 # colorspace 2.1-2
 
 * Small improvements in `hclwizard()` shiny app, e.g., "R default schemes" are

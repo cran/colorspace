@@ -363,7 +363,7 @@ qualitative_hcl <- function(n, h = c(0, 360 * (n - 1)/n), c = 80, l = 60,
     pals <- if(!is.null(palette)) {
         as.matrix(hcl_palettes(type = "Qualitative", palette = palette)[, 2L:11L])[1L, ]
     } else {
-        structure(c(if(length(h) < 2L) c(h, NA) else rep_len(h, 2L), c[1L], NA, l[1L], NA, NA, NA, NA, 1), .Names = vars.pal[1L:10L])
+        structure(c(if(length(h) < 2L) c(h, NA) else rep_len(h, 2L), c[1L], NA, l[1L], NA, NA, NA, NA, 1), names = vars.pal[1L:10L])
     }
     ## (2) h/c/l
     if(!missing(h) && !is.character(h)) {
@@ -453,7 +453,7 @@ sequential_hcl <- function(n, h = 260, c = 80, l = c(30, 90), power = 1.5,
             rep_len(l, 2L),
             if(length(power) < 2L) c(power, NA) else rep_len(power, 2L),
             if(length(c) < 3L) NA else c[3L],
-            1), .Names = vars.pal)
+            1), names = vars.pal)
     }
     ## (2) h/c/l
     if(!missing(h) && !is.character(h)) {
@@ -543,7 +543,7 @@ diverging_hcl <- function(n, h = c(260, 0), c = 80, l = c(30, 90), power = 1.5,
             rep_len(l, 2L),
             if(length(power) < 2L) c(power, NA) else rep_len(power, 2L),
             if(length(c) > 1L) c[2L] else NA,
-            1), .Names = vars.pal)
+            1), names = vars.pal)
     }
     ## (2) h/c/l
     if(!missing(h) && !is.character(h)) {

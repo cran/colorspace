@@ -87,8 +87,8 @@ pal(diverging_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
 ###################################################
 ### code chunk number 9: seats-data
 ###################################################
-seats <- structure(c(226, 61, 54, 51, 222),
-  .Names = c("CDU/CSU", "FDP",  "Linke", "Gruene", "SPD"))
+seats <- setNames(c(226, 61, 54, 51, 222),
+  c("CDU/CSU", "FDP",  "Linke", "Gruene", "SPD"))
 seats
 
 
@@ -269,6 +269,6 @@ fm <- ksvm(class ~ ., data = ex1, C = 0.5)
 ###################################################
 ### code chunk number 31: svm1
 ###################################################
+suppressWarnings(
 plot(fm, data = ex1)
-
-
+)

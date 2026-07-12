@@ -55,7 +55,7 @@ Copyright M. P. Wand 1997-2009
 > pal(diverging_hcl(7, h = c(180, 330), c = 59, l = c(75, 
 +     95)))
 
-> seats <- structure(c(226, 61, 54, 51, 222), .Names = c("CDU/CSU", 
+> seats <- setNames(c(226, 61, 54, 51, 222), c("CDU/CSU", 
 +     "FDP", "Linke", "Gruene", "SPD"))
 
 > seats
@@ -148,7 +148,7 @@ CDU/CSU     FDP   Linke  Gruene     SPD
 
 > fm <- ksvm(class ~ ., data = ex1, C = 0.5)
 
-> plot(fm, data = ex1)
+> suppressWarnings(plot(fm, data = ex1))
 
  *** Run successfully completed ***
 > proc.time()

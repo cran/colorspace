@@ -44,7 +44,7 @@
   Welthandelsplatz 1\\
   1020 Wien, Austria\\
   E-mail: \email{Kurt.Hornik@R-project.org}\\
-  URL: \url{http://statmath.wu.ac.at/~hornik/}\\
+  URL: \url{https://statmath.wu.ac.at/~hornik/}\\
 
   Paul Murrell\\
   Department of Statistics\\
@@ -52,7 +52,7 @@
   Private Bag 92019\\
   Auckland, New Zealand\\
   E-mail: \email{paul@stat.auckland.ac.nz}\\
-  URL: \url{http://www.stat.auckland.ac.nz/~paul/}
+  URL: \url{https://www.stat.auckland.ac.nz/~paul/}
 }
 
 \begin{document}
@@ -260,8 +260,8 @@ In this election, five parties were able to obtain enough votes to enter the
 Bundestag, the numbers of seats are given by
 
 <<seats-data, echo=TRUE>>=
-seats <- structure(c(226, 61, 54, 51, 222),
-  .Names = c("CDU/CSU", "FDP",  "Linke", "Gruene", "SPD"))
+seats <- setNames(c(226, 61, 54, 51, 222),
+  c("CDU/CSU", "FDP",  "Linke", "Gruene", "SPD"))
 seats
 @
 
@@ -499,7 +499,9 @@ cannot be easily modified---however, the colors employed are equivalent to
 \begin{figure}[p]
 \begin{center}
 <<svm1, fig=TRUE, height=6, width=8, png=TRUE, pdf=FALSE>>=
+suppressWarnings(
 <<svm>>
+)
 @
 \caption{\label{fig:class} SVM classification plot.}
 \end{center}
