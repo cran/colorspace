@@ -1,6 +1,6 @@
 Package: colorspace
-Version: 2.1-3
-Date: 2026-07-10
+Version: 2.1-4
+Date: 2026-10-08
 Title: A Toolbox for Manipulating and Assessing Colors and Palettes
 Authors@R: c(person(given = "Ross", family = "Ihaka", role = "aut", email = "ihaka@stat.auckland.ac.nz"),
              person(given = "Paul", family = "Murrell", role = "aut", email = "paul@stat.auckland.ac.nz",
@@ -39,13 +39,13 @@ Suggests: datasets, utils, KernSmooth, MASS, kernlab, mvtnorm, vcd,
         wesanderson
 VignetteBuilder: knitr
 License: BSD_3_clause + file LICENSE
-URL: https://colorspace.R-Forge.R-project.org/, https://hclwizard.org/
-BugReports: https://colorspace.R-Forge.R-project.org/contact.html
+URL: https://zeileis.codeberg.page/colorspace/, https://hclwizard.org/
+BugReports: https://codeberg.org/zeileis/colorspace/issues
 LazyData: yes
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 NeedsCompilation: yes
-Packaged: 2026-07-10 13:51:25 UTC; zeileis
+Packaged: 2026-10-08 01:54:02 UTC; zeileis
 Author: Ross Ihaka [aut],
   Paul Murrell [aut] (ORCID: <https://orcid.org/0000-0002-3224-8858>),
   Kurt Hornik [aut] (ORCID: <https://orcid.org/0000-0003-4198-9911>),
@@ -58,4 +58,4 @@ Author: Ross Ihaka [aut],
     <https://orcid.org/0000-0003-0918-3766>)
 Maintainer: Achim Zeileis <Achim.Zeileis@R-project.org>
 Repository: CRAN
-Date/Publication: 2026-07-12 07:20:02 UTC
+Date/Publication: 2026-10-08 07:50:16 UTC

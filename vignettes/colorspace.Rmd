@@ -20,7 +20,7 @@ vignette: >
 library("colorspace")
 library("ggplot2")
 theme_set(theme_minimal())
-prefix <- "https://colorspace.R-Forge.R-project.org/articles/" ## ""
+prefix <- "https://zeileis.codeberg.page/colorspace/articles/" ## ""
 ```
 
 ## Overview
@@ -91,12 +91,12 @@ The stable release version of _colorspace_ is hosted on the Comprehensive R Arch
 install.packages("colorspace")
 ```
 
-The development version of _colorspace_ is hosted on R-Forge at
-<https://R-Forge.R-project.org/projects/colorspace/> in a Subversion (SVN) repository.
-It can be installed via
+The development version of _colorspace_ is hosted on Codeberg at
+<https://codeberg.org/zeileis/colorspace/> in a Git repository.
+It can be installed from R-universe via
 
-```{r installation-rforge, eval=FALSE}
-install.packages("colorspace", repos = "https://R-Forge.R-project.org")
+```{r installation-runiverse, eval=FALSE}
+install.packages("colorspace", repos = "https://zeileis.R-universe.dev")
 ```
 
 A Python version is available from the Python Package Index (PyPI) at

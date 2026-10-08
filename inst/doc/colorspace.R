@@ -2,7 +2,7 @@
 library("colorspace")
 library("ggplot2")
 theme_set(theme_minimal())
-prefix <- "https://colorspace.R-Forge.R-project.org/articles/" ## ""
+prefix <- "https://zeileis.codeberg.page/colorspace/articles/" ## ""
 
 ## ----hcl-properties, echo = FALSE, message = FALSE, warning = FALSE, fig.width = 4, fig.height = 2.2, fig.align = "center", dev = "png"----
 swatchplot(
@@ -15,8 +15,8 @@ swatchplot(
 ## ----installation-cran, eval=FALSE--------------------------------------------
 # install.packages("colorspace")
 
-## ----installation-rforge, eval=FALSE------------------------------------------
-# install.packages("colorspace", repos = "https://R-Forge.R-project.org")
+## ----installation-runiverse, eval=FALSE---------------------------------------
+# install.packages("colorspace", repos = "https://zeileis.R-universe.dev")
 
 ## ----hcl-palettes, message = FALSE, warning = FALSE, fig.align = "left", fig.height = 9, fig.width = 16, dpi = 48, out.width = "100%"----
 library("colorspace")

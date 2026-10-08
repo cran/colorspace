@@ -1,3 +1,15 @@
+# colorspace 2.1-4
+
+* Code repository changed from R-Forge to Codeberg at:
+  <https://codeberg.org/zeileis/colorspace/>
+
+* The URL for the package web page is now:
+  <https://zeileis.codeberg.page/colorspace/>
+
+* Fix of the argument checks in the internal `.colorspace_set_info()` function
+  (provided by Maximilian Scholz).
+
+
 # colorspace 2.1-3
 
 * Updated `structure()` calls to use `names = ...` instead of `.Names = ...` etc.
